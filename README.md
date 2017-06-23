@@ -7,7 +7,7 @@
 
 用法
 
-···
+```Objective-C
 //在UICollectionView创建之前加入ZLCollectionViewFlowLayout
 
 - (UICollectionView*)collectionViewLabel {
@@ -49,4 +49,4 @@
             return 0;
     }
 }
-···
+```

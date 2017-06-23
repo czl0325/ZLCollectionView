@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		025EA843FC82481C705289F5 /* Pods_ZLCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */; };
 		BE13FE611EFBA5E900AFCD90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE601EFBA5E900AFCD90 /* main.m */; };
 		BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE631EFBA5E900AFCD90 /* AppDelegate.m */; };
 		BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE661EFBA5E900AFCD90 /* ViewController.m */; };
@@ -15,6 +16,9 @@
 		BE13FE6F1EFBA5E900AFCD90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE13FE6D1EFBA5E900AFCD90 /* LaunchScreen.storyboard */; };
 		BE13FE7A1EFBA5E900AFCD90 /* ZLCollectionViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE791EFBA5E900AFCD90 /* ZLCollectionViewTests.m */; };
 		BE13FE851EFBA5E900AFCD90 /* ZLCollectionViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE841EFBA5E900AFCD90 /* ZLCollectionViewUITests.m */; };
+		BE13FE9A1EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE991EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m */; };
+		BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */; };
+		BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3FC19602324B979D2440A85E /* Pods-ZLCollectionView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLCollectionView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView.release.xcconfig"; sourceTree = "<group>"; };
+		8BB1C90479285DF96560EBA0 /* Pods-ZLCollectionView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLCollectionView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView.debug.xcconfig"; sourceTree = "<group>"; };
 		BE13FE5C1EFBA5E900AFCD90 /* ZLCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE13FE601EFBA5E900AFCD90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BE13FE621EFBA5E900AFCD90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -51,6 +57,14 @@
 		BE13FE801EFBA5E900AFCD90 /* ZLCollectionViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZLCollectionViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE13FE841EFBA5E900AFCD90 /* ZLCollectionViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewUITests.m; sourceTree = "<group>"; };
 		BE13FE861EFBA5E900AFCD90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE13FE981EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		BE13FE991EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewFlowLayout.m; sourceTree = "<group>"; };
+		BE13FE9B1EFBBA4900AFCD90 /* SEMyRecordHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEMyRecordHeaderView.h; sourceTree = "<group>"; };
+		BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEMyRecordHeaderView.m; sourceTree = "<group>"; };
+		BE13FE9D1EFBBA4900AFCD90 /* SEMyRecordLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEMyRecordLabelCell.h; sourceTree = "<group>"; };
+		BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEMyRecordLabelCell.m; sourceTree = "<group>"; };
+		BE13FEA11EFBC59B00AFCD90 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				025EA843FC82481C705289F5 /* Pods_ZLCollectionView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +93,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3D76AADB1FBD61DAB810BC9D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8BB1C90479285DF96560EBA0 /* Pods-ZLCollectionView.debug.xcconfig */,
+				3FC19602324B979D2440A85E /* Pods-ZLCollectionView.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		48F0C2691D86AE486BCCE3B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BE13FE531EFBA5E800AFCD90 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +117,8 @@
 				BE13FE781EFBA5E900AFCD90 /* ZLCollectionViewTests */,
 				BE13FE831EFBA5E900AFCD90 /* ZLCollectionViewUITests */,
 				BE13FE5D1EFBA5E900AFCD90 /* Products */,
+				3D76AADB1FBD61DAB810BC9D /* Pods */,
+				48F0C2691D86AE486BCCE3B9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,6 +135,11 @@
 		BE13FE5E1EFBA5E900AFCD90 /* ZLCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				BE13FE9B1EFBBA4900AFCD90 /* SEMyRecordHeaderView.h */,
+				BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */,
+				BE13FE9D1EFBBA4900AFCD90 /* SEMyRecordLabelCell.h */,
+				BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */,
+				BE13FE941EFBAAF200AFCD90 /* ZLCollectionFlowLayout */,
 				BE13FE621EFBA5E900AFCD90 /* AppDelegate.h */,
 				BE13FE631EFBA5E900AFCD90 /* AppDelegate.m */,
 				BE13FE651EFBA5E900AFCD90 /* ViewController.h */,
@@ -118,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				BE13FE601EFBA5E900AFCD90 /* main.m */,
+				BE13FEA11EFBC59B00AFCD90 /* PrefixHeader.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -140,6 +180,15 @@
 			path = ZLCollectionViewUITests;
 			sourceTree = "<group>";
 		};
+		BE13FE941EFBAAF200AFCD90 /* ZLCollectionFlowLayout */ = {
+			isa = PBXGroup;
+			children = (
+				BE13FE981EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.h */,
+				BE13FE991EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m */,
+			);
+			path = ZLCollectionFlowLayout;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +196,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE13FE891EFBA5E900AFCD90 /* Build configuration list for PBXNativeTarget "ZLCollectionView" */;
 			buildPhases = (
+				CE4965F2D828719038828A7B /* [CP] Check Pods Manifest.lock */,
 				BE13FE581EFBA5E900AFCD90 /* Sources */,
 				BE13FE591EFBA5E900AFCD90 /* Frameworks */,
 				BE13FE5A1EFBA5E900AFCD90 /* Resources */,
+				185E367DE42C181CEA7E8E09 /* [CP] Embed Pods Frameworks */,
+				28494A7C8159AE3599F2554C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -268,12 +320,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		185E367DE42C181CEA7E8E09 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		28494A7C8159AE3599F2554C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE4965F2D828719038828A7B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BE13FE581EFBA5E900AFCD90 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */,
+				BE13FE9A1EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m in Sources */,
+				BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */,
+				BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */,
 				BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */,
 				BE13FE611EFBA5E900AFCD90 /* main.m in Sources */,
 			);
@@ -361,6 +464,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ZLCollectionView/PrefixHeader.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -407,6 +512,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/ZLCollectionView/PrefixHeader.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -422,8 +529,10 @@
 		};
 		BE13FE8A1EFBA5E900AFCD90 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BB1C90479285DF96560EBA0 /* Pods-ZLCollectionView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qipai.ZLCollectionView;
@@ -433,8 +542,10 @@
 		};
 		BE13FE8B1EFBA5E900AFCD90 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FC19602324B979D2440A85E /* Pods-ZLCollectionView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qipai.ZLCollectionView;
@@ -507,6 +618,7 @@
 				BE13FE8B1EFBA5E900AFCD90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BE13FE8C1EFBA5E900AFCD90 /* Build configuration list for PBXNativeTarget "ZLCollectionViewTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +627,7 @@
 				BE13FE8E1EFBA5E900AFCD90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BE13FE8F1EFBA5E900AFCD90 /* Build configuration list for PBXNativeTarget "ZLCollectionViewUITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +636,7 @@
 				BE13FE911EFBA5E900AFCD90 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

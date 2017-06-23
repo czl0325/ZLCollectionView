@@ -1,0 +1,6 @@
+framework module Pods_ZLCollectionView {
+  umbrella header "Pods-ZLCollectionView-umbrella.h"
+
+  export *
+  module * { export * }
+}

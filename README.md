@@ -5,6 +5,11 @@
 ![](https://github.com/czl0325/ZLCollectionView/blob/master/demo.gif?raw=true)
 
 
+cocoapods 有点问题
+如采用cocoapod，要写成
+pod 'ZLCollectionViewFlowLayout' , :git => 'https://github.com/czl0325/ZLCollectionView.git'
+
+
 用法
 
 ```Objective-C

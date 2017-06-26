@@ -5,9 +5,12 @@
 ![](https://github.com/czl0325/ZLCollectionView/blob/master/demo.gif?raw=true)
 
 
-cocoapods 有点问题
-如采用cocoapod，要写成
-pod 'ZLCollectionViewFlowLayout' , :git => 'https://github.com/czl0325/ZLCollectionView.git'
+支持cocoapod
+pod 'ZLCollectionViewFlowLayout' 
+
+如果遇到以下错误，
+Unable to find a specification for `ZLCollectionViewFlowLayout`
+请使用pod update命令来安装。
 
 
 用法

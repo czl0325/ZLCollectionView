@@ -8,11 +8,11 @@ Pod::Spec.new do |s|
                       各种样式的uicollectionviewflowlayout
                    DESC
 
-  s.homepage     = "https://github.com/czl0325/ZLCollectionView"
+  s.homepage     = "https://github.com/czl0325/ZLCollectionView/"
 
   s.license      = "MIT"
 
-  s.author       = { "陈昭良" => "295183917@qq.com" }
+  s.author       = { "czl0325" => "295183917@qq.com" }
 
   s.source       = { :git => "https://github.com/czl0325/ZLCollectionView.git", :tag => s.version }
   s.requires_arc = true

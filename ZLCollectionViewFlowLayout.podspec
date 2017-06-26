@@ -14,10 +14,10 @@ Pod::Spec.new do |s|
 
   s.author       = { "陈昭良" => "295183917@qq.com" }
 
-  s.source       = { :git => "https://github.com/czl0325/ZLCollectionView.git", :tag => "0.0.1" }
+  s.source       = { :git => "https://github.com/czl0325/ZLCollectionView.git", :tag => s.version }
   s.requires_arc = true
   s.ios.deployment_target = '8.0'
-  s.source_files  = "ZLCollectionViewFlowLayout", "*.{h,m}"
+  s.source_files  = "ZLCollectionViewFlowLayout/*.{h,m}"
  #s.exclude_files = "Classes/Exclude"
 
 end

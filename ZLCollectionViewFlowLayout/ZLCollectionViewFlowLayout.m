@@ -202,7 +202,6 @@
                                         itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                     }
                                     newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], itemSize.height);
-                                    NSLog(@"第%zd行,第%zd列------%@",indexPath.section,indexPath.item,NSStringFromCGRect(newAttributes.frame));
                                     for (NSInteger j=_attributesArray.count-1; j>=0; j--) {
                                         UICollectionViewLayoutAttributes *item = _attributesArray[j];
                                         if ([item.indexPath compare:dic[@"indexPath"]] == NSOrderedSame) {

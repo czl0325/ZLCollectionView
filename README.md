@@ -1,9 +1,18 @@
 # ZLCollectionView
-不断更新各种样式的UICollectionViewFlowLayout
-目前支持标签页，tableviewcell，瀑布流，九宫格类型的布局。可以不同的section设置不同的布局。
+
+为应对类似淘宝首页，京东首页，国美首页的复杂布局而写的UICollectionViewFlowLayout
+目前支持标签页，tableviewcell，瀑布流，九宫格，百分比类型的布局。可以根据不同的section设置不同的布局。
+
+# 更新
+
+## v0.1.0  (2018.1.29）
+   新增加了百分比布局，详细操作请见demo
+
+# gif效果图
 
 ![](https://github.com/czl0325/ZLCollectionView/blob/master/demo.gif?raw=true)
 
+# 导入
 
 支持cocoapod
 pod 'ZLCollectionViewFlowLayout' 
@@ -13,7 +22,7 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 请使用pod update命令来安装。
 
 
-用法
+# 用法
 
 ```Objective-C
 //在UICollectionView创建之前加入ZLCollectionViewFlowLayout
@@ -55,6 +64,46 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
             return 1;
         default:
             return 0;
+    }
+}
+//如果是百分比布局必须是否该代理，如果没实现默认比例为1
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout percentOfRow:(NSIndexPath*)indexPath; {
+    switch (indexPath.section) {
+        case 3: {
+            switch (indexPath.item) {
+                case 0:
+                    return 1.0/3;
+                case 1:
+                    return 2.0/3;
+                case 2:
+                    return 1.0/3;
+                case 3:
+                    return 1.0/3;
+                case 4:
+                    return 1.0/3;
+                case 5:
+                    return 1.0/4;
+                case 6:
+                    return 1.0/4;
+                case 7:
+                    return 1.0/2;
+                case 8:
+                    return 3.0/5;
+                case 9:
+                    return 2.0/5;
+                default:
+                    break;
+            }
+        }
+        case 4: {
+            if (indexPath.item % 2==0) {
+                return 3.0/4;
+            } else {
+                return 1.0/4;
+            }
+        }
+        default:
+            return 1;
     }
 }
 ```

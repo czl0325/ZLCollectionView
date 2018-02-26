@@ -6,17 +6,24 @@
 //  Copyright © 2017年 zhaoliang chen. All rights reserved.
 //
 
+
 /**
+ 
+ *  v0.1.1版本(当前版本)
+    修复百分比布局计算错误的bug
+ 
  *  v0.1.0版本
     新加入了百分比布局,先在typeOfLayout设置布局为PercentLayout百分比布局,在percentOfRow设置百分比，必须为>0且<=1的浮点型数
+ 
  **/
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    BaseLayout      = 1,
-    LabelLayout     = 2,
-    ClosedLayout    = 3,
-    PercentLayout   = 4,
+    BaseLayout      = 1,        //基础布局
+    LabelLayout     = 2,        //标签页布局
+    ClosedLayout    = 3,        //网格布局
+    PercentLayout   = 4,        //百分比布局
+    IrregularLayout = 5,        //不规则布局(暂未完成,v0.2.0版本更新)
 }ZLLayoutType;
 
 @class ZLCollectionViewFlowLayout;

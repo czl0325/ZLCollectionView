@@ -60,6 +60,10 @@
             return _arrayMyMenus.count;
         case 2:
             return _arrayMyTaboos.count;
+        case 3:
+            return 9;
+        case 4:
+            return 3;
         case 5:
             return 8;
         default:
@@ -146,7 +150,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSLog(@"点击了section=%zd，item=%zd",indexPath.section,indexPath.item);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -161,6 +165,10 @@
             return CGSizeMake([_arrayMyTaboos[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} context:nil].size.width + 30, 30);
         }
         case 3:
+            if (indexPath.item == 2) {
+                return CGSizeMake(50, 200);
+            }
+            return CGSizeMake(50, 120);
         case 4: {
             return CGSizeMake(50, 120);
         }
@@ -196,10 +204,11 @@
         case 0:
         case 1:
         case 2:
-        case 3:
-        case 4:
         case 6:
             return 10;
+//        case 3:
+//        case 4:
+//            return 5;
         default:
             return 0;
     }
@@ -210,8 +219,6 @@
         case 0:
         case 1:
         case 2:
-        case 3:
-        case 4:
         case 6:
             return 10;
         default:
@@ -245,9 +252,6 @@
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 3:
-                headerView.labelMyRecord.text = @"百分比布局:";
-                headerView.btnModifyRecord.hidden = YES;
-                break;
             case 4:
                 headerView.labelMyRecord.text = @"百分比布局:";
                 headerView.btnModifyRecord.hidden = YES;

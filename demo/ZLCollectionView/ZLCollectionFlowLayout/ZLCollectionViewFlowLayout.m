@@ -166,17 +166,11 @@
                                 totalPercent += [dic[@"percent"] floatValue];
                             }
                             if ((totalPercent+percent) >= 1.0) {
-                                if (indexPath.section==3&&indexPath.item==8) {
-                                    NSLog(@"进入断点");
-                                }
                                 if ((totalPercent+percent) < 1.1) {
                                     //小于1.1就当成一行来计算
                                     //先添加进总的数组
                                     attributes.indexPath = indexPath;
                                     attributes.frame = CGRectMake(0, 0, itemSize.width, itemSize.height);
-                                    if (![_attributesArray containsObject:attributes]) {
-                                        [_attributesArray addObject:attributes];
-                                    }
                                     //再添加进计算比例的数组
                                     [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                                     if ((totalPercent+percent) > 1) {
@@ -189,7 +183,110 @@
                                         lastDic[@"percent"] = [NSNumber numberWithFloat:lastPercent];
                                         [arrayOfPercent replaceObjectAtIndex:arrayOfPercent.count-1 withObject:lastDic];
                                     }
+                                    
+                                    CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
+                                    for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                        NSDictionary* dic = arrayOfPercent[i];
+                                        UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                        CGFloat itemX = 0.0f;
+                                        if (i==0) {
+                                            itemX = edgeInsets.left;
+                                        } else {
+                                            UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                            itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
+                                        }
+                                        newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                        newAttributes.indexPath = dic[@"indexPath"];
+                                        //if (![_attributesArray containsObject:newAttributes]) {
+                                            [_attributesArray addObject:newAttributes];
+                                        //}
+                                    }
+                                    for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                        NSDictionary* dic = arrayOfPercent[i];
+                                        UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                        if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
+                                            maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
+                                        }
+                                    }
+                                    [arrayOfPercent removeAllObjects];
+                                } else {
+                                    //先添加进总的数组
+                                    attributes.indexPath = indexPath;
+                                    attributes.frame = CGRectMake(0, maxYOfPercent, itemSize.width, itemSize.height);
+                                    //再添加进计算比例的数组
+                                    [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
+                                    //如果该行item总比例还是小于1，但是item已经是最后一个
+                                    if (i==itemCount-1) {
+                                        CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
+                                        for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                            NSDictionary* dic = arrayOfPercent[i];
+                                            UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                            CGFloat itemX = 0.0f;
+                                            if (i==0) {
+                                                itemX = edgeInsets.left;
+                                            } else {
+                                                UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                                itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
+                                            }
+                                            newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                            newAttributes.indexPath = dic[@"indexPath"];
+                                            [_attributesArray addObject:newAttributes];
+                                        }
+                                        for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                            NSDictionary* dic = arrayOfPercent[i];
+                                            UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                            if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
+                                                maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
+                                            }
+                                        }
+                                        [arrayOfPercent removeAllObjects];
+                                    }
                                 }
+                            } else {
+                                //先添加进总的数组
+                                attributes.indexPath = indexPath;
+                                NSDictionary* lastDicForPercent = arrayOfPercent[arrayOfPercent.count-1];
+                                UICollectionViewLayoutAttributes *lastAttributesForPercent = lastDicForPercent[@"item"];
+                                attributes.frame = CGRectMake(lastAttributesForPercent.frame.origin.x+lastAttributesForPercent.frame.size.width+minimumInteritemSpacing, lastAttributesForPercent.frame.origin.y, itemSize.width, itemSize.height);
+                                //再添加进计算比例的数组
+                                [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
+                                //如果已经是最后一个
+                                if (i==itemCount-1) {
+                                    CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
+                                    for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                        NSDictionary* dic = arrayOfPercent[i];
+                                        UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                        CGFloat itemX = 0.0f;
+                                        if (i==0) {
+                                            itemX = edgeInsets.left;
+                                        } else {
+                                            UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                            itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
+                                        }
+                                        newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                        newAttributes.indexPath = dic[@"indexPath"];
+                                        //if (![_attributesArray containsObject:newAttributes]) {
+                                        [_attributesArray addObject:newAttributes];
+                                        //}
+                                    }
+                                    for (NSInteger i=0; i<arrayOfPercent.count; i++) {
+                                        NSDictionary* dic = arrayOfPercent[i];
+                                        UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                        if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
+                                            maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
+                                        }
+                                    }
+                                    [arrayOfPercent removeAllObjects];
+                                }
+                            }
+                        } else {
+                            //先添加进总的数组
+                            attributes.indexPath = indexPath;
+                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfPercent+minimumLineSpacing, itemSize.width, itemSize.height);
+                            //再添加进计算比例的数组
+                            [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
+                            //如果已经是最后一个
+                            if (i==itemCount-1) {
                                 CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
@@ -201,14 +298,9 @@
                                         UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                         itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                     }
-                                    newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], itemSize.height);
-                                    for (NSInteger j=_attributesArray.count-1; j>=0; j--) {
-                                        UICollectionViewLayoutAttributes *item = _attributesArray[j];
-                                        if ([item.indexPath compare:dic[@"indexPath"]] == NSOrderedSame) {
-                                            item.frame = newAttributes.frame;
-                                            break;
-                                        }
-                                    }
+                                    newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                    newAttributes.indexPath = dic[@"indexPath"];
+                                    [_attributesArray addObject:newAttributes];
                                 }
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
@@ -218,44 +310,11 @@
                                     }
                                 }
                                 [arrayOfPercent removeAllObjects];
-                                if ((totalPercent+percent) >= 1.1) {
-                                    //先添加进总的数组
-                                    attributes.indexPath = indexPath;
-                                    attributes.frame = CGRectMake(0, 0, itemSize.width, itemSize.height);
-                                    if (![_attributesArray containsObject:attributes]) {
-                                        [_attributesArray addObject:attributes];
-                                    }
-                                    //再添加进计算比例的数组
-                                    [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
-                                    //如果还剩下最后一个
-                                    if (i==itemCount-1) {
-                                        NSDictionary* lastDic = arrayOfPercent.lastObject;
-                                        UICollectionViewLayoutAttributes* lastAttr = _attributesArray.lastObject;
-                                        lastAttr.frame = CGRectMake(edgeInsets.left, maxYOfPercent+minimumLineSpacing, realWidth*[lastDic[@"percent"] floatValue], lastAttr.frame.size.height);
-                                        maxYOfPercent = (lastAttr.frame.origin.y + lastAttr.frame.size.height);
-                                    }
-                                }
-                            } else {
-                                //先添加进总的数组
-                                attributes.indexPath = indexPath;
-                                attributes.frame = CGRectMake(0, 0, itemSize.width, itemSize.height);
-                                if (![_attributesArray containsObject:attributes]) {
-                                    [_attributesArray addObject:attributes];
-                                }
-                                //再添加进计算比例的数组
-                                [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                             }
-                        } else {
-                            //先添加进总的数组
-                            attributes.indexPath = indexPath;
-                            attributes.frame = CGRectMake(0, 0, itemSize.width, itemSize.height);
-                            if (![_attributesArray containsObject:attributes]) {
-                                [_attributesArray addObject:attributes];
-                            }
-                            //再添加进计算比例的数组
-                            [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                         }
                     }
+                        break;
+                    case IrregularLayout:
                         break;
                     default: {
                         
@@ -263,8 +322,10 @@
                         break;
                 }
                 attributes.indexPath = indexPath;
-                if (![_attributesArray containsObject:attributes]) {
-                    [_attributesArray addObject:attributes];
+                if (layoutType != PercentLayout) {
+                    //if (![_attributesArray containsObject:attributes]) {
+                        [_attributesArray addObject:attributes];
+                    //}
                 }
                 if (layoutType == ClosedLayout) {
                     CGFloat max = 0;

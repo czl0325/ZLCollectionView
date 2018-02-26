@@ -5,6 +5,9 @@
 
 # 更新
 
+## v0.1.1  (2018.2.26)
+   修复百分比布局的若干bug
+
 ## v0.1.0  (2018.1.29）
    新增加了百分比布局，详细操作请见demo
 
@@ -14,8 +17,11 @@
 
 # 导入
 
-支持cocoapod
+支持cocoapod导入
+
+```
 pod 'ZLCollectionViewFlowLayout' 
+```
 
 如果遇到以下错误，
 Unable to find a specification for `ZLCollectionViewFlowLayout`

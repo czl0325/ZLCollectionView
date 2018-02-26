@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "ZLCollectionViewFlowLayout"
-  s.version      = "0.1.0"
-  s.summary      = "ZLCollectionViewFlowLayout."
+  s.version      = "0.1.1"
+  s.summary      = "ZLCollectionViewFlowLayout"
 
   s.description  = <<-DESC
                       各种样式的uicollectionviewflowlayout

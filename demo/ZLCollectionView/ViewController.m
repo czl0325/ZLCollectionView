@@ -57,15 +57,14 @@
         case 0:
             return _arrayMyActivitys.count;
         case 1:
-            return _arrayMyMenus.count;
+            return 4;
         case 2:
-            return _arrayMyTaboos.count;
+        case 5:
+            return 8;
         case 3:
             return 9;
         case 4:
             return 3;
-        case 5:
-            return 8;
         default:
             return _arrayNumbers.count;
     }
@@ -74,9 +73,10 @@
 - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section {
     switch (section) {
         case 0:
+            return LabelLayout;
         case 1:
         case 2:
-            return LabelLayout;
+            return FillLayout;
         case 3:
         case 4:
             return PercentLayout;
@@ -90,14 +90,6 @@
     switch (indexPath.section) {
         case 0: {
             cell.labelRecord.text = _arrayMyActivitys[indexPath.row];
-        }
-            break;
-        case 1: {
-            cell.labelRecord.text = _arrayMyMenus[indexPath.row];
-        }
-            break;
-        case 2: {
-            cell.labelRecord.text = _arrayMyTaboos[indexPath.row];
         }
             break;
         default: {
@@ -156,13 +148,28 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0: {
-            return CGSizeMake([_arrayMyActivitys[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} context:nil].size.width + 30, 30);
+            return CGSizeMake([_arrayMyActivitys[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:15]} context:nil].size.width + 30, 30);
         }
         case 1: {
-            return CGSizeMake([_arrayMyMenus[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} context:nil].size.width + 30, 30);
+            switch (indexPath.item) {
+                case 0:
+                    return CGSizeMake(150, 200);
+                case 1:
+                case 2:
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 100);
+                default:
+                    return CGSizeMake((collectionView.frame.size.width-20-150), 100);
+            }
         }
         case 2:{
-            return CGSizeMake([_arrayMyTaboos[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]} context:nil].size.width + 30, 30);
+            switch (indexPath.item) {
+                case 2:
+                    return CGSizeMake(150, 140);
+                case 5:
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 70);
+                default:
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/4, 70);
+            }
         }
         case 3:
             if (indexPath.item == 2) {
@@ -202,8 +209,8 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     switch (section) {
         case 0:
-        case 1:
-        case 2:
+//        case 1:
+//        case 2:
         case 6:
             return 10;
 //        case 3:
@@ -217,8 +224,8 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     switch (section) {
         case 0:
-        case 1:
-        case 2:
+//        case 1:
+//        case 2:
         case 6:
             return 10;
         default:
@@ -240,24 +247,27 @@
         SEMyRecordHeaderView* headerView = [SEMyRecordHeaderView headerViewWithCollectionView:collectionView forIndexPath:indexPath];
         switch (indexPath.section) {
             case 0:
-                headerView.labelMyRecord.text = @"您的每日运动量属于:";
+                headerView.labelMyRecord.text = @"标签页布局:";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 1:
-                headerView.labelMyRecord.text = @"您常食用菜系是(多选):";
+                headerView.labelMyRecord.text = @"填充式布局1:";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 2:
-                headerView.labelMyRecord.text = @"您的饮食禁忌有(多选):";
+                headerView.labelMyRecord.text = @"填充式布局2:";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 3:
+                headerView.labelMyRecord.text = @"百分比布局1:";
+                headerView.btnModifyRecord.hidden = YES;
+                break;
             case 4:
-                headerView.labelMyRecord.text = @"百分比布局:";
+                headerView.labelMyRecord.text = @"百分比布局2:";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 5:
-                headerView.labelMyRecord.text = @"正方形格子:";
+                headerView.labelMyRecord.text = @"正方形格子(采用瀑布流布局，设置间距为0):";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 6:
@@ -265,7 +275,7 @@
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             case 7:
-                headerView.labelMyRecord.text = @"列表数据:";
+                headerView.labelMyRecord.text = @"列表数据(采用瀑布流布局，设置只有1列):";
                 headerView.btnModifyRecord.hidden = YES;
                 break;
             default:

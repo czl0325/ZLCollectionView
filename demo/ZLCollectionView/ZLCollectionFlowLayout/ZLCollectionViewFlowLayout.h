@@ -9,7 +9,10 @@
 
 /**
  
- *  v0.1.1版本(当前版本)
+ *  v0.2.0版本(当前版本)
+    增加了填充式布局
+ 
+ *  v0.1.1版本
     修复百分比布局计算错误的bug
  
  *  v0.1.0版本
@@ -23,7 +26,7 @@ typedef enum {
     LabelLayout     = 2,        //标签页布局
     ClosedLayout    = 3,        //网格布局
     PercentLayout   = 4,        //百分比布局
-    IrregularLayout = 5,        //不规则布局(暂未完成,v0.2.0版本更新)
+    FillLayout      = 5,        //填充式布局
 }ZLLayoutType;
 
 @class ZLCollectionViewFlowLayout;

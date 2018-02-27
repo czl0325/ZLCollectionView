@@ -38,9 +38,10 @@
 - (UILabel*)labelRecord {
     if (!_labelRecord) {
         _labelRecord = [[UILabel alloc]init];
-        _labelRecord.font = [UIFont systemFontOfSize:13];
+        _labelRecord.font = [UIFont boldSystemFontOfSize:15];
         _labelRecord.textAlignment = NSTextAlignmentCenter;
-        _labelRecord.textColor = UIColorFromRGB(0x396a88);
+        //_labelRecord.textColor = UIColorFromRGB(0x396a88);
+        _labelRecord.textColor = [UIColor blackColor];
     }
     return _labelRecord;
 }

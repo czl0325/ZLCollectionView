@@ -107,7 +107,9 @@
                 itemWidth = (totalWidth - edgeInsets.left - edgeInsets.right - minimumInteritemSpacing * (columnCount - 1)) / columnCount;
             }
             CGFloat maxYOfPercent = y;
+            CGFloat maxYOfFill = y;
             NSMutableArray* arrayOfPercent = [NSMutableArray new];
+            NSMutableArray* arrayOfFill = [NSMutableArray new];
             for (int i=0; i<itemCount; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
@@ -314,7 +316,66 @@
                         }
                     }
                         break;
-                    case IrregularLayout:
+                    case FillLayout: {
+                        if (arrayOfFill.count == 0) {
+                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, itemSize.width, itemSize.height);
+                            [arrayOfFill addObject:attributes];
+                        } else {
+                            NSMutableArray *arrayXOfFill = [NSMutableArray new];
+                            [arrayXOfFill addObject:@(edgeInsets.left)];
+                            NSMutableArray *arrayYOfFill = [NSMutableArray new];
+                            [arrayYOfFill addObject:@(maxYOfFill)];
+                            for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                if (![arrayXOfFill containsObject:@(attr.frame.origin.x)]) {
+                                    [arrayXOfFill addObject:@(attr.frame.origin.x)];
+                                }
+                                if (![arrayXOfFill containsObject:@(attr.frame.origin.x+attr.frame.size.width)]) {
+                                    [arrayXOfFill addObject:@(attr.frame.origin.x+attr.frame.size.width)];
+                                }
+                                if (![arrayYOfFill containsObject:@(attr.frame.origin.y)]) {
+                                    [arrayYOfFill addObject:@(attr.frame.origin.y)];
+                                }
+                                if (![arrayYOfFill containsObject:@(attr.frame.origin.y+attr.frame.size.height)]) {
+                                    [arrayYOfFill addObject:@(attr.frame.origin.y+attr.frame.size.height)];
+                                }
+                            }
+                            [arrayXOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                return [obj1 floatValue] > [obj2 floatValue];
+                            }];
+                            [arrayYOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                return [obj1 floatValue] > [obj2 floatValue];
+                            }];
+                            BOOL qualified = YES;
+                            for (NSNumber* yFill in arrayYOfFill) {
+                                for (NSNumber* xFill in arrayXOfFill) {
+                                    qualified = YES;
+                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?[yFill floatValue]:[yFill floatValue]+minimumLineSpacing, itemSize.width, itemSize.height);
+                                    if (attributes.frame.origin.x+attributes.frame.size.width > totalWidth-edgeInsets.right) {
+                                        qualified = NO;
+                                        break;
+                                    }
+                                    for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                        if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
+                                            qualified = NO;
+                                            break;
+                                        }
+                                    }
+                                    if (qualified == NO) {
+                                        continue;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                if (qualified == YES) {
+                                    break;
+                                }
+                            }
+                            if (qualified == YES) {
+                                //NSLog(@"合格的矩形区域=%@",NSStringFromCGRect(attributes.frame));
+                            }
+                            [arrayOfFill addObject:attributes];
+                        }
+                    }
                         break;
                     default: {
                         
@@ -337,6 +398,15 @@
                     lastY = max;
                 } else if (layoutType == PercentLayout) {
                     lastY = maxYOfPercent;
+                } else if (layoutType == FillLayout) {
+                    if (i==itemCount-1) {
+                        for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                            if (maxYOfFill < attr.frame.origin.y+attr.frame.size.height) {
+                                maxYOfFill = attr.frame.origin.y+attr.frame.size.height;
+                            }
+                        }
+                    }
+                    lastY = maxYOfFill;
                 } else {
                     lastY = attributes.frame.origin.y + attributes.frame.size.height;
                 }

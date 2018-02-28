@@ -59,12 +59,13 @@
         case 1:
             return 4;
         case 2:
-        case 5:
-            return 8;
+            return 13;
         case 3:
             return 9;
         case 4:
             return 3;
+        case 5:
+            return 8;
         default:
             return _arrayNumbers.count;
     }
@@ -94,7 +95,7 @@
             break;
         default: {
             cell.contentView.backgroundColor = [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
-            cell.labelRecord.text = _arrayNumbers[indexPath.row];
+            cell.labelRecord.text = [NSString stringWithFormat:@"%zd",indexPath.item];//_arrayNumbers[indexPath.row];
         }
             break;
     }
@@ -167,6 +168,14 @@
                     return CGSizeMake(150, 140);
                 case 5:
                     return CGSizeMake((collectionView.frame.size.width-20-150)/2, 70);
+                case 8:
+                case 11:
+                    return CGSizeMake(100, 240);
+                case 10:
+                    return CGSizeMake(collectionView.frame.size.width-20-200, 140);
+                case 9:
+                case 12:
+                    return CGSizeMake(collectionView.frame.size.width-20-100, 100);
                 default:
                     return CGSizeMake((collectionView.frame.size.width-20-150)/4, 70);
             }

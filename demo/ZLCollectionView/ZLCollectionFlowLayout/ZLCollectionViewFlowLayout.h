@@ -8,8 +8,10 @@
 
 
 /**
+ *  v0.3.0版本(当前版本)
+    增加了绝对定位布局，可用于电影选座的开发
  
- *  v0.2.0版本(当前版本)
+ *  v0.2.0版本
     增加了填充式布局
  
  *  v0.1.1版本
@@ -22,11 +24,12 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    BaseLayout      = 1,        //基础布局
-    LabelLayout     = 2,        //标签页布局
-    ClosedLayout    = 3,        //网格布局
-    PercentLayout   = 4,        //百分比布局
-    FillLayout      = 5,        //填充式布局
+    BaseLayout      = 1,        //基础布局。     用苹果默认的UICollectionView的布局，不去改变。
+    LabelLayout     = 2,        //标签页布局。   一堆label标签的集合
+    ClosedLayout    = 3,        //列布局       指定列数，按列数来等分一整行，itemSize的width可以任意写，在布局中会自动帮你计算。可用于瀑布流，普通UITableViewCell
+    PercentLayout   = 4,        //百分比布局     需实现percentOfRow的代理，根据设定值来计算每个itemSize的宽度
+    FillLayout      = 5,        //填充式布局     将一堆大小不一的view见缝插针的填充到一个平面内，规则为先判断从左到右是否有间隙填充，再从上到下判断。
+    AbsoluteLayout  = 6,        //绝对定位布局    需实现rectOfItem的代理，指定每个item的frame
 }ZLLayoutType;
 
 @class ZLCollectionViewFlowLayout;
@@ -35,17 +38,30 @@ typedef enum {
 //指定是什么布局，如没有指定则为BaseLayout(基础布局)
 - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section;
 
-/**通过代理获得每个cell的宽度*/
+/**同基础UICollectionView的代理设置**/
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section;
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
+
+/******** ClosedLayout列布局需要的代理 ***********/
 //在ClosedLayout列布局中指定一行有几列，不指定默认为1列
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section;
+
+/******** PercentLayout百分比布局需要的代理 ***********/
 //在PercentLayout百分比布局中指定每个item占该行的几分之几，如3.0/4，注意为大于0小于等于1的数字。不指定默认为1
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout percentOfRow:(NSIndexPath*)indexPath;
+
+/******** AbsoluteLayout绝对定位布局需要的代理 ***********/
+//在AbsoluteLayout绝对定位布局中指定每个item的frame，不指定默认为CGRectZero
+- (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;
+//在AbsoluteLayout绝对定位布局中指定每个item的zIndex，不指定默认为0
+- (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath;
+//在AbsoluteLayout绝对定位布局中指定每个item的CATransform3D，不指定默认为0
+- (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath;
+
 @end
 
 @interface ZLCollectionViewFlowLayout : UICollectionViewFlowLayout

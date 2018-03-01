@@ -8,6 +8,9 @@
 
 # 更新
 
+## v0.3.0  (2018.3.1)
+   新增加了绝对定位布局，自己定义每个item的位置，可以做层叠布局，电影选座布局等等，详细操作请见demo
+
 ## v0.2.0  (2018.2.27)
    新增加了填充式布局，详细操作请见demo
    
@@ -58,30 +61,40 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 
 //指定section用的样式。LabelLayout是标签样式，ClosedLayout用于tableviewcell或者瀑布流，九宫格之类的。
 - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section {
-    if (section < 3) {
-        return LabelLayout;
-    } else {
-        return ClosedLayout;
+    switch (section) {
+        case 0:
+            return LabelLayout;
+        case 1:
+        case 2:
+            return FillLayout;
+        case 3:
+        case 4:
+            return AbsoluteLayout;
+        case 5:
+        case 6:
+            return PercentLayout;
+        default:
+            return ClosedLayout;
     }
 }
 
 //如果是ClosedLayout样式的section，必须实现该代理，指定列数
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section {
     switch (section) {
-        case 3:
-            return 3;
-        case 4:
+        case 7:
+            return 4;
+        case 8:
             return 2;
-        case 5:
+        case 9:
             return 1;
         default:
             return 0;
     }
 }
-//如果是百分比布局必须是否该代理，如果没实现默认比例为1
+//如果是百分比布局必须实现该代理，设置每个item的百分比，如果没实现默认比例为1
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout percentOfRow:(NSIndexPath*)indexPath; {
     switch (indexPath.section) {
-        case 3: {
+        case 5: {
             switch (indexPath.item) {
                 case 0:
                     return 1.0/3;
@@ -107,7 +120,7 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
                     break;
             }
         }
-        case 4: {
+        case 6: {
             if (indexPath.item % 2==0) {
                 return 3.0/4;
             } else {
@@ -117,5 +130,44 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
         default:
             return 1;
     }
+}
+//如果是绝对定位布局必须是否该代理，设置每个item的frame
+- (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath {
+    switch (indexPath.section) {
+        case 3: {
+            CGFloat width = (collectionView.frame.size.width-200)/2;
+            CGFloat height = width;
+            switch (indexPath.item) {
+                case 0:
+                    return CGRectMake(0, 0, width, height);
+                case 1:
+                    return CGRectMake(width, 0, width, height);
+                case 2:
+                    return CGRectMake(0, height, width, height);
+                case 3:
+                    return CGRectMake(width, height, width, height);
+                case 4:
+                    return CGRectMake(width/2, height/2, width, height);
+                default:
+                    return CGRectZero;
+            }
+        }
+            break;
+        case 4: {
+            switch (indexPath.item) {
+                case 0:
+                    return CGRectMake((collectionView.frame.size.width-20)/2-100, 0, 200, 30);
+                default: {
+                    NSInteger column = (collectionView.frame.size.width-20)/30;
+                    return CGRectMake(((indexPath.item-1)%column)*30, 100+((indexPath.item-1)/column)*30, 20, 20);
+                }
+                    
+            }
+        }
+            break;
+        default:
+            return CGRectZero;
+    }
+    return CGRectZero;
 }
 ```

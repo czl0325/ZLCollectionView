@@ -108,8 +108,9 @@
             }
             CGFloat maxYOfPercent = y;
             CGFloat maxYOfFill = y;
-            NSMutableArray* arrayOfPercent = [NSMutableArray new];
-            NSMutableArray* arrayOfFill = [NSMutableArray new];
+            NSMutableArray* arrayOfPercent = [NSMutableArray new];  //储存百分比布局的数组
+            NSMutableArray* arrayOfFill = [NSMutableArray new];     //储存填充式布局的数组
+            NSMutableArray* arrayOfAbsolute = [NSMutableArray new]; //储存绝对定位布局的数组
             for (int i=0; i<itemCount; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
@@ -377,6 +378,32 @@
                         }
                     }
                         break;
+                    case AbsoluteLayout: {
+                        CGRect itemFrame = CGRectZero;
+                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:rectOfItem:)]) {
+                            itemFrame = [_delegate collectionView:self.collectionView layout:self rectOfItem:indexPath];
+                        }
+                        CGFloat absolute_x = edgeInsets.left+itemFrame.origin.x;
+                        CGFloat absolute_y = y+itemFrame.origin.y;
+                        CGFloat absolute_w = itemFrame.size.width;
+                        if (absolute_x+absolute_w>self.collectionView.frame.size.width-edgeInsets.right) {
+                            absolute_w -= (absolute_x+absolute_w-(self.collectionView.frame.size.width-edgeInsets.right));
+                        }
+                        CGFloat absolute_h = itemFrame.size.height;
+                        attributes.frame = CGRectMake(absolute_x, absolute_y, absolute_w, absolute_h);
+                        CATransform3D transform3D = CATransform3DIdentity;
+                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:transformOfItem:)]) {
+                            transform3D = [_delegate collectionView:self.collectionView layout:self transformOfItem:indexPath];
+                        }
+                        attributes.transform3D = transform3D;
+                        NSInteger zIndex = 0;
+                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:zIndexOfItem:)]) {
+                            zIndex = [_delegate collectionView:self.collectionView layout:self zIndexOfItem:indexPath];
+                        }
+                        attributes.zIndex = zIndex;
+                        [arrayOfAbsolute addObject:attributes];
+                    }
+                        break;
                     default: {
                         
                     }
@@ -407,6 +434,14 @@
                         }
                     }
                     lastY = maxYOfFill;
+                } else if (layoutType == AbsoluteLayout) {
+                    if (i==itemCount-1) {
+                        for (UICollectionViewLayoutAttributes* attr in arrayOfAbsolute) {
+                            if (lastY < attr.frame.origin.y+attr.frame.size.height) {
+                                lastY = attr.frame.origin.y+attr.frame.size.height;
+                            }
+                        }
+                    }
                 } else {
                     lastY = attributes.frame.origin.y + attributes.frame.size.height;
                 }

@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
 
   s.name         = "ZLCollectionViewFlowLayout"
-  s.version      = "0.2.0"
+  s.version      = "0.3.0"
   s.summary      = "ZLCollectionViewFlowLayout"
 
   s.description  = <<-DESC
-                      各种样式的uicollectionviewflowlayout
+                      各种样式的uicollectionview
                    DESC
 
   s.homepage     = "https://github.com/czl0325/ZLCollectionView"

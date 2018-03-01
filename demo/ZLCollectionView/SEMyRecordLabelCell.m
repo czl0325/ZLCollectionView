@@ -27,12 +27,25 @@
         self.contentView.layer.borderColor = [UIColor blackColor].CGColor;
         self.contentView.layer.borderWidth = 0.4;
         
+        [self.contentView addSubview:self.backImageView];
+        [self.backImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(self.contentView);
+        }];
+        
         [self.contentView addSubview:self.labelRecord];
         [self.labelRecord mas_makeConstraints:^(MASConstraintMaker *make) {
             make.center.mas_equalTo(self.contentView);
         }];
     }
     return self;
+}
+
+- (UIImageView*)backImageView {
+    if (!_backImageView) {
+        _backImageView = [[UIImageView alloc]init];
+        _backImageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    return _backImageView;
 }
 
 - (UILabel*)labelRecord {

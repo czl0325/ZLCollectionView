@@ -386,21 +386,11 @@
                         CGFloat absolute_x = edgeInsets.left+itemFrame.origin.x;
                         CGFloat absolute_y = y+itemFrame.origin.y;
                         CGFloat absolute_w = itemFrame.size.width;
-                        if (absolute_x+absolute_w>self.collectionView.frame.size.width-edgeInsets.right) {
+                        if ((absolute_x+absolute_w>self.collectionView.frame.size.width-edgeInsets.right)&&(absolute_x<self.collectionView.frame.size.width-edgeInsets.right)) {
                             absolute_w -= (absolute_x+absolute_w-(self.collectionView.frame.size.width-edgeInsets.right));
                         }
                         CGFloat absolute_h = itemFrame.size.height;
                         attributes.frame = CGRectMake(absolute_x, absolute_y, absolute_w, absolute_h);
-                        CATransform3D transform3D = CATransform3DIdentity;
-                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:transformOfItem:)]) {
-                            transform3D = [_delegate collectionView:self.collectionView layout:self transformOfItem:indexPath];
-                        }
-                        attributes.transform3D = transform3D;
-                        NSInteger zIndex = 0;
-                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:zIndexOfItem:)]) {
-                            zIndex = [_delegate collectionView:self.collectionView layout:self zIndexOfItem:indexPath];
-                        }
-                        attributes.zIndex = zIndex;
                         [arrayOfAbsolute addObject:attributes];
                     }
                         break;
@@ -408,6 +398,15 @@
                         
                     }
                         break;
+                }
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:transformOfItem:)]) {
+                    attributes.transform3D = [_delegate collectionView:self.collectionView layout:self transformOfItem:indexPath];
+                }
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:zIndexOfItem:)]) {
+                    attributes.zIndex = [_delegate collectionView:self.collectionView layout:self zIndexOfItem:indexPath];
+                }
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:alphaOfItem:)]) {
+                    attributes.alpha = [_delegate collectionView:self.collectionView layout:self alphaOfItem:indexPath];
                 }
                 attributes.indexPath = indexPath;
                 if (layoutType != PercentLayout) {

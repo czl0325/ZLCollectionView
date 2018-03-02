@@ -8,7 +8,10 @@
 
 
 /**
- *  v0.3.0版本(当前版本)
+ *  v0.3.1版本(当前版本)
+    将一些代理提取出来
+ 
+ *  v0.3.0版本
     增加了绝对定位布局，可用于电影选座的开发
  
  *  v0.2.0版本
@@ -46,6 +49,14 @@ typedef enum {
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 
+/******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
+//设置每个item的zIndex，不指定默认为0
+- (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath;
+//设置每个item的CATransform3D，不指定默认为CATransform3DIdentity
+- (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath;
+//设置每个item的alpha，不指定默认为1
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout alphaOfItem:(NSIndexPath*)indexPath;
+
 /******** ClosedLayout列布局需要的代理 ***********/
 //在ClosedLayout列布局中指定一行有几列，不指定默认为1列
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section;
@@ -57,10 +68,7 @@ typedef enum {
 /******** AbsoluteLayout绝对定位布局需要的代理 ***********/
 //在AbsoluteLayout绝对定位布局中指定每个item的frame，不指定默认为CGRectZero
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;
-//在AbsoluteLayout绝对定位布局中指定每个item的zIndex，不指定默认为0
-- (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath;
-//在AbsoluteLayout绝对定位布局中指定每个item的CATransform3D，不指定默认为0
-- (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath;
+
 
 @end
 

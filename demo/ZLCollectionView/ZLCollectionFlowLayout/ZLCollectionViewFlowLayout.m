@@ -364,7 +364,31 @@
                                     if (qualified == NO) {
                                         continue;
                                     } else {
-                                        break;
+                                        CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumLineSpacing, attributes.frame.origin.y);
+                                        CGRect leftRect = CGRectZero;
+                                        for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                            if (CGRectContainsPoint(attr.frame, leftPt)) {
+                                                leftRect = attr.frame;
+                                                break;
+                                            }
+                                        }
+                                        if (CGRectEqualToRect(leftRect, CGRectZero)) {
+                                            break;
+                                        } else {
+                                            if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) == minimumInteritemSpacing) {
+                                                break;
+                                            } else {
+                                                CGRect rc = attributes.frame;
+                                                rc.origin.x = leftRect.origin.x + leftRect.size.width + minimumInteritemSpacing;
+                                                attributes.frame = rc;
+                                                for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                                    if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
+                                                        qualified = NO;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 if (qualified == YES) {
@@ -497,7 +521,11 @@
     } else {
         edgeInsets = self.sectionInset;
     }
-    return CGSizeMake(self.collectionView.frame.size.width, [_collectionHeightsArray[_collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
+    if (_collectionHeightsArray.count > 0) {
+        return CGSizeMake(self.collectionView.frame.size.width, [_collectionHeightsArray[_collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
+    } else {
+        return CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    }
 }
 
 /**

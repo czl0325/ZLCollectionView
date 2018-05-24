@@ -22,7 +22,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        
+        self.isFloor = YES;
     }
     return self;
 }
@@ -75,7 +75,7 @@
         }
         x = edgeInsets.left;
         y = [self maxHeightWithSection:index];
-
+        
         // 添加页首属性
         if (headerH > 0) {
             NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
@@ -201,7 +201,7 @@
                                         newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                         newAttributes.indexPath = dic[@"indexPath"];
                                         //if (![_attributesArray containsObject:newAttributes]) {
-                                            [_attributesArray addObject:newAttributes];
+                                        [_attributesArray addObject:newAttributes];
                                         //}
                                     }
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
@@ -319,7 +319,7 @@
                         break;
                     case FillLayout: {
                         if (arrayOfFill.count == 0) {
-                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, itemSize.width, itemSize.height);
+                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, itemSize.height);
                             [arrayOfFill addObject:attributes];
                         } else {
                             NSMutableArray *arrayXOfFill = [NSMutableArray new];
@@ -350,7 +350,7 @@
                             for (NSNumber* yFill in arrayYOfFill) {
                                 for (NSNumber* xFill in arrayXOfFill) {
                                     qualified = YES;
-                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?[yFill floatValue]:[yFill floatValue]+minimumLineSpacing, itemSize.width, itemSize.height);
+                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?[yFill floatValue]:[yFill floatValue]+minimumLineSpacing, self.isFloor?floor(itemSize.width):itemSize.width, itemSize.height);
                                     if (attributes.frame.origin.x+attributes.frame.size.width > totalWidth-edgeInsets.right) {
                                         qualified = NO;
                                         break;
@@ -435,7 +435,7 @@
                 attributes.indexPath = indexPath;
                 if (layoutType != PercentLayout) {
                     //if (![_attributesArray containsObject:attributes]) {
-                        [_attributesArray addObject:attributes];
+                    [_attributesArray addObject:attributes];
                     //}
                 }
                 if (layoutType == ClosedLayout) {
@@ -475,7 +475,7 @@
         if (footerH > 0) {
             NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
             UICollectionViewLayoutAttributes *footerAttr = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
-            footerAttr.frame = CGRectMake(0, lastY + edgeInsets.bottom, self.collectionView.frame.size.width, footerH);
+            footerAttr.frame = CGRectMake(0, lastY, self.collectionView.frame.size.width, footerH);
             [_attributesArray addObject:footerAttr];
             lastY += footerH;
         }
@@ -492,18 +492,18 @@
     } else {
         return _attributesArray;
     }
-//    NSArray *array = [super layoutAttributesForElementsInRect:rect];
-//    for(UICollectionViewLayoutAttributes *attrs1 in array) {
-//        if(attrs1.representedElementCategory == UICollectionElementCategoryCell){
-//            for (UICollectionViewLayoutAttributes *attrs2 in _attributesArray) {
-//                if (attrs1.indexPath.section == attrs2.indexPath.section && attrs1.indexPath.row == attrs2.indexPath.row) {
-//                    attrs1.frame = attrs2.frame;
-//                    break;
-//                }
-//            }
-//        }
-//    }
-//    return array;
+    //    NSArray *array = [super layoutAttributesForElementsInRect:rect];
+    //    for(UICollectionViewLayoutAttributes *attrs1 in array) {
+    //        if(attrs1.representedElementCategory == UICollectionElementCategoryCell){
+    //            for (UICollectionViewLayoutAttributes *attrs2 in _attributesArray) {
+    //                if (attrs1.indexPath.section == attrs2.indexPath.section && attrs1.indexPath.row == attrs2.indexPath.row) {
+    //                    attrs1.frame = attrs2.frame;
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return array;
 }
 
 #pragma mark - CollectionView的滚动范围
@@ -543,3 +543,4 @@
 
 
 @end
+

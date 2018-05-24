@@ -4,27 +4,12 @@
 //
 //  Created by zhaoliang chen on 2017/6/22.
 //  Copyright © 2017年 zhaoliang chen. All rights reserved.
-//
 
+#import <UIKit/UIKit.h>
 
 /**
- *  v0.3.1版本(当前版本)
-    将一些代理提取出来
- 
- *  v0.3.0版本
-    增加了绝对定位布局，可用于电影选座的开发
- 
- *  v0.2.0版本
-    增加了填充式布局
- 
- *  v0.1.1版本
-    修复百分比布局计算错误的bug
- 
- *  v0.1.0版本
-    新加入了百分比布局,先在typeOfLayout设置布局为PercentLayout百分比布局,在percentOfRow设置百分比，必须为>0且<=1的浮点型数
- 
+ *  当前版本 v0.4
  **/
-#import <UIKit/UIKit.h>
 
 typedef enum {
     BaseLayout      = 1,        //基础布局。     用苹果默认的UICollectionView的布局，不去改变。
@@ -33,7 +18,7 @@ typedef enum {
     PercentLayout   = 4,        //百分比布局     需实现percentOfRow的代理，根据设定值来计算每个itemSize的宽度
     FillLayout      = 5,        //填充式布局     将一堆大小不一的view见缝插针的填充到一个平面内，规则为先判断从左到右是否有间隙填充，再从上到下判断。
     AbsoluteLayout  = 6,        //绝对定位布局    需实现rectOfItem的代理，指定每个item的frame
-}ZLLayoutType;
+} ZLLayoutType;
 
 @class ZLCollectionViewFlowLayout;
 @protocol  ZLCollectionViewFlowLayoutDelegate <NSObject>
@@ -75,5 +60,6 @@ typedef enum {
 @interface ZLCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 @property (nonatomic,assign) id<ZLCollectionViewFlowLayoutDelegate> delegate;
+@property (nonatomic,assign) BOOL isFloor;//宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
 
 @end

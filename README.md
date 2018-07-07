@@ -1,5 +1,11 @@
 # ZLCollectionView
 
+![License](https://img.shields.io/badge/License-MIT-orange.svg)&nbsp;
+![Platform](https://img.shields.io/badge/Platform-iOS-yellowgreen.svg)&nbsp;
+![Support](https://img.shields.io/badge/Support-iOS%207%2B-lightgrey.svg)&nbsp;
+![Cocoapods](https://img.shields.io/badge/cocoapods-support-red.svg)&nbsp;
+![Language](https://img.shields.io/badge/language-Objective--C-B9D3EE.svg)&nbsp;
+
 为应对类似淘宝首页，京东首页，国美首页的复杂布局而写的多样化的UICollectionView。
 目前支持标签布局，列布局，百分比布局，定位布局等。可以根据不同的section设置不同的布局。实现了电影选座等高难度的布局。
 

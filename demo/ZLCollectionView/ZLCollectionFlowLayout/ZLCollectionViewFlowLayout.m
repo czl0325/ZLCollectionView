@@ -364,7 +364,7 @@
                                     if (qualified == NO) {
                                         continue;
                                     } else {
-                                        CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumLineSpacing, attributes.frame.origin.y);
+                                        CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumInteritemSpacing, attributes.frame.origin.y);
                                         CGRect leftRect = CGRectZero;
                                         for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
                                             if (CGRectContainsPoint(attr.frame, leftPt)) {

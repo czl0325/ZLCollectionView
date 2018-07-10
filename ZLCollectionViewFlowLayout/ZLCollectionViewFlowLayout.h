@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  当前版本 v0.4
+ *  当前版本 v0.5.1
  **/
 
 typedef enum {

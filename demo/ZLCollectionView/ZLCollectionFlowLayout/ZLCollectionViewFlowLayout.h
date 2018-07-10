@@ -34,6 +34,9 @@ typedef enum {
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section;
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 
+/******** 设置每个section的背景色 ***********/
+- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section;
+
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath;

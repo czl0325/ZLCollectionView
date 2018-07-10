@@ -433,6 +433,10 @@
     return CGSizeMake(collectionView.frame.size.width, 30);
 }
 
+- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
+    return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
+}
+
 - (UICollectionView*)collectionViewLabel {
     if (!_collectionViewLabel) {
         ZLCollectionViewFlowLayout *flowLayout = [[ZLCollectionViewFlowLayout alloc] init];

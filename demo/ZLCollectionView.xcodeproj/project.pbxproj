@@ -19,6 +19,8 @@
 		BE13FE9A1EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE991EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m */; };
 		BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */; };
 		BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */; };
+		BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */; };
+		BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,10 @@
 		BE13FE9D1EFBBA4900AFCD90 /* SEMyRecordLabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEMyRecordLabelCell.h; sourceTree = "<group>"; };
 		BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEMyRecordLabelCell.m; sourceTree = "<group>"; };
 		BE13FEA11EFBC59B00AFCD90 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		BEB2A38120F35E3C003508FF /* ZLCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
+		BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
+		BEB2A38420F35E8F003508FF /* ZLCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionReusableView.h; sourceTree = "<group>"; };
+		BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionReusableView.m; sourceTree = "<group>"; };
 		C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -185,6 +191,10 @@
 			children = (
 				BE13FE981EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.h */,
 				BE13FE991EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m */,
+				BEB2A38120F35E3C003508FF /* ZLCollectionViewLayoutAttributes.h */,
+				BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */,
+				BEB2A38420F35E8F003508FF /* ZLCollectionReusableView.h */,
+				BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */,
 			);
 			path = ZLCollectionFlowLayout;
 			sourceTree = "<group>";
@@ -378,7 +388,9 @@
 				BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */,
 				BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */,
 				BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */,
+				BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */,
 				BE13FE611EFBA5E900AFCD90 /* main.m in Sources */,
+				BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

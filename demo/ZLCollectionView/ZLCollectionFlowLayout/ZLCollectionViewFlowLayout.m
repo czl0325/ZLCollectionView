@@ -7,6 +7,8 @@
 //
 
 #import "ZLCollectionViewFlowLayout.h"
+#import "ZLCollectionViewLayoutAttributes.h"
+#import "ZLCollectionReusableView.h"
 
 @interface ZLCollectionViewFlowLayout()
 //每个section的每一列的高度
@@ -32,8 +34,14 @@
     return NO;
 }
 
++ (Class)layoutAttributesClass {
+    return [ZLCollectionViewLayoutAttributes class];
+}
+
 - (void)prepareLayout {
     [super prepareLayout];
+    
+    [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
     
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
@@ -79,12 +87,13 @@
         // 添加页首属性
         if (headerH > 0) {
             NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
-            UICollectionViewLayoutAttributes* headerAttr = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
+            ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(0, y, self.collectionView.frame.size.width, headerH);
             [_attributesArray addObject:headerAttr];
         }
         
         y += headerH ;
+        CGFloat itemStartY = y;
         CGFloat lastY = y;
         
         if (itemCount > 0) {
@@ -119,7 +128,7 @@
                 } else {
                     itemSize = self.itemSize;
                 }
-                UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+                ZLCollectionViewLayoutAttributes *attributes = [ZLCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
                 
                 NSInteger preRow = _attributesArray.count - 1;
                 switch (layoutType) {
@@ -127,7 +136,7 @@
                         //找上一个cell
                         if(preRow >= 0){
                             if(i > 0) {
-                                UICollectionViewLayoutAttributes *preAttr = _attributesArray[preRow];
+                                ZLCollectionViewLayoutAttributes *preAttr = _attributesArray[preRow];
                                 x = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                 if (x + itemSize.width > totalWidth - edgeInsets.right) {
                                     x = edgeInsets.left;
@@ -190,12 +199,12 @@
                                     CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
-                                        UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                        ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
                                         CGFloat itemX = 0.0f;
                                         if (i==0) {
                                             itemX = edgeInsets.left;
                                         } else {
-                                            UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                            ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                             itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                         }
                                         newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
@@ -206,7 +215,7 @@
                                     }
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
-                                        UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                        ZLCollectionViewLayoutAttributes *item = dic[@"item"];
                                         if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
                                             maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
                                         }
@@ -223,12 +232,12 @@
                                         CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
                                         for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                             NSDictionary* dic = arrayOfPercent[i];
-                                            UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                            ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
                                             CGFloat itemX = 0.0f;
                                             if (i==0) {
                                                 itemX = edgeInsets.left;
                                             } else {
-                                                UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                                ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                                 itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                             }
                                             newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
@@ -237,7 +246,7 @@
                                         }
                                         for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                             NSDictionary* dic = arrayOfPercent[i];
-                                            UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                            ZLCollectionViewLayoutAttributes *item = dic[@"item"];
                                             if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
                                                 maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
                                             }
@@ -249,7 +258,7 @@
                                 //先添加进总的数组
                                 attributes.indexPath = indexPath;
                                 NSDictionary* lastDicForPercent = arrayOfPercent[arrayOfPercent.count-1];
-                                UICollectionViewLayoutAttributes *lastAttributesForPercent = lastDicForPercent[@"item"];
+                                ZLCollectionViewLayoutAttributes *lastAttributesForPercent = lastDicForPercent[@"item"];
                                 attributes.frame = CGRectMake(lastAttributesForPercent.frame.origin.x+lastAttributesForPercent.frame.size.width+minimumInteritemSpacing, lastAttributesForPercent.frame.origin.y, itemSize.width, itemSize.height);
                                 //再添加进计算比例的数组
                                 [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
@@ -258,12 +267,12 @@
                                     CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
-                                        UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                        ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
                                         CGFloat itemX = 0.0f;
                                         if (i==0) {
                                             itemX = edgeInsets.left;
                                         } else {
-                                            UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                            ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                             itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                         }
                                         newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
@@ -274,7 +283,7 @@
                                     }
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
-                                        UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                        ZLCollectionViewLayoutAttributes *item = dic[@"item"];
                                         if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
                                             maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
                                         }
@@ -293,12 +302,12 @@
                                 CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
-                                    UICollectionViewLayoutAttributes *newAttributes = dic[@"item"];
+                                    ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
                                     CGFloat itemX = 0.0f;
                                     if (i==0) {
                                         itemX = edgeInsets.left;
                                     } else {
-                                        UICollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
+                                        ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                         itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                     }
                                     newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
@@ -307,7 +316,7 @@
                                 }
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
-                                    UICollectionViewLayoutAttributes *item = dic[@"item"];
+                                    ZLCollectionViewLayoutAttributes *item = dic[@"item"];
                                     if ((item.frame.origin.y + item.frame.size.height) > maxYOfPercent) {
                                         maxYOfPercent = (item.frame.origin.y + item.frame.size.height);
                                     }
@@ -326,7 +335,7 @@
                             [arrayXOfFill addObject:@(edgeInsets.left)];
                             NSMutableArray *arrayYOfFill = [NSMutableArray new];
                             [arrayYOfFill addObject:@(maxYOfFill)];
-                            for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                            for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                 if (![arrayXOfFill containsObject:@(attr.frame.origin.x)]) {
                                     [arrayXOfFill addObject:@(attr.frame.origin.x)];
                                 }
@@ -355,7 +364,7 @@
                                         qualified = NO;
                                         break;
                                     }
-                                    for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                    for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                         if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
                                             qualified = NO;
                                             break;
@@ -366,7 +375,7 @@
                                     } else {
                                         CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumInteritemSpacing, attributes.frame.origin.y);
                                         CGRect leftRect = CGRectZero;
-                                        for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                        for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                             if (CGRectContainsPoint(attr.frame, leftPt)) {
                                                 leftRect = attr.frame;
                                                 break;
@@ -381,7 +390,7 @@
                                                 CGRect rc = attributes.frame;
                                                 rc.origin.x = leftRect.origin.x + leftRect.size.width + minimumInteritemSpacing;
                                                 attributes.frame = rc;
-                                                for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                                for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                                     if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
                                                         qualified = NO;
                                                         break;
@@ -450,7 +459,7 @@
                     lastY = maxYOfPercent;
                 } else if (layoutType == FillLayout) {
                     if (i==itemCount-1) {
-                        for (UICollectionViewLayoutAttributes* attr in arrayOfFill) {
+                        for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                             if (maxYOfFill < attr.frame.origin.y+attr.frame.size.height) {
                                 maxYOfFill = attr.frame.origin.y+attr.frame.size.height;
                             }
@@ -459,7 +468,7 @@
                     lastY = maxYOfFill;
                 } else if (layoutType == AbsoluteLayout) {
                     if (i==itemCount-1) {
-                        for (UICollectionViewLayoutAttributes* attr in arrayOfAbsolute) {
+                        for (ZLCollectionViewLayoutAttributes* attr in arrayOfAbsolute) {
                             if (lastY < attr.frame.origin.y+attr.frame.size.height) {
                                 lastY = attr.frame.origin.y+attr.frame.size.height;
                             }
@@ -471,10 +480,21 @@
             }
         }
         lastY += edgeInsets.bottom;
+        
+        ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+        attr.frame = CGRectMake(0, itemStartY, self.collectionView.frame.size.width, lastY-itemStartY);
+        attr.color = self.collectionView.backgroundColor;
+        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
+            attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
+        }
+        attr.zIndex = -1000;
+        
+//        attr.backgroudColor = [delegate collectionView:self.collectionView layout:self colorForSectionAtIndex:section];
+        [_attributesArray addObject:attr];
         // 添加页脚属性
         if (footerH > 0) {
             NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
-            UICollectionViewLayoutAttributes *footerAttr = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
+            ZLCollectionViewLayoutAttributes *footerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
             footerAttr.frame = CGRectMake(0, lastY, self.collectionView.frame.size.width, footerH);
             [_attributesArray addObject:footerAttr];
             lastY += footerH;
@@ -493,9 +513,9 @@
         return _attributesArray;
     }
     //    NSArray *array = [super layoutAttributesForElementsInRect:rect];
-    //    for(UICollectionViewLayoutAttributes *attrs1 in array) {
+    //    for(ZLCollectionViewLayoutAttributes *attrs1 in array) {
     //        if(attrs1.representedElementCategory == UICollectionElementCategoryCell){
-    //            for (UICollectionViewLayoutAttributes *attrs2 in _attributesArray) {
+    //            for (ZLCollectionViewLayoutAttributes *attrs2 in _attributesArray) {
     //                if (attrs1.indexPath.section == attrs2.indexPath.section && attrs1.indexPath.row == attrs2.indexPath.row) {
     //                    attrs1.frame = attrs2.frame;
     //                    break;

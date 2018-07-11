@@ -12,4 +12,6 @@
 
 @property(nonatomic,strong)UIColor* color;
 
+//- (void)setupView:(ZLCollectionReusableView*)backView;
+
 @end

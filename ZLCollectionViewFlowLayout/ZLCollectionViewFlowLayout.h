@@ -6,9 +6,11 @@
 //  Copyright © 2017年 zhaoliang chen. All rights reserved.
 
 #import <UIKit/UIKit.h>
+#import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.5.1
+ *  当前版本 v0.5.2
+ *  ------ 添加了可以自定义每个section的背景色或者视图
  **/
 
 typedef enum {
@@ -35,7 +37,12 @@ typedef enum {
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section;
 
 /******** 设置每个section的背景色 ***********/
+//设置每个section的背景色
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section;
+
+//自定义每个section的背景view，需要继承UICollectionReusableView，返回类名
+- (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section;
+
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0

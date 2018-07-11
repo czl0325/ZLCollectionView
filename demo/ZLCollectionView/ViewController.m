@@ -433,6 +433,13 @@
     return CGSizeMake(collectionView.frame.size.width, 30);
 }
 
+- (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section {
+    if (section == 0 || section == 4) {
+        return @"MyTestReusableView";
+    }
+    return @"";
+}
+
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
     return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
 }

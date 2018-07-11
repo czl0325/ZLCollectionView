@@ -440,6 +440,10 @@
     return @"";
 }
 
+- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout loadView:(NSInteger)section {
+    NSLog(@"当前section=%zd，需要处理什么操作？",section);
+}
+
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
     return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
 }

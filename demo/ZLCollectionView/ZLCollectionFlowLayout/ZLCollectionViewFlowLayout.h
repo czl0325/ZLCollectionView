@@ -43,6 +43,8 @@ typedef enum {
 //自定义每个section的背景view，需要继承UICollectionReusableView，返回类名
 - (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section;
 
+//对section背景进行一些操作
+- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout loadView:(NSInteger)section;
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0
@@ -63,7 +65,6 @@ typedef enum {
 /******** AbsoluteLayout绝对定位布局需要的代理 ***********/
 //在AbsoluteLayout绝对定位布局中指定每个item的frame，不指定默认为CGRectZero
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;
-
 
 @end
 

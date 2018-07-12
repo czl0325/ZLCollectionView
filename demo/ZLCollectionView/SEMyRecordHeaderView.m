@@ -18,6 +18,7 @@
 
 + (instancetype)headerViewWithCollectionView:(UICollectionView *)collectionView forIndexPath:(NSIndexPath *)indexPath {
     SEMyRecordHeaderView *headerView = (SEMyRecordHeaderView*)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[SEMyRecordHeaderView headerViewIdentifier] forIndexPath:indexPath];
+    headerView.backgroundColor = [UIColor clearColor];
     return headerView;
 }
 

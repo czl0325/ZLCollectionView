@@ -448,6 +448,14 @@
     return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section {
+    if (section % 2 == 0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (UICollectionView*)collectionViewLabel {
     if (!_collectionViewLabel) {
         ZLCollectionViewFlowLayout *flowLayout = [[ZLCollectionViewFlowLayout alloc] init];

@@ -494,12 +494,15 @@
             NSString* className = [_delegate collectionView:self.collectionView layout:self registerBackView:index];
             if (className != nil && className.length > 0) {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:className withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-                attr.frame = CGRectMake(0, itemStartY, self.collectionView.frame.size.width, lastY-itemStartY);
+                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
                 attr.zIndex = -1000;
                 [_attributesArray addObject:attr];
+                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:loadView:)]) {
+                    [_delegate collectionView:self.collectionView layout:self loadView:index];
+                }
             } else {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-                attr.frame = CGRectMake(0, itemStartY, self.collectionView.frame.size.width, lastY-itemStartY);
+                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
                 attr.color = self.collectionView.backgroundColor;
                 if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
                     attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
@@ -509,7 +512,7 @@
             }
         } else {
             ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-            attr.frame = CGRectMake(0, itemStartY, self.collectionView.frame.size.width, lastY-itemStartY);
+            attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
             attr.color = self.collectionView.backgroundColor;
             if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
                 attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
@@ -518,14 +521,6 @@
             [_attributesArray addObject:attr];
         }
         
-//        ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-//        attr.frame = CGRectMake(0, itemStartY, self.collectionView.frame.size.width, lastY-itemStartY);
-//        attr.color = self.collectionView.backgroundColor;
-//        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
-//            attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
-//        }
-//        attr.zIndex = -1000;
-//        [_attributesArray addObject:attr];
         // 添加页脚属性
         if (footerH > 0) {
             NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
@@ -594,6 +589,13 @@
     } else {
         return 0;
     }
+}
+
+- (BOOL)isAttachToTop:(NSInteger)section {
+    if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:attachToTop:)]) {
+        return [_delegate collectionView:self.collectionView layout:self attachToTop:section];
+    }
+    return NO;
 }
 
 

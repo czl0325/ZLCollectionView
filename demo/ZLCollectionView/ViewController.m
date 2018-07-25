@@ -441,7 +441,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout loadView:(NSInteger)section {
-    NSLog(@"当前section=%zd，需要处理什么操作？",section);
+    //NSLog(@"当前section=%zd，需要处理什么操作？",section);
 }
 
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {

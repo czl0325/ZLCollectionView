@@ -22,6 +22,7 @@
 		BE63A1BD20F5A61D00922D0F /* MyTestReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE63A1BC20F5A61D00922D0F /* MyTestReusableView.m */; };
 		BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */; };
 		BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */; };
+		BEE866B921084ABC00D92D8A /* ZLCellFakeView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE866B821084ABC00D92D8A /* ZLCellFakeView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,8 @@
 		BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
 		BEB2A38420F35E8F003508FF /* ZLCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionReusableView.h; sourceTree = "<group>"; };
 		BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionReusableView.m; sourceTree = "<group>"; };
+		BEE866B721084ABC00D92D8A /* ZLCellFakeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCellFakeView.h; sourceTree = "<group>"; };
+		BEE866B821084ABC00D92D8A /* ZLCellFakeView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCellFakeView.m; sourceTree = "<group>"; };
 		C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLCollectionView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -200,6 +203,8 @@
 				BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */,
 				BEB2A38420F35E8F003508FF /* ZLCollectionReusableView.h */,
 				BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */,
+				BEE866B721084ABC00D92D8A /* ZLCellFakeView.h */,
+				BEE866B821084ABC00D92D8A /* ZLCellFakeView.m */,
 			);
 			path = ZLCollectionFlowLayout;
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 				BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */,
 				BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */,
 				BE63A1BD20F5A61D00922D0F /* MyTestReusableView.m in Sources */,
+				BEE866B921084ABC00D92D8A /* ZLCellFakeView.m in Sources */,
 				BE13FE611EFBA5E900AFCD90 /* main.m in Sources */,
 				BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */,
 			);
@@ -544,6 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.ZLCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -557,6 +564,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.ZLCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";

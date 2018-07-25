@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.5.3
- *  ------ 添加了可以自定义每个section的背景色或者视图
+ *  当前版本 v0.6.0 (测试版)
+ *  ------ 加入了拖动cell的功能
  **/
 
 typedef enum {
@@ -75,5 +75,7 @@ typedef enum {
 
 @property (nonatomic,assign) id<ZLCollectionViewFlowLayoutDelegate> delegate;
 @property (nonatomic,assign) BOOL isFloor;//宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
+
+@property (nonatomic,assign) BOOL canDrag;
 
 @end

@@ -809,7 +809,9 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     
     UICollectionViewLayoutAttributes *attribute = nil;//[self layoutAttributesForItemAtIndexPath:toIndexPath];
     for (ZLCollectionViewLayoutAttributes* attr in self.attributesArray) {
-        if (attr.indexPath.section == toIndexPath.section && attr.indexPath.item == toIndexPath.item) {
+        if (attr.indexPath.section == toIndexPath.section && attr.indexPath.item == toIndexPath.item &&
+            attr.representedElementKind != UICollectionElementKindSectionHeader &&
+            attr.representedElementKind != UICollectionElementKindSectionFooter) {
             attribute = attr;
             break;
         }
@@ -820,6 +822,9 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             self.cellFakeView.cellFrame = attribute.frame;
             [self.cellFakeView changeBoundsIfNeeded:attribute.bounds];
             [self.collectionView moveItemAtIndexPath:atIndexPath toIndexPath:toIndexPath];
+            if ([_delegate respondsToSelector:@selector(collectionView:layout:didMoveCell:toIndexPath:)]) {
+                [_delegate collectionView:self.collectionView layout:self didMoveCell:atIndexPath toIndexPath:toIndexPath];
+            }
         } completion:nil];
     }
 }

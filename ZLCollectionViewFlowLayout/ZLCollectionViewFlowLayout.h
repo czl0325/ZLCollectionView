@@ -69,6 +69,9 @@ typedef enum {
 //在AbsoluteLayout绝对定位布局中指定每个item的frame，不指定默认为CGRectZero
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;
 
+/******** 拖动cell的相关代理 ***************************/
+- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout*)collectionViewLayout didMoveCell:(NSIndexPath*)atIndexPath toIndexPath:(NSIndexPath*)toIndexPath;
+
 @end
 
 @interface ZLCollectionViewFlowLayout : UICollectionViewFlowLayout

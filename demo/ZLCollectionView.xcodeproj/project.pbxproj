@@ -20,6 +20,8 @@
 		BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */; };
 		BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */; };
 		BE63A1BD20F5A61D00922D0F /* MyTestReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE63A1BC20F5A61D00922D0F /* MyTestReusableView.m */; };
+		BE9D32C92109B5EF002EC4A2 /* MultilineTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9D32C82109B5EF002EC4A2 /* MultilineTextCell.m */; };
+		BE9D32CD2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9D32CC2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.m */; };
 		BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */; };
 		BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEB2A38520F35E8F003508FF /* ZLCollectionReusableView.m */; };
 		BEE866B921084ABC00D92D8A /* ZLCellFakeView.m in Sources */ = {isa = PBXBuildFile; fileRef = BEE866B821084ABC00D92D8A /* ZLCellFakeView.m */; };
@@ -70,6 +72,10 @@
 		BE13FEA11EFBC59B00AFCD90 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		BE63A1BB20F5A61D00922D0F /* MyTestReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyTestReusableView.h; sourceTree = "<group>"; };
 		BE63A1BC20F5A61D00922D0F /* MyTestReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTestReusableView.m; sourceTree = "<group>"; };
+		BE9D32C72109B5EF002EC4A2 /* MultilineTextCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultilineTextCell.h; sourceTree = "<group>"; };
+		BE9D32C82109B5EF002EC4A2 /* MultilineTextCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultilineTextCell.m; sourceTree = "<group>"; };
+		BE9D32CB2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionView+ARDynamicCacheHeightLayoutCell.h"; sourceTree = "<group>"; };
+		BE9D32CC2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+ARDynamicCacheHeightLayoutCell.m"; sourceTree = "<group>"; };
 		BEB2A38120F35E3C003508FF /* ZLCollectionViewLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewLayoutAttributes.h; sourceTree = "<group>"; };
 		BEB2A38220F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewLayoutAttributes.m; sourceTree = "<group>"; };
 		BEB2A38420F35E8F003508FF /* ZLCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionReusableView.h; sourceTree = "<group>"; };
@@ -147,11 +153,14 @@
 		BE13FE5E1EFBA5E900AFCD90 /* ZLCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				BE9D32CA2109BBE6002EC4A2 /* UICollectionView+ARDynamicHeightLayoutCell */,
 				BE13FE941EFBAAF200AFCD90 /* ZLCollectionFlowLayout */,
 				BE13FE9B1EFBBA4900AFCD90 /* SEMyRecordHeaderView.h */,
 				BE13FE9C1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m */,
 				BE13FE9D1EFBBA4900AFCD90 /* SEMyRecordLabelCell.h */,
 				BE13FE9E1EFBBA4900AFCD90 /* SEMyRecordLabelCell.m */,
+				BE9D32C72109B5EF002EC4A2 /* MultilineTextCell.h */,
+				BE9D32C82109B5EF002EC4A2 /* MultilineTextCell.m */,
 				BE13FE621EFBA5E900AFCD90 /* AppDelegate.h */,
 				BE13FE631EFBA5E900AFCD90 /* AppDelegate.m */,
 				BE13FE651EFBA5E900AFCD90 /* ViewController.h */,
@@ -208,6 +217,15 @@
 			);
 			path = ZLCollectionFlowLayout;
 			sourceTree = "<group>";
+		};
+		BE9D32CA2109BBE6002EC4A2 /* UICollectionView+ARDynamicHeightLayoutCell */ = {
+			isa = PBXGroup;
+			children = (
+				BE9D32CB2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.h */,
+				BE9D32CC2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.m */,
+			);
+			path = "UICollectionView+ARDynamicHeightLayoutCell";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -385,12 +403,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE9D32C92109B5EF002EC4A2 /* MultilineTextCell.m in Sources */,
 				BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */,
 				BE13FE9A1EFBAC7500AFCD90 /* ZLCollectionViewFlowLayout.m in Sources */,
 				BE13FE9F1EFBBA4900AFCD90 /* SEMyRecordHeaderView.m in Sources */,
 				BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */,
 				BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */,
 				BEB2A38620F35E8F003508FF /* ZLCollectionReusableView.m in Sources */,
+				BE9D32CD2109BBE6002EC4A2 /* UICollectionView+ARDynamicCacheHeightLayoutCell.m in Sources */,
 				BE63A1BD20F5A61D00922D0F /* MyTestReusableView.m in Sources */,
 				BEE866B921084ABC00D92D8A /* ZLCellFakeView.m in Sources */,
 				BE13FE611EFBA5E900AFCD90 /* main.m in Sources */,

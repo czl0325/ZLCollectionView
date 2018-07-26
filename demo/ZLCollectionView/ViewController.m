@@ -10,6 +10,8 @@
 #import "ZLCollectionViewFlowLayout.h"
 #import "SEMyRecordLabelCell.h"
 #import "SEMyRecordHeaderView.h"
+#import "MultilineTextCell.h"
+#import "UICollectionView+ARDynamicCacheHeightLayoutCell.h"
 
 @interface ViewController ()
 <UICollectionViewDelegate,UICollectionViewDataSource,ZLCollectionViewFlowLayoutDelegate>
@@ -17,6 +19,7 @@
 @property(nonatomic,strong)UICollectionView* collectionViewLabel;
 @property(nonatomic,strong)NSArray* arrayMyActivitys;
 @property(nonatomic,strong)NSMutableArray* arraySeats;      //电影座位的数组
+@property(nonatomic,strong)NSArray* arrayTexts;
 
 @end
 
@@ -53,6 +56,8 @@
                                  }];
     }
     
+    _arrayTexts = @[@"高度自适应高度自适应高度自适应高度自适应高度自适应高度自适应高度自适应",@"央广网北京7月26日消息（记者孙莹）据中国之声《新闻纵横》报道，“没名儿生煎”本是一家备受年轻人喜爱的网红小吃店，但红火生意的背后是拖欠二百多名员工工资、供货商货款等共计170多万元，且拒不执行法院判决的真相。昨天（25日）上午，北京市海淀区人民法院对“没名儿生煎”商标注册者北京缘和飞餐饮管理有限公司进行了强制执行。",@"普吉沉船事故已过去20天，遇难者大都已入土为安。然而，此次事故的幸存者却依旧沉浸在伤痛中。截至目前，已有18名遇难者的家属和两名幸存者，委托了公益律师团队向国内涉事旅行机构索赔，索赔对象包括携程、飞猪、马蜂窝等在线旅游平台，以及深之旅、浙江省国际合作旅行社、懒猫旅行社等产品提供商。",@"凯瑞德(8.540,0.31,3.77%)控股股份有限公司（下文简称“凯瑞德”，002072.SZ）自7月以来密集发布公告。 7月18日、19日，凯瑞德监事会主席饶大程、董事长张培峰因涉嫌操纵证券市场按被执行指定居所监视。7月20日，张培峰由于涉及某私募机构违规交易而被立案调查。7月24日，任飞、王腾、黄进益出具了告知函确认不再担任一致行动人。此次变动后，凯瑞德不再由张培峰、任飞、王腾、黄进益、郭文芳共同控制。由于股权较为分散，凯瑞德目前无实际控制人和控股股东（见表1）。旗下P2P平台爱钱帮良性清盘。北京爱钱帮财富科技有限公司（下文简称“爱钱帮”）于2014年上线运营P2P平台。爱钱帮提供房屋、车辆抵押以及消费金融业务，退出爱车贷、爱房贷、爱信贷等产品。旗下拥有全资子公司北京爱车帮资产管理有限公司（下文简称“爱车帮”）。"];
+    
     [self.view addSubview:self.collectionViewLabel];
     [self.collectionViewLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.mas_equalTo(self.view);
@@ -87,6 +92,8 @@
             return 3;
         case 7:
             return 8;
+        case 8:
+            return _arrayTexts.count;
         default:
             return 10;
     }
@@ -111,43 +118,49 @@
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    SEMyRecordLabelCell* cell = [SEMyRecordLabelCell cellWithCollectionView:collectionView forIndexPath:indexPath];
-    switch (indexPath.section) {
-        case 0: {
-            cell.backImageView.image = nil;
-            cell.contentView.backgroundColor = UIColorFromRGB(0xc4e9ff);;
-            cell.contentView.layer.borderWidth = 0.4;
-            cell.labelRecord.text = _arrayMyActivitys[indexPath.row];
-        }
-            break;
-        case 4: {
-            if (indexPath.item == 0) {
+    if (indexPath.section == 8) {
+        MultilineTextCell* cell = [MultilineTextCell cellWithCollectionView:collectionView forIndexPath:indexPath];
+        cell.label.text = self.arrayTexts[indexPath.row];
+        return cell;
+    } else {
+        SEMyRecordLabelCell* cell = [SEMyRecordLabelCell cellWithCollectionView:collectionView forIndexPath:indexPath];
+        switch (indexPath.section) {
+            case 0: {
+                cell.backImageView.image = nil;
+                cell.contentView.backgroundColor = UIColorFromRGB(0xc4e9ff);;
+                cell.contentView.layer.borderWidth = 0.4;
+                cell.labelRecord.text = _arrayMyActivitys[indexPath.row];
+            }
+                break;
+            case 4: {
+                if (indexPath.item == 0) {
+                    cell.backImageView.image = nil;
+                    cell.contentView.layer.borderWidth = 0.4;
+                    cell.contentView.backgroundColor = [UIColor grayColor];
+                    cell.labelRecord.text = @"屏幕";
+                } else {
+                    NSDictionary* dic = _arraySeats[indexPath.item-1];
+                    if ([dic[@"select"] boolValue]==YES) {
+                        cell.backImageView.image = [UIImage imageNamed:@"seat_select"];
+                    } else {
+                        cell.backImageView.image = [UIImage imageNamed:@"seat"];
+                    }
+                    cell.contentView.layer.borderWidth = 0.0;
+                    cell.contentView.backgroundColor = [UIColor whiteColor];
+                    cell.labelRecord.text = @"";
+                }
+            }
+                break;
+            default: {
                 cell.backImageView.image = nil;
                 cell.contentView.layer.borderWidth = 0.4;
-                cell.contentView.backgroundColor = [UIColor grayColor];
-                cell.labelRecord.text = @"屏幕";
-            } else {
-                NSDictionary* dic = _arraySeats[indexPath.item-1];
-                if ([dic[@"select"] boolValue]==YES) {
-                    cell.backImageView.image = [UIImage imageNamed:@"seat_select"];
-                } else {
-                    cell.backImageView.image = [UIImage imageNamed:@"seat"];
-                }
-                cell.contentView.layer.borderWidth = 0.0;
-                cell.contentView.backgroundColor = [UIColor whiteColor];
-                cell.labelRecord.text = @"";
+                cell.contentView.backgroundColor = [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
+                cell.labelRecord.text = [NSString stringWithFormat:@"%zd",indexPath.item];
             }
+                break;
         }
-            break;
-        default: {
-            cell.backImageView.image = nil;
-            cell.contentView.layer.borderWidth = 0.4;
-            cell.contentView.backgroundColor = [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
-            cell.labelRecord.text = [NSString stringWithFormat:@"%zd",indexPath.item];
-        }
-            break;
+        return cell;
     }
-    return cell;
 }
 
 //如果是百分比布局必须实现该代理，设置每个item的百分比，如果没实现默认比例为1
@@ -241,7 +254,11 @@
             return CGSizeMake(50, 80);
         }
         case 8: {
-            return CGSizeMake(50, 50 + arc4random()%300);
+            return [collectionView ar_sizeForCellWithIdentifier:@"MultilineTextCell" indexPath:indexPath fixedWidth:collectionView.frame.size.width/2-30 configuration:^(__kindof MultilineTextCell *cell) {
+                cell.label.text = self.arrayTexts[indexPath.row];
+            }];
+            //return CGSizeMake(50, 50);
+            //return UICollectionViewFlowLayoutAutomaticSize;
         }
         case 9: {
             return CGSizeMake(collectionView.frame.size.width, 100);
@@ -460,12 +477,15 @@
     if (!_collectionViewLabel) {
         ZLCollectionViewFlowLayout *flowLayout = [[ZLCollectionViewFlowLayout alloc] init];
         flowLayout.delegate = self;
+        //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
+        //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;
         
         _collectionViewLabel = [[UICollectionView alloc]initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
         _collectionViewLabel.dataSource = self;
         _collectionViewLabel.delegate = self;
         _collectionViewLabel.backgroundColor = [UIColor whiteColor];
         [_collectionViewLabel registerClass:[SEMyRecordLabelCell class] forCellWithReuseIdentifier:[SEMyRecordLabelCell cellIdentifier]];
+        [_collectionViewLabel registerClass:[MultilineTextCell class] forCellWithReuseIdentifier:[MultilineTextCell cellIdentifier]];
         [_collectionViewLabel registerClass:[SEMyRecordHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[SEMyRecordHeaderView headerViewIdentifier]];
     }
     return _collectionViewLabel;

@@ -50,7 +50,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 
 #pragma mark - 当尺寸有所变化时，重新刷新
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
-    return NO;
+    return YES;
 }
 
 + (Class)layoutAttributesClass {

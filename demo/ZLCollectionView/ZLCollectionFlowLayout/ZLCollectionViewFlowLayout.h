@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.6.0 (测试版)
- *  ------ 加入了拖动cell的功能
+ *  当前版本 v0.7.0
+ *  ------ 加入了头部悬浮的功能
  **/
 
 typedef enum {
@@ -79,6 +79,8 @@ typedef enum {
 @property (nonatomic,assign) id<ZLCollectionViewFlowLayoutDelegate> delegate;
 @property (nonatomic,assign) BOOL isFloor;//宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
 
-@property (nonatomic,assign) BOOL canDrag;
+@property (nonatomic,assign) BOOL canDrag;              //是否允许拖动cell，默认是NO
+
+@property (nonatomic,assign) BOOL header_suspension;    //头部是否悬浮，默认是NO
 
 @end

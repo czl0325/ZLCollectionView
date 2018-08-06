@@ -43,6 +43,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     if (self) {
         self.isFloor = YES;
         self.canDrag = NO;
+        self.header_suspension = NO;
         [self addObserver:self forKeyPath:@"collectionView" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -564,6 +565,25 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     if (!_attributesArray) {
         return [super layoutAttributesForElementsInRect:rect];
     } else {
+        if (self.header_suspension) {
+            for (UICollectionViewLayoutAttributes *attriture in _attributesArray) {
+                if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) continue;
+                NSInteger section = attriture.indexPath.section;
+                CGRect frame = attriture.frame;
+                if (section == 0) {
+                    if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
+                        frame.origin.y = self.collectionView.contentOffset.y;
+                    }
+                } else {
+                    if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
+                        
+                        frame.origin.y = self.collectionView.contentOffset.y;
+                    }
+                }
+                attriture.frame = frame;
+                attriture.zIndex = 9999;
+            }
+        }
         return _attributesArray;
     }
 }

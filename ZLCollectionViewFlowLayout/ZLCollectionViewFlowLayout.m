@@ -580,8 +580,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         frame.origin.y = self.collectionView.contentOffset.y;
                     }
                 }
+                attriture.zIndex = 1000+section;
                 attriture.frame = frame;
-                attriture.zIndex = 9999;
             }
         }
         return _attributesArray;

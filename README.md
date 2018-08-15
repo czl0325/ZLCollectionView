@@ -18,7 +18,7 @@
    增加头部可以悬浮的设置
 
 ### v0.6.2 (2018.7.26)
-   增加拖动cell和高度自适应的测试。拖动cell需要用到第三方库
+   增加拖动cell和高度自适应的测试。高度自适应需要用到第三方库
 
 ### v0.5.3 (2018.7.12)
    增加自定义section背景图
@@ -56,6 +56,12 @@ pod 'ZLCollectionViewFlowLayout'
 如果遇到以下错误，
 Unable to find a specification for `ZLCollectionViewFlowLayout`
 请使用pod update命令来安装。
+
+| 可配置参数               | 类型      | 作用                                                    |
+|------------------------|-----------|--------------------------------------------------------|
+| isFloor                | BOOL      | 宽度是否向下取整，默认为YES，该参数一般不用改                |
+| canDrag                | BOOL      | 是否允许拖动cell，默认为NO                                |
+| header_suspension      | BOOL      | 头部是否悬浮，默认为NO                                    |
 
 
 # 用法

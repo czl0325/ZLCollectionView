@@ -57,6 +57,8 @@ pod 'ZLCollectionViewFlowLayout'
 Unable to find a specification for `ZLCollectionViewFlowLayout`
 请使用pod update命令来安装。
 
+# 参数列表
+
 | 可配置参数               | 类型      | 作用                                                    |
 |------------------------|-----------|--------------------------------------------------------|
 | isFloor                | BOOL      | 宽度是否向下取整，默认为YES，该参数一般不用改                |

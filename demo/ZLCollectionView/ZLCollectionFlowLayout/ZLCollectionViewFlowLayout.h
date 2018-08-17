@@ -9,17 +9,17 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.7.0
- *  ------ 加入了头部悬浮的功能
+ *  当前版本 v0.8.0
+ *  ------ 由于不能兼容原始布局，去掉了BaseLayout
  **/
 
 typedef enum {
-    BaseLayout      = 1,        //基础布局。     用苹果默认的UICollectionView的布局，不去改变。
-    LabelLayout     = 2,        //标签页布局。   一堆label标签的集合
-    ClosedLayout    = 3,        //列布局       指定列数，按列数来等分一整行，itemSize的width可以任意写，在布局中会自动帮你计算。可用于瀑布流，普通UITableViewCell
-    PercentLayout   = 4,        //百分比布局     需实现percentOfRow的代理，根据设定值来计算每个itemSize的宽度
-    FillLayout      = 5,        //填充式布局     将一堆大小不一的view见缝插针的填充到一个平面内，规则为先判断从左到右是否有间隙填充，再从上到下判断。
-    AbsoluteLayout  = 6,        //绝对定位布局    需实现rectOfItem的代理，指定每个item的frame
+    //BaseLayout      = 1,        //基础布局。     用苹果默认的UICollectionView的布局，不去改变。
+    LabelLayout     = 1,        //标签页布局。   一堆label标签的集合
+    ClosedLayout    = 2,        //列布局       指定列数，按列数来等分一整行，itemSize的width可以任意写，在布局中会自动帮你计算。可用于瀑布流，普通UITableViewCell
+    PercentLayout   = 3,        //百分比布局     需实现percentOfRow的代理，根据设定值来计算每个itemSize的宽度
+    FillLayout      = 4,        //填充式布局     将一堆大小不一的view见缝插针的填充到一个平面内，规则为先判断从左到右是否有间隙填充，再从上到下判断。
+    AbsoluteLayout  = 5,        //绝对定位布局    需实现rectOfItem的代理，指定每个item的frame
 } ZLLayoutType;
 
 @class ZLCollectionViewFlowLayout;

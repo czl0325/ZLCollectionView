@@ -132,7 +132,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         
         if (itemCount > 0) {
             y += edgeInsets.top;
-            ZLLayoutType layoutType = BaseLayout;
+            ZLLayoutType layoutType = FillLayout;
             if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:typeOfLayout:)]) {
                 layoutType = [_delegate collectionView:self.collectionView layout:self typeOfLayout:index];
             }
@@ -462,7 +462,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     }
                         break;
                     default: {
-                        
+                        NSLog(@"%@",NSStringFromCGRect(attributes.frame));
                     }
                         break;
                 }

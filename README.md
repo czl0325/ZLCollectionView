@@ -64,6 +64,8 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 | isFloor                | BOOL      | 宽度是否向下取整，默认为YES，该参数一般不用改                |
 | canDrag                | BOOL      | 是否允许拖动cell，默认为NO                                |
 | header_suspension      | BOOL      | 头部是否悬浮，默认为NO                                    |
+| layoutType             | ZLLayoutType      | 设置布局类型，适用于只有单一布局可省去写代理的代码     |
+| columnCount            | columnCount      | 在列布局中设置列数，适用于单一布局可省去写代理的代码 |
 
 
 # 用法

@@ -44,6 +44,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         self.isFloor = YES;
         self.canDrag = NO;
         self.header_suspension = NO;
+        self.layoutType = FillLayout;
+        self.columnCount = 1;
         [self addObserver:self forKeyPath:@"collectionView" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -132,22 +134,22 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         
         if (itemCount > 0) {
             y += edgeInsets.top;
-            ZLLayoutType layoutType = FillLayout;
+            //ZLLayoutType layoutType = FillLayout;
             if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:typeOfLayout:)]) {
-                layoutType = [_delegate collectionView:self.collectionView layout:self typeOfLayout:index];
+                self.layoutType = [_delegate collectionView:self.collectionView layout:self typeOfLayout:index];
             }
-            NSInteger columnCount = 1;
+            //NSInteger columnCount = 1;
             if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:columnCountOfSection:)]) {
-                columnCount = [_delegate collectionView:self.collectionView layout:self columnCountOfSection:index];
+                self.columnCount = [_delegate collectionView:self.collectionView layout:self columnCountOfSection:index];
             }
             // 定义一个列高数组 记录每一列的总高度
-            CGFloat *columnHeight = (CGFloat *) malloc(columnCount * sizeof(CGFloat));
+            CGFloat *columnHeight = (CGFloat *) malloc(self.columnCount * sizeof(CGFloat));
             CGFloat itemWidth = 0.0;
-            if (layoutType == ClosedLayout) {
-                for (int i=0; i<columnCount; i++) {
+            if (self.layoutType == ClosedLayout) {
+                for (int i=0; i<self.columnCount; i++) {
                     columnHeight[i] = y;
                 }
-                itemWidth = (totalWidth - edgeInsets.left - edgeInsets.right - minimumInteritemSpacing * (columnCount - 1)) / columnCount;
+                itemWidth = (totalWidth - edgeInsets.left - edgeInsets.right - minimumInteritemSpacing * (self.columnCount - 1)) / self.columnCount;
             }
             CGFloat maxYOfPercent = y;
             CGFloat maxYOfFill = y;
@@ -165,7 +167,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 ZLCollectionViewLayoutAttributes *attributes = [ZLCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
                 
                 NSInteger preRow = _attributesArray.count - 1;
-                switch (layoutType) {
+                switch (self.layoutType) {
+#pragma mark 标签布局处理
                     case LabelLayout: {
                         //找上一个cell
                         if(preRow >= 0){
@@ -181,10 +184,11 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         attributes.frame = CGRectMake(x, y, itemSize.width, itemSize.height);
                     }
                         break;
+#pragma mark 列布局处理
                     case ClosedLayout: {
                         CGFloat max = CGFLOAT_MAX;
                         NSInteger column = 0;
-                        for (int i = 0; i < columnCount; i++) {
+                        for (int i = 0; i < self.columnCount; i++) {
                             if (columnHeight[i] < max) {
                                 max = columnHeight[i];
                                 column = i;
@@ -196,6 +200,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         columnHeight[column] += (itemSize.height + minimumLineSpacing);
                     }
                         break;
+#pragma mark 百分比布局处理
                     case PercentLayout: {
                         CGFloat percent = 0.0f;
                         if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:percentOfRow:)]) {
@@ -360,6 +365,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         }
                     }
                         break;
+#pragma mark 填充布局处理
                     case FillLayout: {
                         if (arrayOfFill.count == 0) {
                             attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, itemSize.height);
@@ -445,6 +451,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         }
                     }
                         break;
+#pragma mark 绝对定位布局处理
                     case AbsoluteLayout: {
                         CGRect itemFrame = CGRectZero;
                         if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:rectOfItem:)]) {
@@ -476,22 +483,22 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     attributes.alpha = [_delegate collectionView:self.collectionView layout:self alphaOfItem:indexPath];
                 }
                 attributes.indexPath = indexPath;
-                if (layoutType != PercentLayout) {
+                if (self.layoutType != PercentLayout) {
                     //if (![_attributesArray containsObject:attributes]) {
                     [_attributesArray addObject:attributes];
                     //}
                 }
-                if (layoutType == ClosedLayout) {
+                if (self.layoutType == ClosedLayout) {
                     CGFloat max = 0;
-                    for (int i = 0; i < columnCount; i++) {
+                    for (int i = 0; i < self.columnCount; i++) {
                         if (columnHeight[i] > max) {
                             max = columnHeight[i];
                         }
                     }
                     lastY = max;
-                } else if (layoutType == PercentLayout) {
+                } else if (self.layoutType == PercentLayout) {
                     lastY = maxYOfPercent;
-                } else if (layoutType == FillLayout) {
+                } else if (self.layoutType == FillLayout) {
                     if (i==itemCount-1) {
                         for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                             if (maxYOfFill < attr.frame.origin.y+attr.frame.size.height) {
@@ -500,7 +507,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         }
                     }
                     lastY = maxYOfFill;
-                } else if (layoutType == AbsoluteLayout) {
+                } else if (self.layoutType == AbsoluteLayout) {
                     if (i==itemCount-1) {
                         for (ZLCollectionViewLayoutAttributes* attr in arrayOfAbsolute) {
                             if (lastY < attr.frame.origin.y+attr.frame.size.height) {

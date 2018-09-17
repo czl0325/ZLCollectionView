@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.0
- *  ------ 由于不能兼容原始布局，去掉了BaseLayout
+ *  当前版本 v0.8.1
+ *  ------ 把属性layoutType和columnCount提取出来，节约代码量
  **/
 
 typedef enum {
@@ -82,5 +82,11 @@ typedef enum {
 @property (nonatomic,assign) BOOL canDrag;              //是否允许拖动cell，默认是NO
 
 @property (nonatomic,assign) BOOL header_suspension;    //头部是否悬浮，默认是NO
+
+@property (nonatomic,assign) ZLLayoutType layoutType;   //指定layout的类型，也可以在代理里设置
+
+@property (nonatomic,assign) NSInteger columnCount;     //指定列数
+
+
 
 @end

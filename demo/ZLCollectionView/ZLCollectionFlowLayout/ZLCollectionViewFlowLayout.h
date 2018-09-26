@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.2
- *  ------ 增加高度向下取整
+ *  当前版本 v0.8.3
+ *  ------ 修改内存泄漏
  **/
 
 typedef enum {

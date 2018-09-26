@@ -674,9 +674,10 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     self.panGesture.delegate = self;
     self.panGesture.maximumNumberOfTouches = 1;
     NSArray *gestures = [self.collectionView gestureRecognizers];
+    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
     [gestures enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if ([obj isKindOfClass:[UILongPressGestureRecognizer class]]) {
-            [(UILongPressGestureRecognizer *)obj requireGestureRecognizerToFail:self.longPress];
+            [(UILongPressGestureRecognizer *)obj requireGestureRecognizerToFail:weakSelf.longPress];
         }
     }];
     [self.collectionView addGestureRecognizer:self.longPress];
@@ -782,10 +783,12 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     self.collectionView.scrollsToTop = YES;
     self.fakeCellCenter = CGPointZero;
     [self invalidateDisplayLink];
+    
+    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
     [self.cellFakeView pushBackView:^{
-        [self.cellFakeView removeFromSuperview];
-        self.cellFakeView = nil;
-        [self invalidateLayout];
+        [weakSelf.cellFakeView removeFromSuperview];
+        weakSelf.cellFakeView = nil;
+        [weakSelf invalidateLayout];
     }];
 }
 
@@ -844,13 +847,14 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         }
     }
     if (attribute != nil) {
+        __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
         [self.collectionView performBatchUpdates:^{
-            self.cellFakeView.indexPath = toIndexPath;
-            self.cellFakeView.cellFrame = attribute.frame;
-            [self.cellFakeView changeBoundsIfNeeded:attribute.bounds];
-            [self.collectionView moveItemAtIndexPath:atIndexPath toIndexPath:toIndexPath];
-            if ([_delegate respondsToSelector:@selector(collectionView:layout:didMoveCell:toIndexPath:)]) {
-                [_delegate collectionView:self.collectionView layout:self didMoveCell:atIndexPath toIndexPath:toIndexPath];
+            weakSelf.cellFakeView.indexPath = toIndexPath;
+            weakSelf.cellFakeView.cellFrame = attribute.frame;
+            [weakSelf.cellFakeView changeBoundsIfNeeded:attribute.bounds];
+            [weakSelf.collectionView moveItemAtIndexPath:atIndexPath toIndexPath:toIndexPath];
+            if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:didMoveCell:toIndexPath:)]) {
+                [weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf didMoveCell:atIndexPath toIndexPath:toIndexPath];
             }
         } completion:nil];
     }
@@ -894,23 +898,24 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         scrollRate = contentLength + insetEnd - length - offset;
     }
     
+    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
-        if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
+        if (weakSelf.scrollDirection == UICollectionViewScrollDirectionVertical) {
             _fakeCellCenter.y += scrollRate;
             CGPoint center = _cellFakeView.center;
-            center.y = self.fakeCellCenter.y + self.panTranslation.y;
+            center.y = weakSelf.fakeCellCenter.y + weakSelf.panTranslation.y;
             _cellFakeView.center = center;
-            CGPoint contentOffset = self.collectionView.contentOffset;
+            CGPoint contentOffset = weakSelf.collectionView.contentOffset;
             contentOffset.y += scrollRate;
-            self.collectionView.contentOffset = contentOffset;
+            weakSelf.collectionView.contentOffset = contentOffset;
         }else{
             _fakeCellCenter.x += scrollRate;
             CGPoint center = _cellFakeView.center;
-            center.x = self.fakeCellCenter.x + self.panTranslation.x;
+            center.x = weakSelf.fakeCellCenter.x + weakSelf.panTranslation.x;
             _cellFakeView.center = center;
-            CGPoint contentOffset = self.collectionView.contentOffset;
+            CGPoint contentOffset = weakSelf.collectionView.contentOffset;
             contentOffset.x += scrollRate;
-            self.collectionView.contentOffset = contentOffset;
+            weakSelf.collectionView.contentOffset = contentOffset;
         }
     } completion:nil];
     

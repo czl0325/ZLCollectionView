@@ -368,13 +368,13 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 #pragma mark 填充布局处理
                     case FillLayout: {
                         if (arrayOfFill.count == 0) {
-                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, itemSize.height);
+                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                             [arrayOfFill addObject:attributes];
                         } else {
                             NSMutableArray *arrayXOfFill = [NSMutableArray new];
                             [arrayXOfFill addObject:@(edgeInsets.left)];
                             NSMutableArray *arrayYOfFill = [NSMutableArray new];
-                            [arrayYOfFill addObject:@(maxYOfFill)];
+                            [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
                             for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                 if (![arrayXOfFill containsObject:@(attr.frame.origin.x)]) {
                                     [arrayXOfFill addObject:@(attr.frame.origin.x)];
@@ -399,7 +399,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                             for (NSNumber* yFill in arrayYOfFill) {
                                 for (NSNumber* xFill in arrayXOfFill) {
                                     qualified = YES;
-                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?[yFill floatValue]:[yFill floatValue]+minimumLineSpacing, self.isFloor?floor(itemSize.width):itemSize.width, itemSize.height);
+                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?(self.isFloor?floor([yFill floatValue]):[yFill floatValue]):[yFill floatValue]+minimumLineSpacing, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                                     if (attributes.frame.origin.x+attributes.frame.size.width > totalWidth-edgeInsets.right) {
                                         qualified = NO;
                                         break;
@@ -469,7 +469,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     }
                         break;
                     default: {
-                        NSLog(@"%@",NSStringFromCGRect(attributes.frame));
+                        //NSLog(@"%@",NSStringFromCGRect(attributes.frame));
                     }
                         break;
                 }

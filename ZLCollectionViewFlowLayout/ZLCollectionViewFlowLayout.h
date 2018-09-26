@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.1
- *  ------ 把属性layoutType和columnCount提取出来，节约代码量
+ *  当前版本 v0.8.2
+ *  ------ 增加高度向下取整
  **/
 
 typedef enum {

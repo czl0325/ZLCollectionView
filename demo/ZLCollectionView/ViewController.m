@@ -227,9 +227,9 @@
         case 2:{
             switch (indexPath.item) {
                 case 2:
-                    return CGSizeMake(150, 140);
+                    return CGSizeMake(150, 140.32);
                 case 5:
-                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 70);
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 70.19);
                 case 8:
                 case 11:
                     return CGSizeMake(100, 240);
@@ -238,8 +238,13 @@
                 case 9:
                 case 12:
                     return CGSizeMake(collectionView.frame.size.width-20-100, 100);
+                case 0:
+                case 1:
+                case 3:
+                case 4:
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/4, 70.13);
                 default:
-                    return CGSizeMake((collectionView.frame.size.width-20-150)/4, 70);
+                    return CGSizeMake((collectionView.frame.size.width-20-150)/4, 70.19);
             }
         }
         case 5:

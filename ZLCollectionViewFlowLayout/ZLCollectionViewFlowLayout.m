@@ -901,18 +901,23 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
     [self.collectionView performBatchUpdates:^{
         if (weakSelf.scrollDirection == UICollectionViewScrollDirectionVertical) {
-            _fakeCellCenter.y += scrollRate;
-            CGPoint center = _cellFakeView.center;
+            CGPoint point = weakSelf.fakeCellCenter;
+            point.y += scrollRate;
+            weakSelf.fakeCellCenter = point;
+            CGPoint center = weakSelf.cellFakeView.center;
             center.y = weakSelf.fakeCellCenter.y + weakSelf.panTranslation.y;
-            _cellFakeView.center = center;
+            weakSelf.cellFakeView.center = center;
             CGPoint contentOffset = weakSelf.collectionView.contentOffset;
             contentOffset.y += scrollRate;
             weakSelf.collectionView.contentOffset = contentOffset;
-        }else{
-            _fakeCellCenter.x += scrollRate;
-            CGPoint center = _cellFakeView.center;
+        } else {
+            CGPoint point = weakSelf.fakeCellCenter;
+            point.x += scrollRate;
+            weakSelf.fakeCellCenter = point;
+            //_fakeCellCenter.x += scrollRate;
+            CGPoint center = weakSelf.cellFakeView.center;
             center.x = weakSelf.fakeCellCenter.x + weakSelf.panTranslation.x;
-            _cellFakeView.center = center;
+            weakSelf.cellFakeView.center = center;
             CGPoint contentOffset = weakSelf.collectionView.contentOffset;
             contentOffset.x += scrollRate;
             weakSelf.collectionView.contentOffset = contentOffset;

@@ -9,7 +9,7 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.3
+ *  当前版本 v0.8.4
  *  ------ 修改内存泄漏
  **/
 

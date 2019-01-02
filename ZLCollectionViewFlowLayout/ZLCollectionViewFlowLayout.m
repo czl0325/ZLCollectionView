@@ -262,8 +262,24 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                     [arrayOfPercent removeAllObjects];
                                 } else {
                                     //先添加进总的数组
+                                    if (arrayOfPercent.count > 0) {
+                                        for (int i=0; i<arrayOfPercent.count; i++) {
+                                            NSDictionary* dic = arrayOfPercent[i];
+                                            ZLCollectionViewLayoutAttributes* attr = dic[@"item"];
+                                            if ((attr.frame.origin.y+attr.frame.size.height) > maxYOfPercent ) {
+                                                maxYOfPercent = attr.frame.origin.y+attr.frame.size.height;
+                                            }
+                                        }
+                                    }
                                     attributes.indexPath = indexPath;
                                     attributes.frame = CGRectMake(0, maxYOfPercent, itemSize.width, itemSize.height);
+                                    for (int i=0; i<arrayOfPercent.count; i++) {
+                                        NSDictionary* dic = arrayOfPercent[i];
+                                        ZLCollectionViewLayoutAttributes* attr = dic[@"item"];
+                                        attr.indexPath = dic[@"indexPath"];
+                                        [_attributesArray addObject:attr];
+                                    }
+                                    [arrayOfPercent removeAllObjects];
                                     //再添加进计算比例的数组
                                     [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                                     //如果该行item总比例还是小于1，但是item已经是最后一个
@@ -328,6 +344,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         }
                                     }
                                     [arrayOfPercent removeAllObjects];
+                                } else {
+                                    
                                 }
                             }
                         } else {
@@ -361,6 +379,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                     }
                                 }
                                 [arrayOfPercent removeAllObjects];
+                            } else {
+                                
                             }
                         }
                     }
@@ -519,6 +539,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     lastY = attributes.frame.origin.y + attributes.frame.size.height;
                 }
             }
+            free(columnHeight);
         }
         lastY += edgeInsets.bottom;
         

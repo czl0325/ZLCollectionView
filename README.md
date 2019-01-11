@@ -15,7 +15,7 @@
 
 ### 导入
 
-支持cocoapod导入
+支持cocoapod导入，最新版本 0.8.6
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -172,6 +172,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+
+##### v0.8.6 (2019.1.11)
+* 降低了头部不悬浮情况下的cpu占用率
 
 ##### v0.8.2 (2018.9.26)
 * 去掉基础布局

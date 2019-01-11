@@ -12,6 +12,8 @@
 #import "SEMyRecordHeaderView.h"
 #import "MultilineTextCell.h"
 #import "UICollectionView+ARDynamicCacheHeightLayoutCell.h"
+#import "MyTestReusableView.h"
+#import "MyTestReusableView2.h"
 
 @interface ViewController ()
 <UICollectionViewDelegate,UICollectionViewDataSource,ZLCollectionViewFlowLayoutDelegate>
@@ -458,12 +460,14 @@
 - (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section {
     if (section == 0 || section == 4) {
         return @"MyTestReusableView";
+    } else if (section == 5) {
+        return @"MyTestReusableView2";
     }
     return @"";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout loadView:(NSInteger)section {
-    //NSLog(@"当前section=%zd，需要处理什么操作？",section);
+    NSLog(@"当前section=%zd，需要处理什么操作？",section);
 }
 
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
@@ -483,7 +487,7 @@
         ZLCollectionViewFlowLayout *flowLayout = [[ZLCollectionViewFlowLayout alloc] init];
         flowLayout.delegate = self;
         flowLayout.canDrag = YES;
-        flowLayout.header_suspension = YES;
+        flowLayout.header_suspension = NO;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;
         

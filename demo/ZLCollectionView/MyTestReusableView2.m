@@ -1,30 +1,31 @@
 //
-//  MyTestReusableView.m
+//  MyTestReusableView2.m
 //  ZLCollectionView
 //
-//  Created by zhaoliang chen on 2018/7/11.
-//  Copyright © 2018年 zhaoliang chen. All rights reserved.
+//  Created by zhaoliang chen on 2019/1/9.
+//  Copyright © 2019 zhaoliang chen. All rights reserved.
 //
 
-#import "MyTestReusableView.h"
+#import "MyTestReusableView2.h"
 #import "UIImageView+WebCache.h"
 
-@interface MyTestReusableView()
+@interface MyTestReusableView2()
 
 @property(nonatomic,strong)UIImageView* imgV;
 @end
 
-@implementation MyTestReusableView
+@implementation MyTestReusableView2
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.imgV = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"xingkong"]];
+    if (self == [super initWithFrame:frame]) {
+        self.imgV = [[UIImageView alloc]init];
         self.imgV.contentMode = UIViewContentModeScaleToFill;
         [self addSubview:self.imgV];
         [self.imgV mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(self);
         }];
+        
+        [self updateImageView];
     }
     return self;
 }

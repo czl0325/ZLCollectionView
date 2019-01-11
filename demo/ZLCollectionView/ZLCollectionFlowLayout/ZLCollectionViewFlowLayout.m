@@ -20,9 +20,13 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 <UIGestureRecognizerDelegate>
 
 //每个section的每一列的高度
-@property (nonatomic, retain) NSMutableArray *collectionHeightsArray;
+@property (nonatomic, strong) NSMutableArray *collectionHeightsArray;
 //存放每一个cell的属性
-@property (nonatomic, retain) NSMutableArray *attributesArray;
+@property (nonatomic, strong) NSMutableArray *attributesArray;
+//存放每一个自定义背景的数组
+@property (nonatomic, strong) NSMutableArray *arraySectionBackView;
+//存放每一个header属性的数组
+@property (nonatomic, strong) NSMutableArray *arrayHeaderAttrs;
 
 //关于拖动的参数
 @property (nonatomic, strong) ZLCellFakeView *cellFakeView;
@@ -53,7 +57,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 
 #pragma mark - 当尺寸有所变化时，重新刷新
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
-    return YES;
+    return self.header_suspension;
 }
 
 + (Class)layoutAttributesClass {
@@ -67,6 +71,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 - (void)prepareLayout {
     [super prepareLayout];
     
+    
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
     CGFloat y = 0;
@@ -78,6 +83,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     NSUInteger sectionCount = [self.collectionView numberOfSections];
     _attributesArray = [NSMutableArray new];
     _collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
+    _arraySectionBackView = [NSMutableArray arrayWithCapacity:sectionCount];
+    _arrayHeaderAttrs = [NSMutableArray arrayWithCapacity:sectionCount];
     for (int index= 0; index<sectionCount; index++) {
         NSUInteger itemCount = [self.collectionView numberOfItemsInSection:index];
         if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
@@ -114,7 +121,18 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             } else {
                 [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
             }
-        } else {
+        }
+//        else if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView2:)]) {
+//            UICollectionReusableView* backView = [_delegate collectionView:self.collectionView layout:self registerBackView2:index];
+//            if (backView != nil) {
+//                [self registerClass:[backView class] forDecorationViewOfKind:NSStringFromClass([backView class])];
+//            } else {
+//                backView = [[ZLCollectionReusableView alloc]init];
+//                [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
+//            }
+//            _arraySectionBackView[index] = backView;
+//        }
+        else {
             [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
         }
         x = edgeInsets.left;
@@ -126,6 +144,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(0, y, self.collectionView.frame.size.width, headerH);
             [_attributesArray addObject:headerAttr];
+            [_arrayHeaderAttrs addObject:headerAttr];
         }
         
         y += headerH ;
@@ -563,7 +582,30 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 attr.zIndex = -1000;
                 [_attributesArray addObject:attr];
             }
-        } else {
+        }
+//        else if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView2:)]) {
+//            ZLCollectionReusableView* backView = [_delegate collectionView:self.collectionView layout:self registerBackView2:index];
+//            if (backView != nil) {
+//                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:NSStringFromClass([backView class]) withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+//                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
+//                attr.zIndex = -1000;
+//                [_attributesArray addObject:attr];
+//                _arraySectionBackView[index] = backView;
+//                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:newLoadView:section:)]) {
+//                    [_delegate collectionView:self.collectionView layout:self newLoadView:backView section:index];
+//                }
+//            } else {
+//                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+//                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
+//                attr.color = self.collectionView.backgroundColor;
+//                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
+//                    attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
+//                }
+//                attr.zIndex = -1000;
+//                [_attributesArray addObject:attr];
+//            }
+//        }
+        else {
             ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
             attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
             attr.color = self.collectionView.backgroundColor;
@@ -584,6 +626,17 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         }
         _collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
     }
+    
+//    for (int i=0; i<_attributesArray.count; i++) {
+//        ZLCollectionViewLayoutAttributes* attr = _attributesArray[i];
+//        NSLog(@"%@---%@",NSStringFromCGRect(attr.frame), attr.indexPath);
+//    }
+    
+//    for (int i=0; i<_arraySectionBackView.count; i++) {
+//        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:newLoadView:section:)]) {
+//            [_delegate collectionView:self.collectionView layout:self newLoadView:_arraySectionBackView[i] section:i];
+//        }
+//    }
 }
 
 #pragma mark - 所有cell和view的布局属性
@@ -595,26 +648,40 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     } else {
         if (self.header_suspension) {
             for (UICollectionViewLayoutAttributes *attriture in _attributesArray) {
-                if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) continue;
+                if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader])
+                    continue;
                 NSInteger section = attriture.indexPath.section;
                 CGRect frame = attriture.frame;
                 if (section == 0) {
                     if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
                         frame.origin.y = self.collectionView.contentOffset.y;
+                        attriture.zIndex = 1000+section;
+                        attriture.frame = frame;
+                    } else {
+                        ZLCollectionViewLayoutAttributes *attr = _arrayHeaderAttrs[section];
+                        attriture.frame = attr.frame;
+                        attriture.zIndex = 0;
                     }
                 } else {
                     if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
-                        
                         frame.origin.y = self.collectionView.contentOffset.y;
+                        attriture.zIndex = 1000+section;
+                        attriture.frame = frame;
+                    } else {
+                        ZLCollectionViewLayoutAttributes *attr = _arrayHeaderAttrs[section];
+                        attriture.frame = attr.frame;
+                        attriture.zIndex = 0;
                     }
                 }
-                attriture.zIndex = 1000+section;
-                attriture.frame = frame;
             }
         }
         return _attributesArray;
     }
 }
+
+//- (UICollectionViewLayoutAttributes* )layoutAttributesForItemAtIndexPath:(NSIndexPath )indexPath {
+//
+//}
 
 #pragma mark - CollectionView的滚动范围
 - (CGSize)collectionViewContentSize

@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.5
- *  ------ 修改内存泄漏和百分比布局bug
+ *  当前版本 v0.8.6
+ *  ------ 修改cpu占用率
  **/
 
 typedef enum {
@@ -48,6 +48,12 @@ typedef enum {
 
 //背景是否延伸覆盖到headerView，默认为NO
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section;
+
+////没有效果
+//- (ZLCollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout registerBackView2:(NSInteger)section;
+//
+////没有效果
+//- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewFlowLayout *)collectionViewLayout newLoadView:(ZLCollectionReusableView*)backView section:(NSInteger)section;
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0

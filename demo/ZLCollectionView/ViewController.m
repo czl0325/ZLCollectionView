@@ -91,7 +91,7 @@
         case 5:
             return 9;
         case 6:
-            return 3;
+            return 8;
         case 7:
             return 8;
         case 8:
@@ -195,11 +195,7 @@
             }
         }
         case 6: {
-            if (indexPath.item % 2==0) {
-                return 3.0/4;
-            } else {
-                return 1.0/4;
-            }
+            return 1.0/5;
         }
         default:
             return 1;
@@ -368,6 +364,7 @@
         case 0:
 //        case 1:
 //        case 2:
+        case 5:
         case 8:
             return 10;
 //        case 3:
@@ -385,6 +382,8 @@
 //        case 2:
         case 8:
             return 10;
+        case 6:
+            return 24;
         default:
             return 0;
     }
@@ -396,6 +395,8 @@
             return UIEdgeInsetsMake(10, 100, 10, 100);
         case 9:
             return UIEdgeInsetsZero;
+        case 6:
+            return  UIEdgeInsetsMake(0, 23, 0, 23);
         default:
             return UIEdgeInsetsMake(10, 10, 10, 10);
     }

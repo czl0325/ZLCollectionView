@@ -25,8 +25,6 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 @property (nonatomic, strong) NSMutableArray *attributesArray;
 //存放每一个自定义背景的数组
 @property (nonatomic, strong) NSMutableArray *arraySectionBackView;
-//存放每一个header属性的数组
-@property (nonatomic, strong) NSMutableArray *arrayHeaderAttrs;
 
 //关于拖动的参数
 @property (nonatomic, strong) ZLCellFakeView *cellFakeView;
@@ -84,7 +82,6 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     _attributesArray = [NSMutableArray new];
     _collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
     _arraySectionBackView = [NSMutableArray arrayWithCapacity:sectionCount];
-    _arrayHeaderAttrs = [NSMutableArray arrayWithCapacity:sectionCount];
     for (int index= 0; index<sectionCount; index++) {
         NSUInteger itemCount = [self.collectionView numberOfItemsInSection:index];
         if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
@@ -122,16 +119,6 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
             }
         }
-//        else if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView2:)]) {
-//            UICollectionReusableView* backView = [_delegate collectionView:self.collectionView layout:self registerBackView2:index];
-//            if (backView != nil) {
-//                [self registerClass:[backView class] forDecorationViewOfKind:NSStringFromClass([backView class])];
-//            } else {
-//                backView = [[ZLCollectionReusableView alloc]init];
-//                [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
-//            }
-//            _arraySectionBackView[index] = backView;
-//        }
         else {
             [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
         }
@@ -144,7 +131,6 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(0, y, self.collectionView.frame.size.width, headerH);
             [_attributesArray addObject:headerAttr];
-            [_arrayHeaderAttrs addObject:headerAttr];
         }
         
         y += headerH ;
@@ -170,7 +156,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 }
                 itemWidth = (totalWidth - edgeInsets.left - edgeInsets.right - minimumInteritemSpacing * (self.columnCount - 1)) / self.columnCount;
             }
-            CGFloat maxYOfPercent = y;
+            CGFloat maxYOfPercent = -1;
             CGFloat maxYOfFill = y;
             NSMutableArray* arrayOfPercent = [NSMutableArray new];  //储存百分比布局的数组
             NSMutableArray* arrayOfFill = [NSMutableArray new];     //储存填充式布局的数组
@@ -265,7 +251,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                             ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                             itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                         }
-                                        newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                        newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                         newAttributes.indexPath = dic[@"indexPath"];
                                         //if (![_attributesArray containsObject:newAttributes]) {
                                         [_attributesArray addObject:newAttributes];
@@ -279,7 +265,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         }
                                     }
                                     [arrayOfPercent removeAllObjects];
-                                } else {
+                                }
+                                else {
                                     //先添加进总的数组
                                     if (arrayOfPercent.count > 0) {
                                         for (int i=0; i<arrayOfPercent.count; i++) {
@@ -328,7 +315,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         [arrayOfPercent removeAllObjects];
                                     }
                                 }
-                            } else {
+                            }
+                            else {
                                 //先添加进总的数组
                                 attributes.indexPath = indexPath;
                                 NSDictionary* lastDicForPercent = arrayOfPercent[arrayOfPercent.count-1];
@@ -338,7 +326,21 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                 [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                                 //如果已经是最后一个
                                 if (i==itemCount-1) {
-                                    CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
+                                    NSInteger space = arrayOfPercent.count-1;
+                                    if (arrayOfPercent.count > 0) {
+                                        NSDictionary* dic = arrayOfPercent[0];
+                                        BOOL equal = YES;
+                                        for (NSDictionary* d in arrayOfPercent) {
+                                            if ([dic[@"percent"] floatValue] != [d[@"percent"] floatValue]) {
+                                                equal = NO;
+                                                break;
+                                            }
+                                        }
+                                        if (equal == YES) {
+                                            space = (1/([dic[@"percent"] floatValue]))-1;
+                                        }
+                                    }
+                                    CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - space*minimumInteritemSpacing;
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
                                         ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
@@ -367,10 +369,11 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                     
                                 }
                             }
-                        } else {
+                        }
+                        else {
                             //先添加进总的数组
                             attributes.indexPath = indexPath;
-                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfPercent+minimumLineSpacing, itemSize.width, itemSize.height);
+                            attributes.frame = CGRectMake(edgeInsets.left, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, itemSize.width, itemSize.height);
                             //再添加进计算比例的数组
                             [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                             //如果已经是最后一个
@@ -582,30 +585,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 attr.zIndex = -1000;
                 [_attributesArray addObject:attr];
             }
-        }
-//        else if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView2:)]) {
-//            ZLCollectionReusableView* backView = [_delegate collectionView:self.collectionView layout:self registerBackView2:index];
-//            if (backView != nil) {
-//                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:NSStringFromClass([backView class]) withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-//                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
-//                attr.zIndex = -1000;
-//                [_attributesArray addObject:attr];
-//                _arraySectionBackView[index] = backView;
-//                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:newLoadView:section:)]) {
-//                    [_delegate collectionView:self.collectionView layout:self newLoadView:backView section:index];
-//                }
-//            } else {
-//                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-//                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
-//                attr.color = self.collectionView.backgroundColor;
-//                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
-//                    attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
-//                }
-//                attr.zIndex = -1000;
-//                [_attributesArray addObject:attr];
-//            }
-//        }
-        else {
+        } else {
             ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
             attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
             attr.color = self.collectionView.backgroundColor;
@@ -657,20 +637,12 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                         frame.origin.y = self.collectionView.contentOffset.y;
                         attriture.zIndex = 1000+section;
                         attriture.frame = frame;
-                    } else {
-                        ZLCollectionViewLayoutAttributes *attr = _arrayHeaderAttrs[section];
-                        attriture.frame = attr.frame;
-                        attriture.zIndex = 0;
                     }
                 } else {
                     if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
                         frame.origin.y = self.collectionView.contentOffset.y;
                         attriture.zIndex = 1000+section;
                         attriture.frame = frame;
-                    } else {
-                        ZLCollectionViewLayoutAttributes *attr = _arrayHeaderAttrs[section];
-                        attriture.frame = attr.frame;
-                        attriture.zIndex = 0;
                     }
                 }
             }

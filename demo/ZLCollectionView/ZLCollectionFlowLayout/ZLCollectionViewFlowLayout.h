@@ -9,8 +9,8 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.6.1
- *  ------ 修改cpu占用率 (0.8.6版本不可用)
+ *  当前版本 v0.8.7
+ *  ------ 修改百分比布局的bug
  **/
 
 typedef enum {

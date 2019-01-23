@@ -301,7 +301,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                                 ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                                 itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                             }
-                                            newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                            newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                             newAttributes.indexPath = dic[@"indexPath"];
                                             [_attributesArray addObject:newAttributes];
                                         }
@@ -351,7 +351,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                             ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                             itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                         }
-                                        newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                        newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                         newAttributes.indexPath = dic[@"indexPath"];
                                         //if (![_attributesArray containsObject:newAttributes]) {
                                         [_attributesArray addObject:newAttributes];

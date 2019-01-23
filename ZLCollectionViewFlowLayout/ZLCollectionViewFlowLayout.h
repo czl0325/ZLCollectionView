@@ -9,7 +9,7 @@
 #import "ZLCollectionReusableView.h"
 
 /**
- *  当前版本 v0.8.7
+ *  当前版本 v0.8.7.1
  *  ------ 修改百分比布局的bug
  **/
 

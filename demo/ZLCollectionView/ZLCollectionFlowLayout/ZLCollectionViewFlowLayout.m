@@ -378,7 +378,21 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                             [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                             //如果已经是最后一个
                             if (i==itemCount-1) {
-                                CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - (arrayOfPercent.count-1)*minimumInteritemSpacing;
+                                NSInteger space = arrayOfPercent.count-1;
+                                if (arrayOfPercent.count > 0) {
+                                    NSDictionary* dic = arrayOfPercent[0];
+                                    BOOL equal = YES;
+                                    for (NSDictionary* d in arrayOfPercent) {
+                                        if ([dic[@"percent"] floatValue] != [d[@"percent"] floatValue]) {
+                                            equal = NO;
+                                            break;
+                                        }
+                                    }
+                                    if (equal == YES) {
+                                        space = (1/([dic[@"percent"] floatValue]))-1;
+                                    }
+                                }
+                                CGFloat realWidth = totalWidth - edgeInsets.left - edgeInsets.right - space*minimumInteritemSpacing;
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
                                     ZLCollectionViewLayoutAttributes *newAttributes = dic[@"item"];
@@ -389,7 +403,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         ZLCollectionViewLayoutAttributes *preAttr = arrayOfPercent[i-1][@"item"];
                                         itemX = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                     }
-                                    newAttributes.frame = CGRectMake(itemX, maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
+                                    newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                     newAttributes.indexPath = dic[@"indexPath"];
                                     [_attributesArray addObject:newAttributes];
                                 }
@@ -606,7 +620,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         }
         _collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
     }
-    
+
 //    for (int i=0; i<_attributesArray.count; i++) {
 //        ZLCollectionViewLayoutAttributes* attr = _attributesArray[i];
 //        NSLog(@"%@---%@",NSStringFromCGRect(attr.frame), attr.indexPath);
@@ -616,6 +630,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 //        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:newLoadView:section:)]) {
 //            [_delegate collectionView:self.collectionView layout:self newLoadView:_arraySectionBackView[i] section:i];
 //        }
+//        NSLog(@"%@--%@",attr.representedElementKind,NSStringFromCGRect(attr.frame));
 //    }
 }
 

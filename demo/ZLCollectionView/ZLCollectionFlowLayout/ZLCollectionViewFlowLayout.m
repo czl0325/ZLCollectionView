@@ -77,7 +77,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGFloat footerH = 0;
     UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
     CGFloat minimumLineSpacing = 0;
-    CGFloat minimumInteritemSpacing = 0.0;
+    CGFloat minimumInteritemSpacing = 0;
     NSUInteger sectionCount = [self.collectionView numberOfSections];
     _attributesArray = [NSMutableArray new];
     _collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
@@ -424,25 +424,25 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 #pragma mark 填充布局处理
                     case FillLayout: {
                         if (arrayOfFill.count == 0) {
-                            attributes.frame = CGRectMake(edgeInsets.left, maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
+                            attributes.frame = CGRectMake(self.isFloor?floor(edgeInsets.left):edgeInsets.left, self.isFloor?floor(maxYOfFill):maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                             [arrayOfFill addObject:attributes];
                         } else {
                             NSMutableArray *arrayXOfFill = [NSMutableArray new];
-                            [arrayXOfFill addObject:@(edgeInsets.left)];
+                            [arrayXOfFill addObject:self.isFloor?@(floor(edgeInsets.left)):@(edgeInsets.left)];
                             NSMutableArray *arrayYOfFill = [NSMutableArray new];
                             [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
                             for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
-                                if (![arrayXOfFill containsObject:@(attr.frame.origin.x)]) {
-                                    [arrayXOfFill addObject:@(attr.frame.origin.x)];
+                                if (![arrayXOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.x)):@(attr.frame.origin.x)]) {
+                                    [arrayXOfFill addObject:self.isFloor?@(floor(attr.frame.origin.x)):@(attr.frame.origin.x)];
                                 }
-                                if (![arrayXOfFill containsObject:@(attr.frame.origin.x+attr.frame.size.width)]) {
-                                    [arrayXOfFill addObject:@(attr.frame.origin.x+attr.frame.size.width)];
+                                if (![arrayXOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.x+attr.frame.size.width)):@(attr.frame.origin.x+attr.frame.size.width)]) {
+                                    [arrayXOfFill addObject:self.isFloor?@(floor(attr.frame.origin.x+attr.frame.size.width)):@(attr.frame.origin.x+attr.frame.size.width)];
                                 }
-                                if (![arrayYOfFill containsObject:@(attr.frame.origin.y)]) {
-                                    [arrayYOfFill addObject:@(attr.frame.origin.y)];
+                                if (![arrayYOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.y)):@(attr.frame.origin.y)]) {
+                                    [arrayYOfFill addObject:self.isFloor?@(floor(attr.frame.origin.y)):@(attr.frame.origin.y)];
                                 }
-                                if (![arrayYOfFill containsObject:@(attr.frame.origin.y+attr.frame.size.height)]) {
-                                    [arrayYOfFill addObject:@(attr.frame.origin.y+attr.frame.size.height)];
+                                if (![arrayYOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.y+attr.frame.size.height)):@(attr.frame.origin.y+attr.frame.size.height)]) {
+                                    [arrayYOfFill addObject:self.isFloor?@(floor(attr.frame.origin.y+attr.frame.size.height)):@(attr.frame.origin.y+attr.frame.size.height)];
                                 }
                             }
                             [arrayXOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -455,8 +455,10 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                             for (NSNumber* yFill in arrayYOfFill) {
                                 for (NSNumber* xFill in arrayXOfFill) {
                                     qualified = YES;
-                                    attributes.frame = CGRectMake([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing, [yFill floatValue]==maxYOfFill?(self.isFloor?floor([yFill floatValue]):[yFill floatValue]):[yFill floatValue]+minimumLineSpacing, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
-                                    if (attributes.frame.origin.x+attributes.frame.size.width > totalWidth-edgeInsets.right) {
+                                    CGFloat attrX = floor([xFill floatValue])==floor(edgeInsets.left)?floor([xFill floatValue]):(floor([xFill floatValue])+minimumInteritemSpacing);
+                                    CGFloat attrY = floor([yFill floatValue])==floor(maxYOfFill)?(self.isFloor?floor([yFill floatValue]):floor([yFill floatValue])):floor([yFill floatValue])+floor(minimumLineSpacing);
+                                    attributes.frame = CGRectMake(attrX, attrY, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
+                                    if (floor(attributes.frame.origin.x)+floor(attributes.frame.size.width) > floor(totalWidth)-floor(edgeInsets.right)) {
                                         qualified = NO;
                                         break;
                                     }
@@ -480,7 +482,9 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         if (CGRectEqualToRect(leftRect, CGRectZero)) {
                                             break;
                                         } else {
-                                            if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) == minimumInteritemSpacing) {
+                                            if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) >= minimumInteritemSpacing) {
+                                                break;
+                                            } else if (floor(leftRect.origin.x) + floor(leftRect.size.width) <= leftPt.x) {
                                                 break;
                                             } else {
                                                 CGRect rc = attributes.frame;
@@ -501,7 +505,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                 }
                             }
                             if (qualified == YES) {
-                                //NSLog(@"合格的矩形区域=%@",NSStringFromCGRect(attributes.frame));
+                                //NSLog(@"第%d个,合格的矩形区域=%@",i,NSStringFromCGRect(attributes.frame));
                             }
                             [arrayOfFill addObject:attributes];
                         }

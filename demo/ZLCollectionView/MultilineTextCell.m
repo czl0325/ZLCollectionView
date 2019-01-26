@@ -27,9 +27,11 @@
         
         self.label = [UILabel new];
         self.label.numberOfLines = 0;
+        self.label.font = [UIFont systemFontOfSize:15];
+        self.label.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:self.label];
         [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(self.contentView).insets(UIEdgeInsetsMake(10, 10, 10, 10));
+            make.edges.mas_equalTo(self.contentView);
         }];
     }
     return self;

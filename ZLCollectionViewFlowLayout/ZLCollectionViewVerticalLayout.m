@@ -1,74 +1,32 @@
 //
-//  ZLCollectionViewFlowLayout.m
+//  ZLCollectionViewVerticalLayout.m
 //  ZLCollectionView
 //
-//  Created by zhaoliang chen on 2017/6/22.
-//  Copyright © 2017年 zhaoliang chen. All rights reserved.
+//  Created by zhaoliang chen on 2019/1/25.
+//  Copyright © 2019 zhaoliang chen. All rights reserved.
 //
 
-#import "ZLCollectionViewFlowLayout.h"
+#import "ZLCollectionViewVerticalLayout.h"
+#import "ZLCollectionReusableView.h"
 #import "ZLCollectionViewLayoutAttributes.h"
-#import "ZLCellFakeView.h"
 
-typedef NS_ENUM(NSUInteger, LewScrollDirction) {
-    LewScrollDirctionStay,
-    LewScrollDirctionToTop,
-    LewScrollDirctionToEnd,
-};
-
-@interface ZLCollectionViewFlowLayout()
-<UIGestureRecognizerDelegate>
-
-//每个section的每一列的高度
-@property (nonatomic, strong) NSMutableArray *collectionHeightsArray;
-//存放每一个cell的属性
-@property (nonatomic, strong) NSMutableArray *attributesArray;
-//存放每一个自定义背景的数组
-@property (nonatomic, strong) NSMutableArray *arraySectionBackView;
-
-//关于拖动的参数
-@property (nonatomic, strong) ZLCellFakeView *cellFakeView;
-@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
-@property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
-@property (nonatomic, assign) CGPoint fakeCellCenter;
-@property (nonatomic, assign) CGPoint panTranslation;
-@property (nonatomic) LewScrollDirction continuousScrollDirection;
-@property (nonatomic, strong) CADisplayLink *displayLink;
+@interface ZLCollectionViewVerticalLayout ()
 
 @end
 
-@implementation ZLCollectionViewFlowLayout
+@implementation ZLCollectionViewVerticalLayout
 
 #pragma mark - 初始化属性
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.isFloor = YES;
-        self.canDrag = NO;
-        self.header_suspension = NO;
-        self.layoutType = FillLayout;
-        self.columnCount = 1;
-        [self addObserver:self forKeyPath:@"collectionView" options:NSKeyValueObservingOptionNew context:nil];
+        self.scrollDirection = UICollectionViewScrollDirectionVertical;
     }
     return self;
 }
 
-#pragma mark - 当尺寸有所变化时，重新刷新
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
-    return self.header_suspension;
-}
-
-+ (Class)layoutAttributesClass {
-    return [ZLCollectionViewLayoutAttributes class];
-}
-
-- (void)dealloc {
-    [self removeObserver:self forKeyPath:@"collectionView"];
-}
-
 - (void)prepareLayout {
     [super prepareLayout];
-    
     
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
@@ -79,39 +37,38 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGFloat minimumLineSpacing = 0;
     CGFloat minimumInteritemSpacing = 0;
     NSUInteger sectionCount = [self.collectionView numberOfSections];
-    _attributesArray = [NSMutableArray new];
-    _collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
-    _arraySectionBackView = [NSMutableArray arrayWithCapacity:sectionCount];
+    self.attributesArray = [NSMutableArray new];
+    self.collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
     for (int index= 0; index<sectionCount; index++) {
         NSUInteger itemCount = [self.collectionView numberOfItemsInSection:index];
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
-            headerH = [_delegate collectionView:self.collectionView layout:self referenceSizeForHeaderInSection:index].height;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
+            headerH = [self.delegate collectionView:self.collectionView layout:self referenceSizeForHeaderInSection:index].height;
         } else {
             headerH = self.headerReferenceSize.height;
         }
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
-            footerH = [_delegate collectionView:self.collectionView layout:self referenceSizeForFooterInSection:index].height;
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
+            footerH = [self.delegate collectionView:self.collectionView layout:self referenceSizeForFooterInSection:index].height;
         } else {
             footerH = self.footerReferenceSize.height;
         }
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
-            edgeInsets = [_delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:index];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
+            edgeInsets = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:index];
         } else {
             edgeInsets = self.sectionInset;
         }
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
-            minimumLineSpacing = [_delegate collectionView:self.collectionView layout:self minimumLineSpacingForSectionAtIndex:index];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
+            minimumLineSpacing = [self.delegate collectionView:self.collectionView layout:self minimumLineSpacingForSectionAtIndex:index];
         } else {
             minimumLineSpacing = self.minimumLineSpacing;
         }
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
-            minimumInteritemSpacing = [_delegate collectionView:self.collectionView layout:self minimumInteritemSpacingForSectionAtIndex:index];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
+            minimumInteritemSpacing = [self.delegate collectionView:self.collectionView layout:self minimumInteritemSpacingForSectionAtIndex:index];
         } else {
             minimumInteritemSpacing = self.minimumInteritemSpacing;
         }
         
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
-            NSString* className = [_delegate collectionView:self.collectionView layout:self registerBackView:index];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
+            NSString* className = [self.delegate collectionView:self.collectionView layout:self registerBackView:index];
             if (className != nil && className.length > 0) {
                 NSAssert([[NSClassFromString(className) alloc]init]!=nil, @"代理collectionView:layout:registerBackView:里面必须返回有效的类名!");
                 [self registerClass:NSClassFromString(className) forDecorationViewOfKind:className];
@@ -130,7 +87,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
             ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(0, y, self.collectionView.frame.size.width, headerH);
-            [_attributesArray addObject:headerAttr];
+            [self.attributesArray addObject:headerAttr];
         }
         
         y += headerH ;
@@ -139,13 +96,12 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         
         if (itemCount > 0) {
             y += edgeInsets.top;
-            //ZLLayoutType layoutType = FillLayout;
-            if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:typeOfLayout:)]) {
-                self.layoutType = [_delegate collectionView:self.collectionView layout:self typeOfLayout:index];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:typeOfLayout:)]) {
+                self.layoutType = [self.delegate collectionView:self.collectionView layout:self typeOfLayout:index];
             }
             //NSInteger columnCount = 1;
-            if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:columnCountOfSection:)]) {
-                self.columnCount = [_delegate collectionView:self.collectionView layout:self columnCountOfSection:index];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:columnCountOfSection:)]) {
+                self.columnCount = [self.delegate collectionView:self.collectionView layout:self columnCountOfSection:index];
             }
             // 定义一个列高数组 记录每一列的总高度
             CGFloat *columnHeight = (CGFloat *) malloc(self.columnCount * sizeof(CGFloat));
@@ -164,21 +120,21 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             for (int i=0; i<itemCount; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
-                    itemSize = [_delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:indexPath];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
+                    itemSize = [self.delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:indexPath];
                 } else {
                     itemSize = self.itemSize;
                 }
                 ZLCollectionViewLayoutAttributes *attributes = [ZLCollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
                 
-                NSInteger preRow = _attributesArray.count - 1;
+                NSInteger preRow = self.attributesArray.count - 1;
                 switch (self.layoutType) {
 #pragma mark 标签布局处理
                     case LabelLayout: {
                         //找上一个cell
                         if(preRow >= 0){
                             if(i > 0) {
-                                ZLCollectionViewLayoutAttributes *preAttr = _attributesArray[preRow];
+                                ZLCollectionViewLayoutAttributes *preAttr = self.attributesArray[preRow];
                                 x = preAttr.frame.origin.x + preAttr.frame.size.width + minimumInteritemSpacing;
                                 if (x + itemSize.width > totalWidth - edgeInsets.right) {
                                     x = edgeInsets.left;
@@ -208,8 +164,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 #pragma mark 百分比布局处理
                     case PercentLayout: {
                         CGFloat percent = 0.0f;
-                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:percentOfRow:)]) {
-                            percent = [_delegate collectionView:self.collectionView layout:self percentOfRow:indexPath];
+                        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:percentOfRow:)]) {
+                            percent = [self.delegate collectionView:self.collectionView layout:self percentOfRow:indexPath];
                         } else {
                             percent = 1;
                         }
@@ -253,8 +209,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         }
                                         newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                         newAttributes.indexPath = dic[@"indexPath"];
-                                        //if (![_attributesArray containsObject:newAttributes]) {
-                                        [_attributesArray addObject:newAttributes];
+                                        //if (![self.attributesArray containsObject:newAttributes]) {
+                                        [self.attributesArray addObject:newAttributes];
                                         //}
                                     }
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
@@ -283,7 +239,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         NSDictionary* dic = arrayOfPercent[i];
                                         ZLCollectionViewLayoutAttributes* attr = dic[@"item"];
                                         attr.indexPath = dic[@"indexPath"];
-                                        [_attributesArray addObject:attr];
+                                        [self.attributesArray addObject:attr];
                                     }
                                     [arrayOfPercent removeAllObjects];
                                     //再添加进计算比例的数组
@@ -303,7 +259,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                             }
                                             newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                             newAttributes.indexPath = dic[@"indexPath"];
-                                            [_attributesArray addObject:newAttributes];
+                                            [self.attributesArray addObject:newAttributes];
                                         }
                                         for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                             NSDictionary* dic = arrayOfPercent[i];
@@ -353,8 +309,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                         }
                                         newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                         newAttributes.indexPath = dic[@"indexPath"];
-                                        //if (![_attributesArray containsObject:newAttributes]) {
-                                        [_attributesArray addObject:newAttributes];
+                                        //if (![self.attributesArray containsObject:newAttributes]) {
+                                        [self.attributesArray addObject:newAttributes];
                                         //}
                                     }
                                     for (NSInteger i=0; i<arrayOfPercent.count; i++) {
@@ -405,7 +361,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                                     }
                                     newAttributes.frame = CGRectMake(itemX, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, realWidth*[dic[@"percent"] floatValue], newAttributes.frame.size.height);
                                     newAttributes.indexPath = dic[@"indexPath"];
-                                    [_attributesArray addObject:newAttributes];
+                                    [self.attributesArray addObject:newAttributes];
                                 }
                                 for (NSInteger i=0; i<arrayOfPercent.count; i++) {
                                     NSDictionary* dic = arrayOfPercent[i];
@@ -514,8 +470,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 #pragma mark 绝对定位布局处理
                     case AbsoluteLayout: {
                         CGRect itemFrame = CGRectZero;
-                        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:rectOfItem:)]) {
-                            itemFrame = [_delegate collectionView:self.collectionView layout:self rectOfItem:indexPath];
+                        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:rectOfItem:)]) {
+                            itemFrame = [self.delegate collectionView:self.collectionView layout:self rectOfItem:indexPath];
                         }
                         CGFloat absolute_x = edgeInsets.left+itemFrame.origin.x;
                         CGFloat absolute_y = y+itemFrame.origin.y;
@@ -533,19 +489,19 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     }
                         break;
                 }
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:transformOfItem:)]) {
-                    attributes.transform3D = [_delegate collectionView:self.collectionView layout:self transformOfItem:indexPath];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:transformOfItem:)]) {
+                    attributes.transform3D = [self.delegate collectionView:self.collectionView layout:self transformOfItem:indexPath];
                 }
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:zIndexOfItem:)]) {
-                    attributes.zIndex = [_delegate collectionView:self.collectionView layout:self zIndexOfItem:indexPath];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:zIndexOfItem:)]) {
+                    attributes.zIndex = [self.delegate collectionView:self.collectionView layout:self zIndexOfItem:indexPath];
                 }
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:alphaOfItem:)]) {
-                    attributes.alpha = [_delegate collectionView:self.collectionView layout:self alphaOfItem:indexPath];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:alphaOfItem:)]) {
+                    attributes.alpha = [self.delegate collectionView:self.collectionView layout:self alphaOfItem:indexPath];
                 }
                 attributes.indexPath = indexPath;
                 if (self.layoutType != PercentLayout) {
-                    //if (![_attributesArray containsObject:attributes]) {
-                    [_attributesArray addObject:attributes];
+                    //if (![self.attributesArray containsObject:attributes]) {
+                    [self.attributesArray addObject:attributes];
                     //}
                 }
                 if (self.layoutType == ClosedLayout) {
@@ -581,37 +537,40 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             }
             free(columnHeight);
         }
+        if (self.layoutType == ClosedLayout) {
+            lastY -= minimumLineSpacing;
+        }
         lastY += edgeInsets.bottom;
         
-        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
-            NSString* className = [_delegate collectionView:self.collectionView layout:self registerBackView:index];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
+            NSString* className = [self.delegate collectionView:self.collectionView layout:self registerBackView:index];
             if (className != nil && className.length > 0) {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:className withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
                 attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
                 attr.zIndex = -1000;
-                [_attributesArray addObject:attr];
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:loadView:)]) {
-                    [_delegate collectionView:self.collectionView layout:self loadView:index];
+                [self.attributesArray addObject:attr];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:loadView:)]) {
+                    [self.delegate collectionView:self.collectionView layout:self loadView:index];
                 }
             } else {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
                 attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
                 attr.color = self.collectionView.backgroundColor;
-                if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
-                    attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
+                    attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
                 }
                 attr.zIndex = -1000;
-                [_attributesArray addObject:attr];
+                [self.attributesArray addObject:attr];
             }
         } else {
             ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
             attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, lastY-itemStartY+([self isAttachToTop:index]?headerH:0));
             attr.color = self.collectionView.backgroundColor;
-            if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
-                attr.color = [_delegate collectionView:self.collectionView layout:self backColorForSection:index];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
+                attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
             }
             attr.zIndex = -1000;
-            [_attributesArray addObject:attr];
+            [self.attributesArray addObject:attr];
         }
         
         // 添加页脚属性
@@ -619,34 +578,22 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
             ZLCollectionViewLayoutAttributes *footerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
             footerAttr.frame = CGRectMake(0, lastY, self.collectionView.frame.size.width, footerH);
-            [_attributesArray addObject:footerAttr];
+            [self.attributesArray addObject:footerAttr];
             lastY += footerH;
         }
-        _collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
+        self.collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
     }
-
-//    for (int i=0; i<_attributesArray.count; i++) {
-//        ZLCollectionViewLayoutAttributes* attr = _attributesArray[i];
-//        NSLog(@"%@---%@",NSStringFromCGRect(attr.frame), attr.indexPath);
-//    }
-    
-//    for (int i=0; i<_arraySectionBackView.count; i++) {
-//        if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:newLoadView:section:)]) {
-//            [_delegate collectionView:self.collectionView layout:self newLoadView:_arraySectionBackView[i] section:i];
-//        }
-//        NSLog(@"%@--%@",attr.representedElementKind,NSStringFromCGRect(attr.frame));
-//    }
 }
 
 #pragma mark - 所有cell和view的布局属性
 //sectionheader sectionfooter decorationview collectionviewcell的属性都会走这个方法
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    if (!_attributesArray) {
+    if (!self.attributesArray) {
         return [super layoutAttributesForElementsInRect:rect];
     } else {
         if (self.header_suspension) {
-            for (UICollectionViewLayoutAttributes *attriture in _attributesArray) {
+            for (UICollectionViewLayoutAttributes *attriture in self.attributesArray) {
                 if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader])
                     continue;
                 NSInteger section = attriture.indexPath.section;
@@ -666,7 +613,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 }
             }
         }
-        return _attributesArray;
+        return self.attributesArray;
     }
 }
 
@@ -678,19 +625,19 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 - (CGSize)collectionViewContentSize
 {
     CGFloat footerH = 0.0f;
-    if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
-        footerH = [_delegate collectionView:self.collectionView layout:self referenceSizeForFooterInSection:_collectionHeightsArray.count-1].height;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
+        footerH = [self.delegate collectionView:self.collectionView layout:self referenceSizeForFooterInSection:self.collectionHeightsArray.count-1].height;
     } else {
         footerH = self.footerReferenceSize.height;
     }
     UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
-    if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
-        edgeInsets = [_delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:_collectionHeightsArray.count-1];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
+        edgeInsets = [self.delegate collectionView:self.collectionView layout:self insetForSectionAtIndex:self.collectionHeightsArray.count-1];
     } else {
         edgeInsets = self.sectionInset;
     }
-    if (_collectionHeightsArray.count > 0) {
-        return CGSizeMake(self.collectionView.frame.size.width, [_collectionHeightsArray[_collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
+    if (self.collectionHeightsArray.count > 0) {
+        return CGSizeMake(self.collectionView.frame.size.width, [self.collectionHeightsArray[self.collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
     } else {
         return CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height);
     }
@@ -703,361 +650,17 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
  */
 - (CGFloat)maxHeightWithSection:(NSInteger)section {
     if (section>0) {
-        return [_collectionHeightsArray[section-1] floatValue];
+        return [self.collectionHeightsArray[section-1] floatValue];
     } else {
         return 0;
     }
 }
 
 - (BOOL)isAttachToTop:(NSInteger)section {
-    if (_delegate && [_delegate respondsToSelector:@selector(collectionView:layout:attachToTop:)]) {
-        return [_delegate collectionView:self.collectionView layout:self attachToTop:section];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:attachToTop:)]) {
+        return [self.delegate collectionView:self.collectionView layout:self attachToTop:section];
     }
     return NO;
 }
 
-#pragma mark 以下是拖动排序的代码
-- (void)setCanDrag:(BOOL)canDrag {
-    _canDrag = canDrag;
-    if (canDrag) {
-        if (self.longPress == nil && self.panGesture == nil) {
-            [self setUpGestureRecognizers];
-        }
-    } else {
-        [self.collectionView removeGestureRecognizer:self.longPress];
-        self.longPress.delegate = nil;
-        self.longPress = nil;
-        [self.collectionView removeGestureRecognizer:self.panGesture];
-        self.panGesture.delegate = nil;
-        self.panGesture = nil;
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-    if ([keyPath isEqualToString:@"collectionView"]) {
-        if (self.canDrag) {
-            [self setUpGestureRecognizers];
-        }
-    }else{
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-}
-
-- (void)setUpGestureRecognizers{
-    if (self.collectionView == nil) {
-        return;
-    }
-    self.longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
-    self.panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePanGesture:)];
-    self.longPress.delegate = self;
-    self.panGesture.delegate = self;
-    self.panGesture.maximumNumberOfTouches = 1;
-    NSArray *gestures = [self.collectionView gestureRecognizers];
-    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
-    [gestures enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[UILongPressGestureRecognizer class]]) {
-            [(UILongPressGestureRecognizer *)obj requireGestureRecognizerToFail:weakSelf.longPress];
-        }
-    }];
-    [self.collectionView addGestureRecognizer:self.longPress];
-    [self.collectionView addGestureRecognizer:self.panGesture];
-}
-
-#pragma mark - gesture
-- (void)handleLongPress:(UILongPressGestureRecognizer *)longPress {
-    CGPoint location = [longPress locationInView:self.collectionView];
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
-    
-    if (_cellFakeView != nil) {
-        indexPath = self.cellFakeView.indexPath;
-    }
-    
-    if (indexPath == nil) {
-        return;
-    }
-    
-    switch (longPress.state) {
-        case UIGestureRecognizerStateBegan:{
-            // will begin drag item
-            self.collectionView.scrollsToTop = NO;
-            
-            UICollectionViewCell *currentCell = [self.collectionView cellForItemAtIndexPath:indexPath];
-            
-            self.cellFakeView = [[ZLCellFakeView alloc]initWithCell:currentCell];
-            self.cellFakeView.indexPath = indexPath;
-            self.cellFakeView.originalCenter = currentCell.center;
-            self.cellFakeView.cellFrame = [self layoutAttributesForItemAtIndexPath:indexPath].frame;
-            [self.collectionView addSubview:self.cellFakeView];
-            
-            self.fakeCellCenter = self.cellFakeView.center;
-            
-            [self invalidateLayout];
-            
-            [self.cellFakeView pushFowardView];
-        }
-            break;
-        case UIGestureRecognizerStateCancelled:
-        case UIGestureRecognizerStateEnded:
-            [self cancelDrag:indexPath];
-        default:
-            break;
-    }
-}
-
-// pan gesture
-- (void)handlePanGesture:(UIPanGestureRecognizer *)pan {
-    _panTranslation = [pan translationInView:self.collectionView];
-    if (_cellFakeView != nil) {
-        switch (pan.state) {
-            case UIGestureRecognizerStateChanged:{
-                CGPoint center = _cellFakeView.center;
-                center.x = self.fakeCellCenter.x + self.panTranslation.x;
-                center.y = self.fakeCellCenter.y + self.panTranslation.y;
-                self.cellFakeView.center = center;
-                
-                [self beginScrollIfNeeded];
-                [self moveItemIfNeeded];
-            }
-                break;
-            case UIGestureRecognizerStateCancelled:
-            case UIGestureRecognizerStateEnded:
-                [self invalidateDisplayLink];
-            default:
-                break;
-        }
-    }
-}
-
-// gesture recognize delegate
-- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    
-    // allow move item
-    CGPoint location = [gestureRecognizer locationInView:self.collectionView];
-    NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
-    if (!indexPath) {
-        return NO;
-    }
-    
-    if ([gestureRecognizer isEqual:self.longPress]){
-        return (self.collectionView.panGestureRecognizer.state == UIGestureRecognizerStatePossible || self.collectionView.panGestureRecognizer.state == UIGestureRecognizerStateFailed);
-    } else if ([gestureRecognizer isEqual:self.panGesture]){
-        return (self.longPress.state != UIGestureRecognizerStatePossible && self.longPress.state != UIGestureRecognizerStateFailed);
-    }
-    return YES;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    if ([self.panGesture isEqual:gestureRecognizer]) {
-        return [self.longPress isEqual:otherGestureRecognizer];
-    } else if ([self.collectionView.panGestureRecognizer isEqual:gestureRecognizer]) {
-        return (self.longPress.state != UIGestureRecognizerStatePossible && self.longPress.state != UIGestureRecognizerStateFailed);
-    }
-    return YES;
-}
-
-- (void)cancelDrag:(NSIndexPath *)toIndexPath {
-    if (self.cellFakeView == nil) {
-        return;
-    }
-    self.collectionView.scrollsToTop = YES;
-    self.fakeCellCenter = CGPointZero;
-    [self invalidateDisplayLink];
-    
-    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
-    [self.cellFakeView pushBackView:^{
-        [weakSelf.cellFakeView removeFromSuperview];
-        weakSelf.cellFakeView = nil;
-        [weakSelf invalidateLayout];
-    }];
-}
-
-- (void)beginScrollIfNeeded{
-    if (self.cellFakeView == nil) {
-        return;
-    }
-    CGFloat offset = self.collectionView.contentOffset.y;
-    CGFloat trigerInsetTop = self.collectionView.contentInset.top;
-    CGFloat trigerInsetEnd = self.collectionView.contentInset.bottom;
-    CGFloat paddingTop = 0;
-    CGFloat paddingEnd = 0;
-    CGFloat length = self.collectionView.frame.size.height;
-    CGFloat fakeCellTopEdge = CGRectGetMinY(self.cellFakeView.frame);
-    CGFloat fakeCellEndEdge = CGRectGetMaxY(self.cellFakeView.frame);
-
-    if(fakeCellTopEdge <= offset + paddingTop + trigerInsetTop){
-        self.continuousScrollDirection = LewScrollDirctionToTop;
-        [self setUpDisplayLink];
-    }else if(fakeCellEndEdge >= offset + length - paddingEnd - trigerInsetEnd) {
-        self.continuousScrollDirection = LewScrollDirctionToEnd;
-        [self setUpDisplayLink];
-    }else {
-        [self invalidateDisplayLink];
-    }
-}
-
-// move item
-- (void)moveItemIfNeeded {
-    NSIndexPath *atIndexPath = nil;
-    NSIndexPath *toIndexPath = nil;
-    if (self.cellFakeView) {
-        atIndexPath = _cellFakeView.indexPath;
-        toIndexPath = [self.collectionView indexPathForItemAtPoint:_cellFakeView.center];
-    }
-    
-    if (atIndexPath.section != toIndexPath.section) {
-        return;
-    }
-    
-    if (atIndexPath == nil || toIndexPath == nil) {
-        return;
-    }
-    
-    if ([atIndexPath isEqual:toIndexPath]) {
-        return;
-    }
-    
-    UICollectionViewLayoutAttributes *attribute = nil;//[self layoutAttributesForItemAtIndexPath:toIndexPath];
-    for (ZLCollectionViewLayoutAttributes* attr in self.attributesArray) {
-        if (attr.indexPath.section == toIndexPath.section && attr.indexPath.item == toIndexPath.item &&
-            attr.representedElementKind != UICollectionElementKindSectionHeader &&
-            attr.representedElementKind != UICollectionElementKindSectionFooter) {
-            attribute = attr;
-            break;
-        }
-    }
-    if (attribute != nil) {
-        __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
-        [self.collectionView performBatchUpdates:^{
-            weakSelf.cellFakeView.indexPath = toIndexPath;
-            weakSelf.cellFakeView.cellFrame = attribute.frame;
-            [weakSelf.cellFakeView changeBoundsIfNeeded:attribute.bounds];
-            [weakSelf.collectionView moveItemAtIndexPath:atIndexPath toIndexPath:toIndexPath];
-            if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:didMoveCell:toIndexPath:)]) {
-                [weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf didMoveCell:atIndexPath toIndexPath:toIndexPath];
-            }
-        } completion:nil];
-    }
-}
-
-- (void)setUpDisplayLink{
-    if (_displayLink) {
-        return;
-    }
-    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(continuousScroll)];
-    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
-}
-
-- (void)invalidateDisplayLink{
-    _continuousScrollDirection = LewScrollDirctionStay;
-    [_displayLink invalidate];
-    _displayLink = nil;
-}
-
-- (void)continuousScroll{
-    if (_cellFakeView == nil) {
-        return;
-    }
-    
-    CGFloat percentage = [self calcTrigerPercentage];
-    CGFloat scrollRate = [self scrollValueWithSpeed:10 andPercentage:percentage];
-    
-    CGFloat offset = 0;
-    CGFloat insetTop = 0;
-    CGFloat insetEnd = 0;
-    CGFloat length = self.collectionView.frame.size.height;
-    CGFloat contentLength = self.collectionView.contentSize.height;
-    
-    if (contentLength + insetTop + insetEnd <= length) {
-        return;
-    }
-    
-    if (offset + scrollRate <= -insetTop) {
-        scrollRate = -insetTop - offset;
-    } else if (offset + scrollRate >= contentLength + insetEnd - length) {
-        scrollRate = contentLength + insetEnd - length - offset;
-    }
-    
-    __weak typeof(ZLCollectionViewFlowLayout*) weakSelf = self;
-    [self.collectionView performBatchUpdates:^{
-        if (weakSelf.scrollDirection == UICollectionViewScrollDirectionVertical) {
-            CGPoint point = weakSelf.fakeCellCenter;
-            point.y += scrollRate;
-            weakSelf.fakeCellCenter = point;
-            CGPoint center = weakSelf.cellFakeView.center;
-            center.y = weakSelf.fakeCellCenter.y + weakSelf.panTranslation.y;
-            weakSelf.cellFakeView.center = center;
-            CGPoint contentOffset = weakSelf.collectionView.contentOffset;
-            contentOffset.y += scrollRate;
-            weakSelf.collectionView.contentOffset = contentOffset;
-        } else {
-            CGPoint point = weakSelf.fakeCellCenter;
-            point.x += scrollRate;
-            weakSelf.fakeCellCenter = point;
-            //_fakeCellCenter.x += scrollRate;
-            CGPoint center = weakSelf.cellFakeView.center;
-            center.x = weakSelf.fakeCellCenter.x + weakSelf.panTranslation.x;
-            weakSelf.cellFakeView.center = center;
-            CGPoint contentOffset = weakSelf.collectionView.contentOffset;
-            contentOffset.x += scrollRate;
-            weakSelf.collectionView.contentOffset = contentOffset;
-        }
-    } completion:nil];
-    
-    [self moveItemIfNeeded];
-}
-
-- (CGFloat)calcTrigerPercentage{
-    if (_cellFakeView == nil) {
-        return 0;
-    }
-    CGFloat offset = 0;
-    CGFloat offsetEnd = 0 + self.collectionView.frame.size.height;
-    CGFloat insetTop = 0;
-    CGFloat trigerInsetTop = 0;
-    CGFloat trigerInsetEnd = 0;
-    CGFloat paddingTop = 0;
-    CGFloat paddingEnd = 0;
-    
-    CGFloat percentage = 0.0;
-    
-    if (self.continuousScrollDirection == LewScrollDirctionToTop) {
-        if (self.cellFakeView) {
-            percentage = 1.0 - ((self.cellFakeView.frame.origin.y - (offset + paddingTop)) / trigerInsetTop);
-        }
-    } else if (self.continuousScrollDirection == LewScrollDirctionToEnd){
-        if (self.cellFakeView) {
-            percentage = 1.0 - (((insetTop + offsetEnd - paddingEnd) - (self.cellFakeView.frame.origin.y + self.cellFakeView.frame.size.height + insetTop)) / trigerInsetEnd);
-        }
-    }
-    percentage = fmin(1.0f, percentage);
-    percentage = fmax(0.0f, percentage);
-    return percentage;
-}
-
-#pragma mark - getter
-- (CGFloat)scrollValueWithSpeed:(CGFloat)speed andPercentage:(CGFloat)percentage{
-    CGFloat value = 0.0f;
-    switch (_continuousScrollDirection) {
-        case LewScrollDirctionStay: {
-            return 0.0f;
-            break;
-        }
-        case LewScrollDirctionToTop: {
-            value = -speed;
-            break;
-        }
-        case LewScrollDirctionToEnd: {
-            value = speed;
-            break;
-        }
-        default: {
-            return 0.0f;
-        }
-    }
-    
-    CGFloat proofedPercentage = fmax(fmin(1.0f, percentage), 0.0f);
-    return value * proofedPercentage;
-}
-
 @end
-

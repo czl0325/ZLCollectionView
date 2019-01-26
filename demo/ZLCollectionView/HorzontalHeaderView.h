@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SEMyRecordHeaderView : UICollectionReusableView
+@interface HorzontalHeaderView : UICollectionReusableView
 
-@property(nonatomic,strong)UILabel* labelMyRecord;
-@property(nonatomic,strong)UIButton* btnModifyRecord;
-@property(nonatomic,copy)void (^onMyRecordModify)();
+@property(nonatomic,strong)UILabel* headerLabel;
 
 + (NSString *)headerViewIdentifier;
 

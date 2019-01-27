@@ -5,7 +5,7 @@
 
 ### gif效果图
 
-![](https://github.com/czl0325/ZLCollectionView/blob/master/demo.gif?raw=true)
+<img src="https://github.com/czl0325/ZLCollectionView/blob/master/demo1.gif?raw=true"/>   <img src="https://github.com/czl0325/ZLCollectionView/blob/master/demo2.gif?raw=true"/>
 
 ### 导入
 

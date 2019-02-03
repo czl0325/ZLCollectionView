@@ -18,8 +18,8 @@ pod 'ZLCollectionViewFlowLayout'
 ### 注意事项：
 版本1.0开始加入了横向布局，有升级到1.0的，原来的类ZLCollectionViewFlowLayout提示找不到，请更换成ZLCollectionViewVerticalLayout即可，其余不变。如果不想升级可用  pod 'ZLCollectionViewFlowLayout','0.8.7.1'  <br><br>
 <br>
-ZLCollectionViewVerticalLayout    ====     纵向布局   <br>
-ZLCollectionViewHorzontalLayout   ====   横向布局(暂时先做了标签页布局和瀑布流，其余的后续增加)<br>
+* ZLCollectionViewVerticalLayout    ====     纵向布局   <br>
+* ZLCollectionViewHorzontalLayout   ====     横向布局(暂时先做了标签页布局和瀑布流，其余的后续增加)<br>
 <br>
 
 如果遇到以下错误，

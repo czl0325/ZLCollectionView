@@ -174,6 +174,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 
 ### 更新
 
+##### v1.0.2 (2019.2.20)
+* 拆分成横向布局和纵向布局两个类，使用方法和类名有所改变
+
 ##### v0.8.6 (2019.1.11)
 * 降低了头部不悬浮情况下的cpu占用率
 

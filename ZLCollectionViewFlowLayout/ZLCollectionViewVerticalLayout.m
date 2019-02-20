@@ -142,6 +142,9 @@
                                 }
                             }
                         }
+                        if (itemSize.width > (totalWidth-edgeInsets.left-edgeInsets.right)) {
+                            itemSize.width = (totalWidth-edgeInsets.left-edgeInsets.right);
+                        }
                         attributes.frame = CGRectMake(x, y, itemSize.width, itemSize.height);
                     }
                         break;
@@ -584,42 +587,6 @@
         self.collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
     }
 }
-
-#pragma mark - 所有cell和view的布局属性
-//sectionheader sectionfooter decorationview collectionviewcell的属性都会走这个方法
-- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
-{
-    if (!self.attributesArray) {
-        return [super layoutAttributesForElementsInRect:rect];
-    } else {
-        if (self.header_suspension) {
-            for (UICollectionViewLayoutAttributes *attriture in self.attributesArray) {
-                if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader])
-                    continue;
-                NSInteger section = attriture.indexPath.section;
-                CGRect frame = attriture.frame;
-                if (section == 0) {
-                    if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
-                        frame.origin.y = self.collectionView.contentOffset.y;
-                        attriture.zIndex = 1000+section;
-                        attriture.frame = frame;
-                    }
-                } else {
-                    if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
-                        frame.origin.y = self.collectionView.contentOffset.y;
-                        attriture.zIndex = 1000+section;
-                        attriture.frame = frame;
-                    }
-                }
-            }
-        }
-        return self.attributesArray;
-    }
-}
-
-//- (UICollectionViewLayoutAttributes* )layoutAttributesForItemAtIndexPath:(NSIndexPath )indexPath {
-//
-//}
 
 #pragma mark - CollectionView的滚动范围
 - (CGSize)collectionViewContentSize

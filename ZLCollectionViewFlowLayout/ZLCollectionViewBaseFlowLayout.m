@@ -57,6 +57,53 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     [self removeObserver:self forKeyPath:@"collectionView"];
 }
 
+#pragma mark - 所有cell和view的布局属性
+- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
+{
+    if (!self.attributesArray) {
+        return [super layoutAttributesForElementsInRect:rect];
+    } else {
+        if (self.header_suspension) {
+            for (UICollectionViewLayoutAttributes *attriture in self.attributesArray) {
+                if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader])
+                    continue;
+                NSInteger section = attriture.indexPath.section;
+                CGRect frame = attriture.frame;
+                if (section == 0) {
+                    if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
+                        if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
+                            frame.origin.y = self.collectionView.contentOffset.y;
+                            attriture.zIndex = 1000+section;
+                            attriture.frame = frame;
+                        }
+                    } else {
+                        if (self.collectionView.contentOffset.x > 0 && self.collectionView.contentOffset.x < [self.collectionHeightsArray[0] floatValue]) {
+                            frame.origin.x = self.collectionView.contentOffset.x;
+                            attriture.zIndex = 1000+section;
+                            attriture.frame = frame;
+                        }
+                    }
+                } else {
+                    if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
+                        if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
+                            frame.origin.y = self.collectionView.contentOffset.y;
+                            attriture.zIndex = 1000+section;
+                            attriture.frame = frame;
+                        }
+                    } else {
+                        if (self.collectionView.contentOffset.x > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.x < [self.collectionHeightsArray[section] floatValue]) {
+                            frame.origin.x = self.collectionView.contentOffset.x;
+                            attriture.zIndex = 1000+section;
+                            attriture.frame = frame;
+                        }
+                    }
+                }
+            }
+        }
+        return self.attributesArray;
+    }
+}
+
 #pragma mark 以下是拖动排序的代码
 - (void)setCanDrag:(BOOL)canDrag {
     _canDrag = canDrag;

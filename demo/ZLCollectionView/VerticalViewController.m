@@ -478,7 +478,7 @@
         ZLCollectionViewVerticalLayout *flowLayout = [[ZLCollectionViewVerticalLayout alloc] init];
         flowLayout.delegate = self;
         flowLayout.canDrag = NO;
-        flowLayout.header_suspension = NO;
+        flowLayout.header_suspension = YES;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;
         

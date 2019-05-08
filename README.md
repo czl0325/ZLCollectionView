@@ -174,6 +174,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 
 ### 更新
 
+##### v1.0.3 (2019.5.7)
+* 修改适配swift
+
 ##### v1.0.2 (2019.2.20)
 * 拆分成横向布局和纵向布局两个类，使用方法和类名有所改变
 

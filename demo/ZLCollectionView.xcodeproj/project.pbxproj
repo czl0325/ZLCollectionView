@@ -395,7 +395,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
@@ -406,7 +406,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CE4965F2D828719038828A7B /* [CP] Check Pods Manifest.lock */ = {

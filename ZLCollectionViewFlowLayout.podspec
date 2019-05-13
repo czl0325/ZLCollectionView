@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ZLCollectionViewFlowLayout"
-  s.version      = "1.0.3"
+  s.version      = "1.1.0"
   s.summary      = "ZLCollectionViewFlowLayout"
 
   s.description  = <<-DESC

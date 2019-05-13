@@ -99,7 +99,7 @@
             if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:typeOfLayout:)]) {
                 self.layoutType = [self.delegate collectionView:self.collectionView layout:self typeOfLayout:index];
             }
-            NSAssert((self.layoutType==LabelVerticalLayout||self.layoutType==ColumnLayout), @"横向布局暂时只支持LabelVerticalLayout和ColumnLayout!");
+            NSAssert((self.layoutType==LabelVerticalLayout||self.layoutType==ColumnLayout||self.layoutType==AbsoluteLayout), @"横向布局暂时只支持LabelVerticalLayout,ColumnLayout,AbsoluteLayout!");
             //NSInteger columnCount = 1;
             if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:columnCountOfSection:)]) {
                 self.columnCount = [self.delegate collectionView:self.collectionView layout:self columnCountOfSection:index];
@@ -113,6 +113,9 @@
                 }
                 itemHeight = (totalHeight - edgeInsets.top - edgeInsets.bottom - minimumInteritemSpacing * (self.columnCount - 1)) / self.columnCount;
             }
+            
+            NSMutableArray* arrayOfAbsolute = [NSMutableArray new]; //储存绝对定位布局的数组
+            
             for (int i=0; i<itemCount; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
@@ -161,7 +164,22 @@
                         columnWidths[column] += (itemSize.width + minimumLineSpacing);
                     }
                         break;
-
+                    case AbsoluteLayout: {
+                        CGRect itemFrame = CGRectZero;
+                        if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:rectOfItem:)]) {
+                            itemFrame = [self.delegate collectionView:self.collectionView layout:self rectOfItem:indexPath];
+                        }
+                        CGFloat absolute_x = x+itemFrame.origin.x;
+                        CGFloat absolute_y = edgeInsets.top+itemFrame.origin.y;
+                        CGFloat absolute_h = itemFrame.size.height;
+                        if ((absolute_y+absolute_h>self.collectionView.frame.size.height-edgeInsets.bottom)&&(absolute_y<self.collectionView.frame.size.height-edgeInsets.top)) {
+                            absolute_h -= (absolute_y+absolute_h-(self.collectionView.frame.size.height-edgeInsets.bottom));
+                        }
+                        CGFloat absolute_w = itemFrame.size.width;
+                        attributes.frame = CGRectMake(absolute_x, absolute_y, absolute_w, absolute_h);
+                        [arrayOfAbsolute addObject:attributes];
+                    }
+                        break;
                     default: {
                         
                     }
@@ -190,6 +208,14 @@
                         }
                     }
                     lastX = max;
+                } else if (self.layoutType == AbsoluteLayout) {
+                    if (i==itemCount-1) {
+                        for (ZLCollectionViewLayoutAttributes* attr in arrayOfAbsolute) {
+                            if (lastX < attr.frame.origin.x+attr.frame.size.width) {
+                                lastX = attr.frame.origin.x+attr.frame.size.width;
+                            }
+                        }
+                    }
                 } else {
                     lastX = attributes.frame.origin.x + attributes.frame.size.width;
                 }

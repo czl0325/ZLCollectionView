@@ -15,6 +15,11 @@
 pod 'ZLCollectionViewFlowLayout' 
 ```
 
+### 推荐项目
+使用uitableview或者uicollectionview的朋友可以使用我的另外一个库  [ZLCellDataSource](https://github.com/czl0325/ZLCellDataSource)<br>
+至少可以少写1/3的代码量，在开发界面可以快速帮你构建uitableview和uicollectionview<br>
+觉得好用的朋友可以去点个star<br>
+
 ### 注意事项：
 版本1.0开始加入了横向布局，有升级到1.0的，原来的类ZLCollectionViewFlowLayout提示找不到，请更换成ZLCollectionViewVerticalLayout即可，其余不变。如果不想升级可用  pod 'ZLCollectionViewFlowLayout','0.8.7.1'  <br><br>
 <br>

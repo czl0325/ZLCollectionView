@@ -178,7 +178,7 @@
         _collectionViewLabel = ({
             ZLCollectionViewHorzontalLayout* layout = [[ZLCollectionViewHorzontalLayout alloc]init];
             layout.delegate = self;
-            layout.header_suspension = YES;
+            layout.header_suspension = NO;
             
             UICollectionView * object = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
             object.delegate = self;

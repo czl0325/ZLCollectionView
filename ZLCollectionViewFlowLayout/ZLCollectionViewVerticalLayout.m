@@ -591,6 +591,9 @@
 #pragma mark - CollectionView的滚动范围
 - (CGSize)collectionViewContentSize
 {
+    if (self.collectionHeightsArray.count <= 0) {
+        return CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    }
     CGFloat footerH = 0.0f;
     if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
         footerH = [self.delegate collectionView:self.collectionView layout:self referenceSizeForFooterInSection:self.collectionHeightsArray.count-1].height;
@@ -603,11 +606,8 @@
     } else {
         edgeInsets = self.sectionInset;
     }
-    if (self.collectionHeightsArray.count > 0) {
-        return CGSizeMake(self.collectionView.frame.size.width, [self.collectionHeightsArray[self.collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
-    } else {
-        return CGSizeMake(self.collectionView.frame.size.width, self.collectionView.frame.size.height);
-    }
+    return CGSizeMake(self.collectionView.frame.size.width, [self.collectionHeightsArray[self.collectionHeightsArray.count-1] floatValue]);// + edgeInsets.bottom + footerH);
+    
 }
 
 /**

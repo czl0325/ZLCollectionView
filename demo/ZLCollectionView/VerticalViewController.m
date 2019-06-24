@@ -116,6 +116,7 @@
             return AbsoluteLayout;
         case 5:
         case 6:
+        case 9:
             return PercentLayout;
         default:
             return ClosedLayout;
@@ -394,9 +395,9 @@
     switch (section) {
         case 3:
             return UIEdgeInsetsMake(10, 100, 10, 100);
-        case 9:
-            return UIEdgeInsetsZero;
+            //return UIEdgeInsetsZero;
         case 6:
+        case 9:
             return  UIEdgeInsetsMake(0, 23, 0, 23);
         default:
             return UIEdgeInsetsMake(10, 10, 10, 10);

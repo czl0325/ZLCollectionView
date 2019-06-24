@@ -175,6 +175,7 @@
                         if (percent > 1 || percent <= 0) {
                             percent = 1;
                         }
+                        
                         if (arrayOfPercent.count > 0) {
                             CGFloat totalPercent = 0;
                             for (NSDictionary* dic in arrayOfPercent) {
@@ -185,7 +186,7 @@
                                     //小于1.1就当成一行来计算
                                     //先添加进总的数组
                                     attributes.indexPath = indexPath;
-                                    attributes.frame = CGRectMake(0, 0, itemSize.width, itemSize.height);
+                                    attributes.frame = CGRectMake(0, 0, (itemSize.width>self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right)?self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right:itemSize.width, itemSize.height);
                                     //再添加进计算比例的数组
                                     [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                                     if ((totalPercent+percent) > 1) {
@@ -237,7 +238,7 @@
                                         }
                                     }
                                     attributes.indexPath = indexPath;
-                                    attributes.frame = CGRectMake(0, maxYOfPercent, itemSize.width, itemSize.height);
+                                    attributes.frame = CGRectMake(edgeInsets.left, maxYOfPercent, (itemSize.width>self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right)?self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right:itemSize.width, itemSize.height);
                                     for (int i=0; i<arrayOfPercent.count; i++) {
                                         NSDictionary* dic = arrayOfPercent[i];
                                         ZLCollectionViewLayoutAttributes* attr = dic[@"item"];
@@ -332,7 +333,7 @@
                         else {
                             //先添加进总的数组
                             attributes.indexPath = indexPath;
-                            attributes.frame = CGRectMake(edgeInsets.left, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, itemSize.width, itemSize.height);
+                            attributes.frame = CGRectMake(edgeInsets.left, (maxYOfPercent==-1)?y:maxYOfPercent+minimumLineSpacing, (itemSize.width>self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right)?self.collectionView.frame.size.width-edgeInsets.left-edgeInsets.right:itemSize.width, itemSize.height);
                             //再添加进计算比例的数组
                             [arrayOfPercent addObject:[NSMutableDictionary dictionaryWithDictionary:@{@"item":attributes,@"percent":[NSNumber numberWithFloat:percent],@"indexPath":indexPath}]];
                             //如果已经是最后一个

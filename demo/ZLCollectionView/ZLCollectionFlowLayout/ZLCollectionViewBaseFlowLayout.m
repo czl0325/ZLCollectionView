@@ -156,6 +156,13 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGPoint location = [longPress locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
     
+//    __weak typeof(ZLCollectionViewBaseFlowLayout*) weakSelf = self;
+//    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
+//        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:indexPath] == NO) {
+//            return;
+//        }
+//    }
+    
     if (_cellFakeView != nil) {
         indexPath = self.cellFakeView.indexPath;
     }
@@ -202,7 +209,6 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 center.x = self.fakeCellCenter.x + self.panTranslation.x;
                 center.y = self.fakeCellCenter.y + self.panTranslation.y;
                 self.cellFakeView.center = center;
-                
                 [self beginScrollIfNeeded];
                 [self moveItemIfNeeded];
             }
@@ -287,6 +293,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 - (void)moveItemIfNeeded {
     NSIndexPath *atIndexPath = nil;
     NSIndexPath *toIndexPath = nil;
+    __weak typeof(ZLCollectionViewBaseFlowLayout*) weakSelf = self;
+    
     if (self.cellFakeView) {
         atIndexPath = _cellFakeView.indexPath;
         toIndexPath = [self.collectionView indexPathForItemAtPoint:_cellFakeView.center];
@@ -295,6 +303,12 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     if (atIndexPath.section != toIndexPath.section) {
         return;
     }
+    
+//    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
+//        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:toIndexPath] == NO) {
+//            return;
+//        }
+//    }
     
     if (atIndexPath == nil || toIndexPath == nil) {
         return;
@@ -305,7 +319,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     }
     
     UICollectionViewLayoutAttributes *attribute = nil;//[self layoutAttributesForItemAtIndexPath:toIndexPath];
-    for (ZLCollectionViewLayoutAttributes* attr in self.attributesArray) {
+    for (ZLCollectionViewLayoutAttributes* attr in weakSelf.attributesArray) {
         if (attr.indexPath.section == toIndexPath.section && attr.indexPath.item == toIndexPath.item &&
             attr.representedElementKind != UICollectionElementKindSectionHeader &&
             attr.representedElementKind != UICollectionElementKindSectionFooter) {
@@ -313,8 +327,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             break;
         }
     }
+    NSLog(@"拖动从%@到%@",atIndexPath,toIndexPath);
     if (attribute != nil) {
-        __weak typeof(ZLCollectionViewBaseFlowLayout*) weakSelf = self;
         [self.collectionView performBatchUpdates:^{
             weakSelf.cellFakeView.indexPath = toIndexPath;
             weakSelf.cellFakeView.cellFrame = attribute.frame;

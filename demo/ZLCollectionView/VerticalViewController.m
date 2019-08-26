@@ -475,11 +475,18 @@
     }
 }
 
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout shouldMoveCell:(NSIndexPath *)indexPath {
+    if (indexPath.item % 2 == 0) {
+        return YES;
+    }
+    return NO;
+}
+
 - (UICollectionView*)collectionViewLabel {
     if (!_collectionViewLabel) {
         ZLCollectionViewVerticalLayout *flowLayout = [[ZLCollectionViewVerticalLayout alloc] init];
         flowLayout.delegate = self;
-        flowLayout.canDrag = NO;
+        flowLayout.canDrag = YES;
         flowLayout.header_suspension = NO;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;

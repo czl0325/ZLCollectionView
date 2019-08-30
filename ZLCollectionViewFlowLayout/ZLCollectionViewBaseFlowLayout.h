@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /***
- 版本：1.1.2
+ 版本：1.1.3
  **/
 
 NS_ASSUME_NONNULL_BEGIN
@@ -71,6 +71,8 @@ typedef enum {
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;
 
 /******** 拖动cell的相关代理 ***************************/
+//- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout shouldMoveCell:(NSIndexPath*)indexPath;
+
 - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout didMoveCell:(NSIndexPath*)atIndexPath toIndexPath:(NSIndexPath*)toIndexPath;
 
 @end
@@ -84,7 +86,7 @@ typedef enum {
  ***/
 @interface ZLCollectionViewBaseFlowLayout : UICollectionViewFlowLayout
 
-@property (nonatomic,assign) id<ZLCollectionViewBaseFlowLayoutDelegate> delegate;
+@property (nonatomic,weak) id<ZLCollectionViewBaseFlowLayoutDelegate> delegate;
 
 @property (nonatomic,assign) BOOL isFloor;//宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
 

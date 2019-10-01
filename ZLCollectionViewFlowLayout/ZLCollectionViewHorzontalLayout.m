@@ -223,9 +223,13 @@
             free(columnWidths);
         }
         if (self.layoutType == ClosedLayout) {
-            lastX -= minimumLineSpacing;
+            if (itemCount > 0) {
+                lastX -= minimumLineSpacing;
+            }
         }
-        lastX += edgeInsets.right;
+        if (itemCount > 0) {
+            lastX += edgeInsets.right;
+        }
         
         CGFloat backWidth = lastX-itemStartX+([self isAttachToTop:index]?headerW:0);
         if (backWidth < 0) {

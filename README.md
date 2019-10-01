@@ -9,7 +9,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.1.5
+支持cocoapod导入，最新版本 1.1.6
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -178,6 +178,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+
+##### v1.1.6 (2019.10.1)
+* 修复bug
 
 ##### v1.1.0 (2019.5.13)
 * 横向布局增加绝对定位布局

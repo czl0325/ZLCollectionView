@@ -542,9 +542,13 @@
             free(columnHeight);
         }
         if (self.layoutType == ClosedLayout) {
-            lastY -= minimumLineSpacing;
+            if (itemCount > 0) {
+                lastY -= minimumLineSpacing;
+            }
         }
-        lastY += edgeInsets.bottom;
+        if (itemCount > 0) {
+            lastY += edgeInsets.bottom;
+        }
         
 #pragma mark 添加背景图
         CGFloat backHeight = lastY-itemStartY+([self isAttachToTop:index]?headerH:0);

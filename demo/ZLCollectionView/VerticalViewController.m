@@ -100,7 +100,7 @@
         case 8:
             return _arrayTexts.count;
         default:
-            return 10;
+            return 1000;
     }
 }
 
@@ -487,7 +487,7 @@
         ZLCollectionViewVerticalLayout *flowLayout = [[ZLCollectionViewVerticalLayout alloc] init];
         flowLayout.delegate = self;
         flowLayout.canDrag = YES;
-        flowLayout.header_suspension = NO;
+        flowLayout.header_suspension = YES;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;
         

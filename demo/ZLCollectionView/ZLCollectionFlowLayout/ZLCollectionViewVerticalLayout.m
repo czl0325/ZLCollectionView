@@ -28,6 +28,11 @@
 - (void)prepareLayout {
     [super prepareLayout];
     
+    //这里很关键，不加此判断在悬浮情况下将卡的怀疑人生...
+    if (!self.isNeedReCalculateAllLayout) {
+        return;
+    }
+    
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
     CGFloat y = 0;
@@ -87,7 +92,9 @@
             NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
             ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(0, y, self.collectionView.frame.size.width, headerH);
+            [headerAttr setValue:[NSValue valueWithCGRect:headerAttr.frame] forKey:@"orginalFrame"];
             [self.attributesArray addObject:headerAttr];
+            [self.headerAttributesArray addObject:headerAttr];
         }
         
         y += headerH ;
@@ -599,6 +606,7 @@
 //    for (ZLCollectionViewLayoutAttributes* attr in self.attributesArray) {
 //        NSLog(@"类型=%@,尺寸=%@",attr.representedElementKind, NSStringFromCGRect(attr.frame));
 //    }
+    [self forceSetIsNeedReCalculateAllLayout:NO];
 }
 
 #pragma mark - CollectionView的滚动范围

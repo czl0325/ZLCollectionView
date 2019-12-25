@@ -33,6 +33,8 @@
         return;
     }
     
+    NSLog(@"prepareLayout");
+    
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
     CGFloat y = 0;

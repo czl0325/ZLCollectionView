@@ -100,7 +100,7 @@
         case 8:
             return _arrayTexts.count;
         default:
-            return 1000;
+            return 10;
     }
 }
 

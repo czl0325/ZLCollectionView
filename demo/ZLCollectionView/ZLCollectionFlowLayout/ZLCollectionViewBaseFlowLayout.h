@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- 版本：1.1.6
+ 版本：1.2.0
  */
 
 NS_ASSUME_NONNULL_BEGIN

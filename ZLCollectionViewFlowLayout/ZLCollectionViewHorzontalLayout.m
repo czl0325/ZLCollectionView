@@ -28,6 +28,11 @@
 - (void)prepareLayout {
     [super prepareLayout];
     
+    //这里很关键，不加此判断在悬浮情况下将卡的怀疑人生...
+    if (!self.isNeedReCalculateAllLayout) {
+        return;
+    }
+    
     CGFloat totalHeight = self.collectionView.frame.size.height;
     CGFloat x = 0;
     CGFloat y = 0;
@@ -87,7 +92,9 @@
             NSIndexPath *headerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
             ZLCollectionViewLayoutAttributes* headerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionHeader withIndexPath:headerIndexPath];
             headerAttr.frame = CGRectMake(x, 0, headerW, self.collectionView.frame.size.height);
+            [headerAttr setValue:[NSValue valueWithCGRect:headerAttr.frame] forKey:@"orginalFrame"];
             [self.attributesArray addObject:headerAttr];
+            [self.headerAttributesArray addObject:headerAttr];
         }
         
         x += headerW ;
@@ -276,7 +283,7 @@
         }
         self.collectionHeightsArray[index] = [NSNumber numberWithFloat:lastX];
     }
-    
+    [self forceSetIsNeedReCalculateAllLayout:NO];
 //    for (int i=0; i<self.attributesArray.count; i++) {
 //        ZLCollectionViewLayoutAttributes* attr = self.attributesArray[i];
 //        NSLog(@"第%d个-----%@",i,NSStringFromCGRect(attr.frame));

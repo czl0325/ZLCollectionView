@@ -1,7 +1,8 @@
 # ZLCollectionView
 
 为应对类似淘宝首页，京东首页，国美首页的复杂布局而写的多样化的UICollectionView。
-目前支持标签布局，列布局，百分比布局，定位布局等。可以根据不同的section设置不同的布局。可以进行拖动cell，头部悬浮，自定义section的背景色或者背景view，实现了电影选座等高难度的布局。
+目前支持标签布局，列布局，百分比布局，定位布局等。可以根据不同的section设置不同的布局。可以进行拖动cell，头部悬浮，自定义section的背景色或者背景view，实现了电影选座等高难度的布局。<br>
+特别感谢[donggelaile](https://github.com/donggelaile)贡献了降低cpu占用率的代码
 
 ### gif效果图
 
@@ -9,7 +10,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.1.6
+支持cocoapod导入，最新版本 1.2.0
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -178,6 +179,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+
+##### v1.2.0 (2019.12.25)
+* 降低cpu的占用率
 
 ##### v1.1.6 (2019.10.1)
 * 修复bug

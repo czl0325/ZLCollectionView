@@ -31,7 +31,9 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 @end
 
 @implementation ZLCollectionViewBaseFlowLayout
-
+{
+    BOOL _isNeedReCalculateAllLayout;
+}
 - (instancetype)init {
     if (self == [super init]) {
         self.isFloor = YES;
@@ -39,6 +41,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         self.header_suspension = NO;
         self.layoutType = FillLayout;
         self.columnCount = 1;
+        _isNeedReCalculateAllLayout = YES;
+        _headerAttributesArray = @[].mutableCopy;
         [self addObserver:self forKeyPath:@"collectionView" options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
@@ -53,6 +57,15 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     return [ZLCollectionViewLayoutAttributes class];
 }
 
+- (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context
+{
+    //外部调用relaodData或变更任意数据时则认为需要进行全量布局的刷新
+    //好处是在外部变更数据时内部布局会及时刷新
+    //劣势是在你在上拉加载某一页时,布局会全部整体重新计算一遍,并非只计算新增的布局
+    _isNeedReCalculateAllLayout = context.invalidateEverything || context.invalidateDataSourceCounts;
+    [super invalidateLayoutWithContext:context];
+}
+
 - (void)dealloc {
     [self removeObserver:self forKeyPath:@"collectionView"];
 }
@@ -64,23 +77,27 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         return [super layoutAttributesForElementsInRect:rect];
     } else {
         if (self.header_suspension) {
-            for (UICollectionViewLayoutAttributes *attriture in self.attributesArray) {
+            //只在headerAttributesArray里面查找需要悬浮的属性
+            for (UICollectionViewLayoutAttributes *attriture in self.headerAttributesArray) {
                 if (![attriture.representedElementKind isEqualToString:UICollectionElementKindSectionHeader])
                     continue;
                 NSInteger section = attriture.indexPath.section;
                 CGRect frame = attriture.frame;
+                BOOL isNeedChangeFrame = NO;
                 if (section == 0) {
                     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
                         if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
                             frame.origin.y = self.collectionView.contentOffset.y;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
+                            isNeedChangeFrame = YES;
                         }
                     } else {
                         if (self.collectionView.contentOffset.x > 0 && self.collectionView.contentOffset.x < [self.collectionHeightsArray[0] floatValue]) {
                             frame.origin.x = self.collectionView.contentOffset.x;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
+                            isNeedChangeFrame = YES;
                         }
                     }
                 } else {
@@ -89,13 +106,26 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                             frame.origin.y = self.collectionView.contentOffset.y;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
+                            isNeedChangeFrame = YES;
                         }
                     } else {
                         if (self.collectionView.contentOffset.x > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.x < [self.collectionHeightsArray[section] floatValue]) {
                             frame.origin.x = self.collectionView.contentOffset.x;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
+                            isNeedChangeFrame = YES;
                         }
+                    }
+                }
+                
+                if (!isNeedChangeFrame) {
+                    /*
+                      这里需要注意，在悬浮的情况下改变了headerAtt的frame
+                      在滑出header又滑回来时,headerAtt已经被修改过，需要改回原始值
+                      否则header无法正确归位
+                     */
+                    if ([attriture isKindOfClass:[ZLCollectionViewLayoutAttributes class]]) {
+                        attriture.frame = ((ZLCollectionViewLayoutAttributes*)attriture).orginalFrame;
                     }
                 }
             }
@@ -460,5 +490,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGFloat proofedPercentage = fmax(fmin(1.0f, percentage), 0.0f);
     return value * proofedPercentage;
 }
-
+- (void)forceSetIsNeedReCalculateAllLayout:(BOOL)isNeedReCalculateAllLayout
+{
+    _isNeedReCalculateAllLayout = isNeedReCalculateAllLayout;
+}
 @end

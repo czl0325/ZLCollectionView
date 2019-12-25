@@ -103,7 +103,16 @@ typedef enum {
 @property (nonatomic, strong) NSMutableArray *collectionHeightsArray;
 //存放每一个cell的属性
 @property (nonatomic, strong) NSMutableArray *attributesArray;
+//存放header属性, 外部不要干预
+@property (nonatomic, strong, readonly) NSMutableArray *headerAttributesArray;
 
+//是否需要重新计算所有布局
+//内部控制，一般情况外部无需干预(内部会在外部调用reloadData,insertSections,insertItems,deleteItems...等方法调用时将此属性自动置为yYES)
+@property (nonatomic, assign, readonly) BOOL isNeedReCalculateAllLayout;
+
+//提供一个方法来设置isNeedReCalculateAllLayout (之所以提供是因为特殊情况下外部可能需要强制重新计算布局)
+//比如需要强制刷新布局时，可以先调用此函数设置为YES, 一般情况外部无需干预
+- (void)forceSetIsNeedReCalculateAllLayout:(BOOL)isNeedReCalculateAllLayout;
 @end
 
 NS_ASSUME_NONNULL_END

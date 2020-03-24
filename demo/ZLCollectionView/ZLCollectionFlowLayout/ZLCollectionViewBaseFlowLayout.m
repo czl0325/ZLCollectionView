@@ -86,15 +86,17 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 BOOL isNeedChangeFrame = NO;
                 if (section == 0) {
                     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                        if (self.collectionView.contentOffset.y > 0 && self.collectionView.contentOffset.y < [self.collectionHeightsArray[0] floatValue]) {
-                            frame.origin.y = self.collectionView.contentOffset.y;
+                        CGFloat offsetY = self.collectionView.contentOffset.y + self.fixTop;
+                        if (offsetY > 0 && offsetY < [self.collectionHeightsArray[0] floatValue]) {
+                            frame.origin.y = offsetY;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
                             isNeedChangeFrame = YES;
                         }
                     } else {
-                        if (self.collectionView.contentOffset.x > 0 && self.collectionView.contentOffset.x < [self.collectionHeightsArray[0] floatValue]) {
-                            frame.origin.x = self.collectionView.contentOffset.x;
+                        CGFloat offsetX = self.collectionView.contentOffset.y + self.fixTop;
+                        if (offsetX > 0 && offsetX < [self.collectionHeightsArray[0] floatValue]) {
+                            frame.origin.x = offsetX;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
                             isNeedChangeFrame = YES;
@@ -102,15 +104,19 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                     }
                 } else {
                     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-                        if (self.collectionView.contentOffset.y > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.y < [self.collectionHeightsArray[section] floatValue]) {
-                            frame.origin.y = self.collectionView.contentOffset.y;
+                        CGFloat offsetY = self.collectionView.contentOffset.y + self.fixTop;
+                        if (offsetY > [self.collectionHeightsArray[section-1] floatValue] &&
+                            offsetY < [self.collectionHeightsArray[section] floatValue]) {
+                            frame.origin.y = offsetY;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
                             isNeedChangeFrame = YES;
                         }
                     } else {
-                        if (self.collectionView.contentOffset.x > [self.collectionHeightsArray[section-1] floatValue] && self.collectionView.contentOffset.x < [self.collectionHeightsArray[section] floatValue]) {
-                            frame.origin.x = self.collectionView.contentOffset.x;
+                        CGFloat offsetX = self.collectionView.contentOffset.y + self.fixTop;
+                        if (offsetX > [self.collectionHeightsArray[section-1] floatValue] &&
+                            offsetX < [self.collectionHeightsArray[section] floatValue]) {
+                            frame.origin.x = offsetX;
                             attriture.zIndex = 1000+section;
                             attriture.frame = frame;
                             isNeedChangeFrame = YES;

@@ -98,6 +98,7 @@ typedef enum {
 
 @property (nonatomic,assign) NSInteger columnCount;     //指定列数
 
+@property (nonatomic,assign) CGFloat fixTop;     //header偏移量
 
 //每个section的每一列的高度
 @property (nonatomic, strong) NSMutableArray *collectionHeightsArray;

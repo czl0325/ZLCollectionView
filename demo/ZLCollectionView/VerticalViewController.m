@@ -488,6 +488,7 @@
         flowLayout.delegate = self;
         flowLayout.canDrag = YES;
         flowLayout.header_suspension = YES;
+        flowLayout.fixTop = 64;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;
         

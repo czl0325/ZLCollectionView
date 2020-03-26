@@ -35,7 +35,7 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ### 参数列表
 
 | 可配置参数               | 类型      | 作用                                                    |
-|------------------------|-----------|--------------------------------------------------------|
+|:------------------------:|:-----------:|:--------------------------------------------------------:|
 | isFloor                | BOOL      | 宽度是否向下取整，默认为YES，该参数一般不用改                |
 | canDrag                | BOOL      | 是否允许拖动cell，默认为NO                                |
 | header_suspension      | BOOL      | 头部是否悬浮，默认为NO                                    |
@@ -43,17 +43,14 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 | columnCount            | columnCount      | 在列布局中设置列数，适用于单一布局可省去写代理的代码 |
 | fixTop            | CGFloat      | header距离顶部的距离 |
 <br>
-<br>
-<br>
-| 布局名称               | 布局类型      | 
-|------------------------|-----------|
-| LabelLayout                | 标签页布局      | 
-| ColumnLayout                | 列布局，瀑布流      | 
-| PercentLayout      | 百分比布局      | 
-| FillLayout             | 填充式布局      | 
-| AbsoluteLayout            | 绝对定位布局      | 
-<br>
-<br>
+
+| 布局名称              | 布局类型      | 作用                                                    |
+|:------------------------:|:-----------:|:--------------------------------------------------------:|
+| LabelLayout            | 标签页布局      |                 |
+| ColumnLayout                | 列布局      | 瀑布流，单行布局，等分布局                               |
+| PercentLayout      | 百分比布局      |                                 |
+| FillLayout             | 填充式布局      |      |
+| AbsoluteLayout            | 绝对定位布局      |    |
 <br>
 
 ### 用法
@@ -192,6 +189,8 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+##### v1.3.0 (2020.03.25)
+* 增加头部偏移量设置
 
 ##### v1.2.0 (2019.12.25)
 * 降低cpu的占用率

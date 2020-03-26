@@ -41,7 +41,20 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 | header_suspension      | BOOL      | 头部是否悬浮，默认为NO                                    |
 | layoutType             | ZLLayoutType      | 设置布局类型，适用于只有单一布局可省去写代理的代码     |
 | columnCount            | columnCount      | 在列布局中设置列数，适用于单一布局可省去写代理的代码 |
-
+| fixTop            | CGFloat      | header距离顶部的距离 |
+<br>
+<br>
+<br>
+| 布局名称               | 布局类型      | 
+|------------------------|-----------|
+| LabelLayout                | 标签页布局      | 
+| ColumnLayout                | 列布局，瀑布流      | 
+| PercentLayout      | 百分比布局      | 
+| FillLayout             | 填充式布局      | 
+| AbsoluteLayout            | 绝对定位布局      | 
+<br>
+<br>
+<br>
 
 ### 用法
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- 版本：1.2.0
+ 版本：1.3.0
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -28,7 +28,7 @@ typedef enum {
 @class ZLCollectionViewBaseFlowLayout;
 @protocol  ZLCollectionViewBaseFlowLayoutDelegate <NSObject, UICollectionViewDelegateFlowLayout>
 @optional
-//指定是什么布局，如没有指定则为BaseLayout(基础布局)
+//指定是什么布局，如没有指定则为FillLayout(填充式布局)
 - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section;
 
 /******** 设置每个section的背景色 ***********/
@@ -44,10 +44,9 @@ typedef enum {
 //背景是否延伸覆盖到headerView，默认为NO
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section;
 
-////没有效果
+// 没有效果
 //- (ZLCollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackView2:(NSInteger)section;
-//
-////没有效果
+// 没有效果
 //- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout newLoadView:(ZLCollectionReusableView*)backView section:(NSInteger)section;
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
@@ -98,7 +97,7 @@ typedef enum {
 
 @property (nonatomic,assign) NSInteger columnCount;     //指定列数
 
-@property (nonatomic,assign) CGFloat fixTop;     //header偏移量
+@property (nonatomic,assign) CGFloat fixTop;            //header偏移量
 
 //每个section的每一列的高度
 @property (nonatomic, strong) NSMutableArray *collectionHeightsArray;

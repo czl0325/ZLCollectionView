@@ -41,6 +41,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         self.header_suspension = NO;
         self.layoutType = FillLayout;
         self.columnCount = 1;
+        self.fixTop = 0;
         _isNeedReCalculateAllLayout = YES;
         _headerAttributesArray = @[].mutableCopy;
         [self addObserver:self forKeyPath:@"collectionView" options:NSKeyValueObservingOptionNew context:nil];

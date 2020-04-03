@@ -53,6 +53,21 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 | AbsoluteLayout            | 绝对定位布局      |    |
 <br>
 
+| 代理方法              | 作用      | 备注                                                    |
+|:------------------------:|:-----------:|:--------------------------------------------------------:|
+| - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section            | 指定是什么布局，如没有指定则为FillLayout(填充式布局)      |                 |
+| - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section                | 设置每个section的背景色      |                               |
+| - (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section      | 自定义每个section的背景view，      |    需要继承UICollectionReusableView，返回类名  |
+| - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section             | 背景是否延伸覆盖到headerView      |   默认为NO   |
+| - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath            | 设置每个item的zIndex      |    默认为0|
+| - (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath            | 设置每个item的CATransform3D      |    默认为CATransform3DIdentity|
+| - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout alphaOfItem:(NSIndexPath*)indexPath;           | 设置每个item的alpha    |    默认为1|
+| - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section;           | 列布局中指定一行有几列    |    列布局需要的代理，默认为1|
+| - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout percentOfRow:(NSIndexPath*)indexPath;          | 百分比布局中指定每个item占该行的几分之几    |    PercentLayout百分比布局需要的代理，如3.0/4，注意为大于0小于等于1的数字。不指定默认为1|
+| - (CGRect)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath;          | 绝对定位布局中指定每个item的frame    |    绝对定位布局必须实现的代理。不指定默认为CGRectZero|
+| - (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout didMoveCell:(NSIndexPath*)atIndexPath toIndexPath:(NSIndexPath*)toIndexPath;          | 拖动cell的相关代理    |    |
+<br>
+
 ### 用法
 
 ```Objective-C

@@ -84,7 +84,7 @@
         case 0:
             return _arrayMyActivitys.count;
         case 1:
-            return 4;
+            return 5;
         case 2:
             return 13;
         case 3:
@@ -211,6 +211,9 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        NSLog(@"%.2f", collectionView.frame.size.width);
+    }
     switch (indexPath.section) {
         case 0: {
             return CGSizeMake([_arrayMyActivitys[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:15]} context:nil].size.width + 30, 30);
@@ -218,12 +221,12 @@
         case 1: {
             switch (indexPath.item) {
                 case 0:
-                    return CGSizeMake(150, 200);
-                case 1:
-                case 2:
-                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 100);
+                    return CGSizeMake(collectionView.frame.size.width/2, collectionView.frame.size.width/2);
+//                case 1:
+//                case 2:
+//                    return CGSizeMake((collectionView.frame.size.width-20-150)/2, 100);
                 default:
-                    return CGSizeMake((collectionView.frame.size.width-20-150), 100);
+                    return CGSizeMake(collectionView.frame.size.width/4, collectionView.frame.size.width/4);
             }
         }
         case 2:{
@@ -364,14 +367,9 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
     switch (section) {
         case 0:
-            //        case 1:
-            //        case 2:
         case 5:
         case 8:
             return 10;
-            //        case 3:
-            //        case 4:
-            //            return 5;
         default:
             return 0;
     }
@@ -380,8 +378,6 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     switch (section) {
         case 0:
-            //        case 1:
-            //        case 2:
         case 8:
             return 10;
         case 6:
@@ -395,7 +391,8 @@
     switch (section) {
         case 3:
             return UIEdgeInsetsMake(10, 100, 10, 100);
-            //return UIEdgeInsetsZero;
+        case 1:
+            return UIEdgeInsetsZero;
         case 6:
         case 9:
             return  UIEdgeInsetsMake(0, 23, 0, 23);
@@ -487,6 +484,7 @@
         ZLCollectionViewVerticalLayout *flowLayout = [[ZLCollectionViewVerticalLayout alloc] init];
         flowLayout.delegate = self;
         flowLayout.canDrag = YES;
+        flowLayout.isFloor = YES;
         flowLayout.header_suspension = YES;
         //flowLayout.fixTop = 64;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);

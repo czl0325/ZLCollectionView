@@ -424,8 +424,8 @@
                             for (NSNumber* yFill in arrayYOfFill) {
                                 for (NSNumber* xFill in arrayXOfFill) {
                                     qualified = YES;
-                                    CGFloat attrX = floor([xFill floatValue])==floor(edgeInsets.left)?floor([xFill floatValue]):(floor([xFill floatValue])+minimumInteritemSpacing);
-                                    CGFloat attrY = floor([yFill floatValue])==floor(maxYOfFill)?(self.isFloor?floor([yFill floatValue]):floor([yFill floatValue])):floor([yFill floatValue])+floor(minimumLineSpacing);
+                                    CGFloat attrX = self.isFloor?(floor([xFill floatValue])==floor(edgeInsets.left)?floor([xFill floatValue]):(floor([xFill floatValue])+minimumInteritemSpacing)):([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing);
+                                    CGFloat attrY = self.isFloor?(floor([yFill floatValue])==floor(maxYOfFill)?(floor([yFill floatValue])):(floor([yFill floatValue])+floor(minimumLineSpacing))):([yFill floatValue]==maxYOfFill?([yFill floatValue]):([yFill floatValue])+floor(minimumLineSpacing));
                                     attributes.frame = CGRectMake(attrX, attrY, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                                     if (floor(attributes.frame.origin.x)+floor(attributes.frame.size.width) > floor(totalWidth)-floor(edgeInsets.right)) {
                                         qualified = NO;

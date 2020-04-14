@@ -10,7 +10,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.2.0
+支持cocoapod导入，最新版本 1.3.1
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -204,6 +204,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+##### v1.3.1 (2020.04.14)
+* 修改填充式布局的bug
+
 ##### v1.3.0 (2020.03.25)
 * 增加头部偏移量设置
 

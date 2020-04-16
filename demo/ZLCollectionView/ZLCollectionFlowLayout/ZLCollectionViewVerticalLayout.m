@@ -45,6 +45,7 @@
     CGFloat minimumInteritemSpacing = 0;
     NSUInteger sectionCount = [self.collectionView numberOfSections];
     self.attributesArray = [NSMutableArray new];
+    [self.headerAttributesArray removeAllObjects];
     self.collectionHeightsArray = [NSMutableArray arrayWithCapacity:sectionCount];
     for (int index= 0; index<sectionCount; index++) {
         NSUInteger itemCount = [self.collectionView numberOfItemsInSection:index];

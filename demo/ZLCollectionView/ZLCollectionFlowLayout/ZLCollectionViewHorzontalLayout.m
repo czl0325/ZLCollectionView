@@ -249,9 +249,6 @@
                 attr.frame = CGRectMake([self isAttachToTop:index]?itemStartX-headerW:itemStartX, 0, backWidth, self.collectionView.frame.size.height);
                 attr.zIndex = -1000;
                 [self.attributesArray addObject:attr];
-                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:loadView:)]) {
-                    [self.delegate collectionView:self.collectionView layout:self loadView:index];
-                }
             } else {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
                 attr.frame = CGRectMake([self isAttachToTop:index]?itemStartX-headerW:itemStartX, 0, backWidth, self.collectionView.frame.size.height);

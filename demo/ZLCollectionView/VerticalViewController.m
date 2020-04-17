@@ -447,22 +447,27 @@
     return CGSizeMake(collectionView.frame.size.width, 30);
 }
 
-- (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section {
+//- (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackViewByClass:(NSInteger)section {
+//    if (section == 0 || section == 4) {
+//        return [[MyTestReusableView alloc]init];
+//    } else if (section == 5) {
+//        return [[MyTestReusableView2 alloc]init];
+//    }
+//    return nil;
+//}
+
+- (NSDictionary*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section {
     if (section == 0 || section == 4) {
-        return @"MyTestReusableView";
+        return nil;
     } else if (section == 5) {
-        return @"MyTestReusableView2";
+        return @{@"className":@"MyTestReusableView2",@"eventName": @"updateImageView:",@"parameter":@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547035180781&di=ad7e771ee99afc06b9280062c13b3cd9&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F14%2F20150814165156_iAvkx.jpeg"};
     }
-    return @"";
+    return nil;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout loadView:(NSInteger)section {
-    //NSLog(@"当前section=%zd，需要处理什么操作？",section);
-}
-
-- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
-    return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
-}
+//- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
+//    return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
+//}
 
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section {
     if (section % 2 == 0) {
@@ -486,6 +491,7 @@
         flowLayout.canDrag = YES;
         flowLayout.isFloor = YES;
         flowLayout.header_suspension = YES;
+        [flowLayout registerDecorationView:@[@"MyTestReusableView2"]];
         //flowLayout.fixTop = 64;
         //flowLayout.estimatedItemSize = CGSizeMake([UIScreen mainScreen].bounds.size.width, 100.0);
         //flowLayout.itemSize = UICollectionViewFlowLayoutAutomaticSize;

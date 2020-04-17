@@ -83,8 +83,14 @@
             } else {
                 [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
             }
-        }
-        else {
+        } else if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackViewByClass:)]) {
+            UICollectionReusableView* backView = [self.delegate collectionView:self.collectionView layout:self registerBackViewByClass:index];
+            if (backView != nil) {
+                [self registerClass:[backView class] forDecorationViewOfKind:NSStringFromClass([backView class])];
+            } else {
+                [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
+            }
+        } else {
             [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
         }
         x = edgeInsets.left;
@@ -565,6 +571,7 @@
         if (backHeight < 0) {
             backHeight = 0;
         }
+        
         if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
             NSString* className = [self.delegate collectionView:self.collectionView layout:self registerBackView:index];
             if (className != nil && className.length > 0) {
@@ -572,9 +579,23 @@
                 attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
                 attr.zIndex = -1000;
                 [self.attributesArray addObject:attr];
-                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:loadView:)]) {
-                    [self.delegate collectionView:self.collectionView layout:self loadView:index];
+            } else {
+                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
+                attr.color = self.collectionView.backgroundColor;
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
+                    attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
                 }
+                attr.zIndex = -1000;
+                [self.attributesArray addObject:attr];
+            }
+        } else if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackViewByClass:)]) {
+            UICollectionReusableView* backView = [self.delegate collectionView:self.collectionView layout:self registerBackViewByClass:index];
+            if (backView != nil) {
+                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:NSStringFromClass([backView class]) withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
+                attr.zIndex = -1000;
+                [self.attributesArray addObject:attr];
             } else {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
                 attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
@@ -591,6 +612,11 @@
             attr.color = self.collectionView.backgroundColor;
             if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
                 attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
+            }
+            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backgroundViewMethodForSection:)]) {
+                if ([self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index] != nil) {
+                    [attr callMethod:[self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index]];
+                }
             }
             attr.zIndex = -1000;
             [self.attributesArray addObject:attr];

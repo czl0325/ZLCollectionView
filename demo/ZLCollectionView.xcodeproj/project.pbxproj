@@ -21,6 +21,8 @@
 		BE14940521E5F196002F5922 /* MyTestReusableView2.m in Sources */ = {isa = PBXBuildFile; fileRef = BE14940421E5F196002F5922 /* MyTestReusableView2.m */; };
 		BE4C2AD121FAE64A00FC865E /* VerticalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4C2AD021FAE64A00FC865E /* VerticalViewController.m */; };
 		BE4C2AD421FAE68100FC865E /* HorzontalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4C2AD321FAE68100FC865E /* HorzontalViewController.m */; };
+		BE585DB524495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */; };
+		BE585DB824495CE8003674CA /* ZLCollectionBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE585DB724495CE8003674CA /* ZLCollectionBackView.m */; };
 		BE5E3B8321FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8221FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m */; };
 		BE5E3B8621FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8521FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m */; };
 		BE5E3B8921FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8821FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m */; };
@@ -80,6 +82,10 @@
 		BE4C2AD021FAE64A00FC865E /* VerticalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalViewController.m; sourceTree = "<group>"; };
 		BE4C2AD221FAE68100FC865E /* HorzontalViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HorzontalViewController.h; sourceTree = "<group>"; };
 		BE4C2AD321FAE68100FC865E /* HorzontalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HorzontalViewController.m; sourceTree = "<group>"; };
+		BE585DB324495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewBackgroundViewLayoutAttributes.h; sourceTree = "<group>"; };
+		BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewBackgroundViewLayoutAttributes.m; sourceTree = "<group>"; };
+		BE585DB624495CE8003674CA /* ZLCollectionBackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionBackView.h; sourceTree = "<group>"; };
+		BE585DB724495CE8003674CA /* ZLCollectionBackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionBackView.m; sourceTree = "<group>"; };
 		BE5E3B8121FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewBaseFlowLayout.h; sourceTree = "<group>"; };
 		BE5E3B8221FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewBaseFlowLayout.m; sourceTree = "<group>"; };
 		BE5E3B8421FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewVerticalLayout.h; sourceTree = "<group>"; };
@@ -244,6 +250,10 @@
 				BE5E3B8521FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m */,
 				BE5E3B8721FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.h */,
 				BE5E3B8821FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m */,
+				BE585DB324495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.h */,
+				BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */,
+				BE585DB624495CE8003674CA /* ZLCollectionBackView.h */,
+				BE585DB724495CE8003674CA /* ZLCollectionBackView.m */,
 			);
 			path = ZLCollectionFlowLayout;
 			sourceTree = "<group>";
@@ -433,6 +443,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE585DB524495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m in Sources */,
 				BE5E3B8321FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m in Sources */,
 				BE9D32C92109B5EF002EC4A2 /* MultilineTextCell.m in Sources */,
 				BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */,
@@ -451,6 +462,7 @@
 				BE75064121FAEF180053B022 /* VerticalHeaderView.m in Sources */,
 				BE14940521E5F196002F5922 /* MyTestReusableView2.m in Sources */,
 				BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */,
+				BE585DB824495CE8003674CA /* ZLCollectionBackView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

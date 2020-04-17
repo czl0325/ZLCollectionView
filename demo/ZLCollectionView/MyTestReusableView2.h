@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MyTestReusableView2 : ZLCollectionReusableView
 
-- (void)updateImageView;
+- (instancetype)initWithUrl:(NSString*)url;
+- (void)updateImageView:(NSString*)url;
 
 @end
 

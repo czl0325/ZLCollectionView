@@ -206,6 +206,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+##### v1.4.0 (2020.04.18)
+* 自定义背景view的代理方法增加
+
 ##### v1.3.1 (2020.04.14)
 * 修改填充式布局的bug
 

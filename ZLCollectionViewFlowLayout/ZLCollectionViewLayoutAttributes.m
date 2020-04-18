@@ -11,18 +11,20 @@
 
 @implementation ZLCollectionViewLayoutAttributes
 @synthesize orginalFrame = _orginalFrame;
+
 + (instancetype)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind withIndexPath:(NSIndexPath *)indexPath orginalFrmae:(CGRect)orginalFrame{
     ZLCollectionViewLayoutAttributes *layoutAttributes = [super layoutAttributesForDecorationViewOfKind:decorationViewKind withIndexPath:indexPath];
     [layoutAttributes setValue:[NSValue valueWithCGRect:orginalFrame] forKey:@"orginalFrame"];
     layoutAttributes.frame = orginalFrame;
     return layoutAttributes;
 }
--(CGRect)orginalFrame
-{
+
+-(CGRect)orginalFrame {
     if ([self.representedElementKind isEqualToString:UICollectionElementKindSectionHeader]) {
         return _orginalFrame;
-    }else{
+    } else {
         return self.frame;
     }
 }
+
 @end

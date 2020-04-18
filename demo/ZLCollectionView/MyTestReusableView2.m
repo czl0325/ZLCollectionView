@@ -16,13 +16,6 @@
 
 @implementation MyTestReusableView2
 
-- (instancetype)init {
-    if (self == [super init]) {
-        NSLog(@"init");
-    }
-    return self;
-}
-
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self == [super initWithFrame:frame]) {
         self.imgV = [[UIImageView alloc]init];
@@ -31,14 +24,6 @@
         [self.imgV mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(self);
         }];
-        //[self updateImageView:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547035180781&di=ad7e771ee99afc06b9280062c13b3cd9&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F14%2F20150814165156_iAvkx.jpeg"];
-    }
-    return self;
-}
-
-- (instancetype)initWithUrl:(NSString*)url {
-    if (self == [self initWithFrame:CGRectZero]) {
-        [self updateImageView:url];
     }
     return self;
 }

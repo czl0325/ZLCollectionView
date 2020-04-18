@@ -372,7 +372,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             break;
         }
     }
-    NSLog(@"拖动从%@到%@",atIndexPath,toIndexPath);
+    //NSLog(@"拖动从%@到%@",atIndexPath,toIndexPath);
     if (attribute != nil) {
         [self.collectionView performBatchUpdates:^{
             weakSelf.cellFakeView.indexPath = toIndexPath;

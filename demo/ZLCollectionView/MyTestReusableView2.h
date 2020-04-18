@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ZLCollectionReusableView.h"
+#import "ZLCollectionBaseDecorationView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MyTestReusableView2 : ZLCollectionReusableView
+@interface MyTestReusableView2 : ZLCollectionBaseDecorationView
 
-- (instancetype)initWithUrl:(NSString*)url;
 - (void)updateImageView:(NSString*)url;
 
 @end

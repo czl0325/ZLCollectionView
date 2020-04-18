@@ -11,11 +11,25 @@
 #import <objc/runtime.h>
 #import "MyTestReusableView2.h"
 
+@interface ZLCollectionReusableView ()
+
+@property(nonatomic,strong)UIImageView* ivBackground;
+
+@end
+
 @implementation ZLCollectionReusableView
 
-- (instancetype)init {
-    if (self == [super init]) {
-        
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self == [super initWithFrame:frame]) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addSubview:self.ivBackground];
+        self.ivBackground.translatesAutoresizingMaskIntoConstraints = NO;
+        [self addConstraints:@[
+            [NSLayoutConstraint constraintWithItem:self.ivBackground attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0],
+            [NSLayoutConstraint constraintWithItem:self.ivBackground attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1.0 constant: 0.0],
+            [NSLayoutConstraint constraintWithItem:self.ivBackground attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant: 0.0],
+            [NSLayoutConstraint constraintWithItem:self.ivBackground attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant: 0.0]
+            ]];
     }
     return self;
 }
@@ -24,34 +38,22 @@
     [super applyLayoutAttributes:layoutAttributes];
     //设置背景颜色
     ZLCollectionViewLayoutAttributes *ecLayoutAttributes = (ZLCollectionViewLayoutAttributes*)layoutAttributes;
-    self.backgroundColor = ecLayoutAttributes.color;
-    unsigned int methodCount = 0;
-    Class newClass = NSClassFromString(ecLayoutAttributes.className);
-    Method *methods = class_copyMethodList(newClass, &methodCount);
-    if (ecLayoutAttributes.eventName != nil && ecLayoutAttributes.eventName.length > 0) {
-        for(int i = 0; i < methodCount; i++) {
-            Method method = methods[i];
-            SEL sel = method_getName(method);
-            const char *name = sel_getName(sel);
-            NSString* methodName = [NSString stringWithUTF8String:name];
-            if ([methodName isEqualToString:ecLayoutAttributes.eventName]) {
-                object_setClass(self, newClass);
-                SEL selector = NSSelectorFromString(ecLayoutAttributes.eventName);
-                IMP imp = [self methodForSelector:selector];
-                if ([self respondsToSelector:selector]) {
-                    if (ecLayoutAttributes.parameter) {
-                        void (*func) (id, SEL, id) = (void *)imp;
-                        func(self,selector,ecLayoutAttributes.parameter);
-                    } else {
-                        void (*func) (id, SEL) = (void *)imp;
-                        func(self,selector);
-                    }
-                }
-               break;
-            };
-        }
+    if (ecLayoutAttributes.color) {
+        self.backgroundColor = ecLayoutAttributes.color;
     }
-    free(methods);
+    if (ecLayoutAttributes.image) {
+        self.ivBackground.image = ecLayoutAttributes.image;
+    }
+}
+
+
+- (UIImageView*)ivBackground {
+    if (!_ivBackground) {
+        _ivBackground = [[UIImageView alloc]init];
+        _ivBackground.contentMode = UIViewContentModeScaleAspectFill;
+        _ivBackground.backgroundColor = [UIColor clearColor];
+    }
+    return _ivBackground;
 }
 
 @end

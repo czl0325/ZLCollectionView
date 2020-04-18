@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ZLCollectionReusableView.h"
 
-@interface MyTestReusableView : ZLCollectionReusableView
+@interface MyTestReusableView : UICollectionReusableView
 
 - (void)updateImageView;
 
 @end
+	

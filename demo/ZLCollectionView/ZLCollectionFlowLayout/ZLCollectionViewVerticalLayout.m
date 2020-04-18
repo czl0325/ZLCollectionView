@@ -9,6 +9,7 @@
 #import "ZLCollectionViewVerticalLayout.h"
 #import "ZLCollectionReusableView.h"
 #import "ZLCollectionViewLayoutAttributes.h"
+#import "ZLCollectionViewBackgroundViewLayoutAttributes.h"
 
 @interface ZLCollectionViewVerticalLayout ()
 
@@ -32,8 +33,6 @@
     if (!self.isNeedReCalculateAllLayout) {
         return;
     }
-    
-    NSLog(@"prepareLayout");
     
     CGFloat totalWidth = self.collectionView.frame.size.width;
     CGFloat x = 0;
@@ -80,13 +79,6 @@
             if (className != nil && className.length > 0) {
                 NSAssert([[NSClassFromString(className) alloc]init]!=nil, @"代理collectionView:layout:registerBackView:里面必须返回有效的类名!");
                 [self registerClass:NSClassFromString(className) forDecorationViewOfKind:className];
-            } else {
-                [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
-            }
-        } else if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackViewByClass:)]) {
-            UICollectionReusableView* backView = [self.delegate collectionView:self.collectionView layout:self registerBackViewByClass:index];
-            if (backView != nil) {
-                [self registerClass:[backView class] forDecorationViewOfKind:NSStringFromClass([backView class])];
             } else {
                 [self registerClass:[ZLCollectionReusableView class] forDecorationViewOfKind:@"ZLCollectionReusableView"];
             }
@@ -566,18 +558,30 @@
             lastY += edgeInsets.bottom;
         }
         
+        // 添加页脚属性
+        if (footerH > 0) {
+            NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
+            ZLCollectionViewLayoutAttributes *footerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
+            footerAttr.frame = CGRectMake(0, lastY, self.collectionView.frame.size.width, footerH);
+            [self.attributesArray addObject:footerAttr];
+            lastY += footerH;
+        }
 #pragma mark 添加背景图
-        CGFloat backHeight = lastY-itemStartY+([self isAttachToTop:index]?headerH:0);
+        CGFloat backHeight = lastY-itemStartY+([self isAttachToTop:index]?headerH:0)-([self isAttachToBottom:index]?0:footerH);
         if (backHeight < 0) {
             backHeight = 0;
         }
-        
         if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackView:)]) {
             NSString* className = [self.delegate collectionView:self.collectionView layout:self registerBackView:index];
             if (className != nil && className.length > 0) {
-                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:className withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
+                ZLCollectionViewBackgroundViewLayoutAttributes *attr = [ZLCollectionViewBackgroundViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:className withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
                 attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
                 attr.zIndex = -1000;
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backgroundViewMethodForSection:)]) {
+                    if ([self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index] != nil) {
+                        [attr callMethod:[self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index]];
+                    }
+                }
                 [self.attributesArray addObject:attr];
             } else {
                 ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
@@ -586,22 +590,8 @@
                 if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
                     attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
                 }
-                attr.zIndex = -1000;
-                [self.attributesArray addObject:attr];
-            }
-        } else if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:registerBackViewByClass:)]) {
-            UICollectionReusableView* backView = [self.delegate collectionView:self.collectionView layout:self registerBackViewByClass:index];
-            if (backView != nil) {
-                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:NSStringFromClass([backView class]) withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
-                attr.zIndex = -1000;
-                [self.attributesArray addObject:attr];
-            } else {
-                ZLCollectionViewLayoutAttributes *attr = [ZLCollectionViewLayoutAttributes  layoutAttributesForDecorationViewOfKind:@"ZLCollectionReusableView" withIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]];
-                attr.frame = CGRectMake(0, [self isAttachToTop:index]?itemStartY-headerH:itemStartY, self.collectionView.frame.size.width, backHeight);
-                attr.color = self.collectionView.backgroundColor;
-                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
-                    attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backImageForSection:)]) {
+                    attr.image = [self.delegate collectionView:self.collectionView layout:self backImageForSection:index];
                 }
                 attr.zIndex = -1000;
                 [self.attributesArray addObject:attr];
@@ -613,22 +603,11 @@
             if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backColorForSection:)]) {
                 attr.color = [self.delegate collectionView:self.collectionView layout:self backColorForSection:index];
             }
-            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backgroundViewMethodForSection:)]) {
-                if ([self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index] != nil) {
-                    [attr callMethod:[self.delegate collectionView:self.collectionView layout:self backgroundViewMethodForSection:index]];
-                }
+            if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:backImageForSection:)]) {
+                attr.image = [self.delegate collectionView:self.collectionView layout:self backImageForSection:index];
             }
             attr.zIndex = -1000;
             [self.attributesArray addObject:attr];
-        }
-        
-        // 添加页脚属性
-        if (footerH > 0) {
-            NSIndexPath *footerIndexPath = [NSIndexPath indexPathForItem:0 inSection:index];
-            ZLCollectionViewLayoutAttributes *footerAttr = [ZLCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:UICollectionElementKindSectionFooter withIndexPath:footerIndexPath];
-            footerAttr.frame = CGRectMake(0, lastY, self.collectionView.frame.size.width, footerH);
-            [self.attributesArray addObject:footerAttr];
-            lastY += footerH;
         }
         self.collectionHeightsArray[index] = [NSNumber numberWithFloat:lastY];
     }
@@ -676,6 +655,13 @@
 - (BOOL)isAttachToTop:(NSInteger)section {
     if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:attachToTop:)]) {
         return [self.delegate collectionView:self.collectionView layout:self attachToTop:section];
+    }
+    return NO;
+}
+
+- (BOOL)isAttachToBottom:(NSInteger)section {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:attachToBottom:)]) {
+        return [self.delegate collectionView:self.collectionView layout:self attachToBottom:section];
     }
     return NO;
 }

@@ -27,19 +27,4 @@
     }
 }
 
-- (void)callMethod:(NSDictionary*)dict {
-    if (dict == nil) {
-        return;
-    }
-    if ([dict objectForKey:@"className"]) {
-        self.className = [dict objectForKey:@"className"];
-        if ([[dict objectForKey:@"eventName"] isKindOfClass:[NSString class]]) {
-            self.eventName = [dict objectForKey:@"eventName"];
-        }
-        if ([dict objectForKey:@"parameter"]) {
-            self.parameter = [dict objectForKey:@"parameter"];
-        }
-    }
-}
-
 @end

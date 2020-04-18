@@ -10,7 +10,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.3.1
+支持cocoapod导入，最新版本 1.4.0
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -55,12 +55,15 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 
 | 代理方法              | 作用      | 备注                                                    |
 |:------------------------:|:-----------:|:--------------------------------------------------------:|
-| - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section            | 指定是什么布局，如没有指定则为FillLayout(填充式布局)      |                 |
-| - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section                | 设置每个section的背景色      |                               |
-| - (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section      | 自定义每个section的背景view，      |    需要继承UICollectionReusableView，返回类名  |
-| - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section             | 背景是否延伸覆盖到headerView      |   默认为NO   |
-| - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath            | 设置每个item的zIndex      |    默认为0|
-| - (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath            | 设置每个item的CATransform3D      |    默认为CATransform3DIdentity|
+| - (ZLLayoutType)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout typeOfLayout:(NSInteger)section;            | 指定是什么布局     |  如没有指定则为FillLayout(填充式布局)  |
+| - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section;                | 设置每个section的背景色      |       
+| - (UIImage*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backImageForSection:(NSInteger)section;               | 设置每个section的背景图      |                            |
+| - (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section;      | 自定义每个section的背景view，      |      |
+| - (ZLBaseEventModel*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section;      | 向每个section自定义背景view传递自定义方法      |  ZLBaseEventModel对象，eventName:方法名（注意带参数的方法名必须末尾加:）,parameter:参数  |
+| - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToBottom:(NSInteger)section;            | 背景是否延伸覆盖到headerView      |   默认为NO   |
+| - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section;            | 背景是否延伸覆盖到footerView      |   默认为NO   |
+| - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout zIndexOfItem:(NSIndexPath*)indexPath;            | 设置每个item的zIndex      |    默认为0|
+| - (CATransform3D)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout transformOfItem:(NSIndexPath*)indexPath;            | 设置每个item的CATransform3D      |    默认为CATransform3DIdentity|
 | - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout alphaOfItem:(NSIndexPath*)indexPath;           | 设置每个item的alpha    |    默认为1|
 | - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section;           | 列布局中指定一行有几列    |    列布局需要的代理，默认为1|
 | - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout percentOfRow:(NSIndexPath*)indexPath;          | 百分比布局中指定每个item占该行的几分之几    |    PercentLayout百分比布局需要的代理，如3.0/4，注意为大于0小于等于1的数字。不指定默认为1|

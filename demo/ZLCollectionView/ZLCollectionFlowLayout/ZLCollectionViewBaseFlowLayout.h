@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLBaseEventModel.h"
 
 /**
- 版本：1.3.2
+ 版本：1.4.0
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,17 +36,20 @@ typedef enum {
 //设置每个section的背景色
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section;
 
-//设置每个section背景view的方法 字典格式传入{"eventName":"", "parameter":""}
-- (NSDictionary*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section;
+//设置每个section的背景图
+- (UIImage*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backImageForSection:(NSInteger)section;
 
-//自定义每个section的背景view，需要继承UICollectionReusableView，返回类名
-- (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section  API_DEPRECATED_WITH_REPLACEMENT("方法过期，请使用- (void)registerDecorationView:(NSArray<NSString*>*)classNames来注册背景视图", ios(7.0, 13.0));
+//自定义每个section的背景view，需要继承UICollectionReusableView(如要调用方法传递参数需要继承ZLCollectionBaseDecorationView)，返回类名
+- (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section;
 
-//自定义每个section的背景view，需要继承UICollectionReusableView，返回类的对象
-- (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackViewByClass:(NSInteger)section API_DEPRECATED_WITH_REPLACEMENT("方法过期，请使用- (void)registerDecorationView:(NSArray<NSString*>*)classNames来注册背景视图", ios(7.0, 13.0));
+//向每个section自定义背景view传递自定义方法 eventName:方法名（注意带参数的方法名必须末尾加:）,parameter:参数
+- (ZLBaseEventModel*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section;
 
 //背景是否延伸覆盖到headerView，默认为NO
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section;
+
+//背景是否延伸覆盖到footerView，默认为NO
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToBottom:(NSInteger)section;
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0

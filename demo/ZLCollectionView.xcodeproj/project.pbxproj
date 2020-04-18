@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		025EA843FC82481C705289F5 /* Pods_ZLCollectionView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E5B7C147D6E34553526770 /* Pods_ZLCollectionView.framework */; };
+		65FFE0E8244AA05700406DDF /* ZLBaseEventModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FFE0E7244AA05700406DDF /* ZLBaseEventModel.m */; };
+		65FFE0EB244AB61A00406DDF /* VerticalFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 65FFE0EA244AB61A00406DDF /* VerticalFooterView.m */; };
 		BE13FE611EFBA5E900AFCD90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE601EFBA5E900AFCD90 /* main.m */; };
 		BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE631EFBA5E900AFCD90 /* AppDelegate.m */; };
 		BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13FE661EFBA5E900AFCD90 /* ViewController.m */; };
@@ -22,7 +24,7 @@
 		BE4C2AD121FAE64A00FC865E /* VerticalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4C2AD021FAE64A00FC865E /* VerticalViewController.m */; };
 		BE4C2AD421FAE68100FC865E /* HorzontalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE4C2AD321FAE68100FC865E /* HorzontalViewController.m */; };
 		BE585DB524495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */; };
-		BE585DB824495CE8003674CA /* ZLCollectionBackView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE585DB724495CE8003674CA /* ZLCollectionBackView.m */; };
+		BE585DB824495CE8003674CA /* ZLCollectionBaseDecorationView.m in Sources */ = {isa = PBXBuildFile; fileRef = BE585DB724495CE8003674CA /* ZLCollectionBaseDecorationView.m */; };
 		BE5E3B8321FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8221FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m */; };
 		BE5E3B8621FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8521FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m */; };
 		BE5E3B8921FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BE5E3B8821FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m */; };
@@ -54,6 +56,10 @@
 
 /* Begin PBXFileReference section */
 		3FC19602324B979D2440A85E /* Pods-ZLCollectionView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLCollectionView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView.release.xcconfig"; sourceTree = "<group>"; };
+		65FFE0E6244AA05700406DDF /* ZLBaseEventModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLBaseEventModel.h; sourceTree = "<group>"; };
+		65FFE0E7244AA05700406DDF /* ZLBaseEventModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLBaseEventModel.m; sourceTree = "<group>"; };
+		65FFE0E9244AB61A00406DDF /* VerticalFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VerticalFooterView.h; sourceTree = "<group>"; };
+		65FFE0EA244AB61A00406DDF /* VerticalFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VerticalFooterView.m; sourceTree = "<group>"; };
 		8BB1C90479285DF96560EBA0 /* Pods-ZLCollectionView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLCollectionView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView.debug.xcconfig"; sourceTree = "<group>"; };
 		BE13FE5C1EFBA5E900AFCD90 /* ZLCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE13FE601EFBA5E900AFCD90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -84,8 +90,8 @@
 		BE4C2AD321FAE68100FC865E /* HorzontalViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HorzontalViewController.m; sourceTree = "<group>"; };
 		BE585DB324495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewBackgroundViewLayoutAttributes.h; sourceTree = "<group>"; };
 		BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewBackgroundViewLayoutAttributes.m; sourceTree = "<group>"; };
-		BE585DB624495CE8003674CA /* ZLCollectionBackView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionBackView.h; sourceTree = "<group>"; };
-		BE585DB724495CE8003674CA /* ZLCollectionBackView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionBackView.m; sourceTree = "<group>"; };
+		BE585DB624495CE8003674CA /* ZLCollectionBaseDecorationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionBaseDecorationView.h; sourceTree = "<group>"; };
+		BE585DB724495CE8003674CA /* ZLCollectionBaseDecorationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionBaseDecorationView.m; sourceTree = "<group>"; };
 		BE5E3B8121FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewBaseFlowLayout.h; sourceTree = "<group>"; };
 		BE5E3B8221FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLCollectionViewBaseFlowLayout.m; sourceTree = "<group>"; };
 		BE5E3B8421FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZLCollectionViewVerticalLayout.h; sourceTree = "<group>"; };
@@ -204,6 +210,8 @@
 				BE13FE9C1EFBBA4900AFCD90 /* HorzontalHeaderView.m */,
 				BE75063F21FAEF180053B022 /* VerticalHeaderView.h */,
 				BE75064021FAEF180053B022 /* VerticalHeaderView.m */,
+				65FFE0E9244AB61A00406DDF /* VerticalFooterView.h */,
+				65FFE0EA244AB61A00406DDF /* VerticalFooterView.m */,
 			);
 			path = ZLCollectionView;
 			sourceTree = "<group>";
@@ -252,8 +260,10 @@
 				BE5E3B8821FAA49C00F14FDC /* ZLCollectionViewHorzontalLayout.m */,
 				BE585DB324495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.h */,
 				BE585DB424495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m */,
-				BE585DB624495CE8003674CA /* ZLCollectionBackView.h */,
-				BE585DB724495CE8003674CA /* ZLCollectionBackView.m */,
+				BE585DB624495CE8003674CA /* ZLCollectionBaseDecorationView.h */,
+				BE585DB724495CE8003674CA /* ZLCollectionBaseDecorationView.m */,
+				65FFE0E6244AA05700406DDF /* ZLBaseEventModel.h */,
+				65FFE0E7244AA05700406DDF /* ZLBaseEventModel.m */,
 			);
 			path = ZLCollectionFlowLayout;
 			sourceTree = "<group>";
@@ -405,11 +415,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ZLCollectionView/Pods-ZLCollectionView-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
@@ -443,12 +455,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65FFE0E8244AA05700406DDF /* ZLBaseEventModel.m in Sources */,
 				BE585DB524495CB6003674CA /* ZLCollectionViewBackgroundViewLayoutAttributes.m in Sources */,
 				BE5E3B8321FA99DF00F14FDC /* ZLCollectionViewBaseFlowLayout.m in Sources */,
 				BE9D32C92109B5EF002EC4A2 /* MultilineTextCell.m in Sources */,
 				BE13FE671EFBA5E900AFCD90 /* ViewController.m in Sources */,
 				BE5E3B8621FA9ACF00F14FDC /* ZLCollectionViewVerticalLayout.m in Sources */,
 				BE4C2AD121FAE64A00FC865E /* VerticalViewController.m in Sources */,
+				65FFE0EB244AB61A00406DDF /* VerticalFooterView.m in Sources */,
 				BE13FE9F1EFBBA4900AFCD90 /* HorzontalHeaderView.m in Sources */,
 				BE13FEA01EFBBA4900AFCD90 /* SEMyRecordLabelCell.m in Sources */,
 				BE13FE641EFBA5E900AFCD90 /* AppDelegate.m in Sources */,
@@ -462,7 +476,7 @@
 				BE75064121FAEF180053B022 /* VerticalHeaderView.m in Sources */,
 				BE14940521E5F196002F5922 /* MyTestReusableView2.m in Sources */,
 				BEB2A38320F35E3C003508FF /* ZLCollectionViewLayoutAttributes.m in Sources */,
-				BE585DB824495CE8003674CA /* ZLCollectionBackView.m in Sources */,
+				BE585DB824495CE8003674CA /* ZLCollectionBaseDecorationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

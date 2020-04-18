@@ -30,10 +30,10 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 
 @end
 
-@implementation ZLCollectionViewBaseFlowLayout
-{
+@implementation ZLCollectionViewBaseFlowLayout {
     BOOL _isNeedReCalculateAllLayout;
 }
+
 - (instancetype)init {
     if (self == [super init]) {
         self.isFloor = YES;
@@ -54,17 +54,25 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     return self.header_suspension;
 }
 
-+ (Class)layoutAttributesClass {
-    return [ZLCollectionViewLayoutAttributes class];
-}
+//+ (Class)layoutAttributesClass {
+//    return [ZLCollectionViewLayoutAttributes class];
+//}
 
-- (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context
-{
+- (void)invalidateLayoutWithContext:(UICollectionViewLayoutInvalidationContext *)context {
     //外部调用relaodData或变更任意数据时则认为需要进行全量布局的刷新
     //好处是在外部变更数据时内部布局会及时刷新
     //劣势是在你在上拉加载某一页时,布局会全部整体重新计算一遍,并非只计算新增的布局
     _isNeedReCalculateAllLayout = context.invalidateEverything || context.invalidateDataSourceCounts;
     [super invalidateLayoutWithContext:context];
+}
+
+// 注册所有的背景view(传入类名)
+- (void)registerDecorationView:(NSArray<NSString*>*)classNames {
+    for (NSString* className in classNames) {
+        if (className.length > 0) {
+            [self registerClass:NSClassFromString(className) forDecorationViewOfKind:className];
+        }
+    }
 }
 
 - (void)dealloc {
@@ -364,7 +372,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
             break;
         }
     }
-    NSLog(@"拖动从%@到%@",atIndexPath,toIndexPath);
+    //NSLog(@"拖动从%@到%@",atIndexPath,toIndexPath);
     if (attribute != nil) {
         [self.collectionView performBatchUpdates:^{
             weakSelf.cellFakeView.indexPath = toIndexPath;

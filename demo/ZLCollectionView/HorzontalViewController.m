@@ -50,7 +50,7 @@
         case 2:
             return 5;
         default:
-            return 2000;
+            return 10;
     }
 }
 
@@ -162,7 +162,7 @@
     } else if (section == 1) {
         return [UIColor purpleColor];
     } else {
-        return [UIColor whiteColor];
+        return [UIColor orangeColor];
     }
 }
 

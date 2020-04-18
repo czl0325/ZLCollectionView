@@ -14,6 +14,8 @@
 #import "UICollectionView+ARDynamicCacheHeightLayoutCell.h"
 #import "MyTestReusableView.h"
 #import "MyTestReusableView2.h"
+#import "VerticalFooterView.h"
+#import "MJRefresh.h"
 
 @interface VerticalViewController ()
 <UICollectionViewDelegate,UICollectionViewDataSource,ZLCollectionViewBaseFlowLayoutDelegate>
@@ -32,6 +34,8 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     self.navigationItem.title = @"纵向UICollectionView布局";
+    //[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor redColor], NSFontAttributeName : [UIFont fontWithName:@"Helvetica-Bold" size:17]}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:19.0]}];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
     }
@@ -211,9 +215,6 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        NSLog(@"%.2f", collectionView.frame.size.width);
-    }
     switch (indexPath.section) {
         case 0: {
             return CGSizeMake([_arrayMyActivitys[indexPath.row] boundingRectWithSize:CGSizeMake(1000000, 20) options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:15]} context:nil].size.width + 30, 30);
@@ -439,6 +440,9 @@
                 break;
         }
         return headerView;
+    } else  if ([kind isEqualToString : UICollectionElementKindSectionFooter]){
+        VerticalFooterView* footerView = [VerticalFooterView footerViewWithCollectionView:collectionView forIndexPath:indexPath];
+        return footerView;
     }
     return nil;
 }
@@ -447,27 +451,34 @@
     return CGSizeMake(collectionView.frame.size.width, 30);
 }
 
-//- (UICollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackViewByClass:(NSInteger)section {
-//    if (section == 0 || section == 4) {
-//        return [[MyTestReusableView alloc]init];
-//    } else if (section == 5) {
-//        return [[MyTestReusableView2 alloc]init];
-//    }
-//    return nil;
-//}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    if (section == 5) {
+        return CGSizeMake(collectionView.frame.size.width, 80);
+    }
+    return CGSizeZero;
+}
 
-- (NSDictionary*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section {
+- (NSString*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section {
     if (section == 0 || section == 4) {
-        return nil;
+        return @"MyTestReusableView";
     } else if (section == 5) {
-        return @{@"className":@"MyTestReusableView2",@"eventName": @"updateImageView:",@"parameter":@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547035180781&di=ad7e771ee99afc06b9280062c13b3cd9&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F14%2F20150814165156_iAvkx.jpeg"};
+        return @"MyTestReusableView2";
     }
     return nil;
 }
 
-//- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
-//    return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
-//}
+- (ZLBaseEventModel*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section {
+    if (section == 0 || section == 4) {
+        return nil;
+    } else if (section == 5) {
+        return [ZLBaseEventModel createWithEventName:@"updateImageView:" parameter:@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547035180781&di=ad7e771ee99afc06b9280062c13b3cd9&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201508%2F14%2F20150814165156_iAvkx.jpeg"];
+    }
+    return nil;
+}
+
+- (UIColor*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section {
+    return [UIColor colorWithRed:(random()%256)/255.0 green:(random()%256)/255.0 blue:(random()%256)/255.0 alpha:1.0];
+}
 
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section {
     if (section % 2 == 0) {
@@ -475,6 +486,13 @@
     } else {
         return NO;
     }
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToBottom:(NSInteger)section {
+    if (section % 2 == 1) {
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout shouldMoveCell:(NSIndexPath *)indexPath {
@@ -503,6 +521,13 @@
         [_collectionViewLabel registerClass:[SEMyRecordLabelCell class] forCellWithReuseIdentifier:[SEMyRecordLabelCell cellIdentifier]];
         [_collectionViewLabel registerClass:[MultilineTextCell class] forCellWithReuseIdentifier:[MultilineTextCell cellIdentifier]];
         [_collectionViewLabel registerClass:[HorzontalHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[HorzontalHeaderView headerViewIdentifier]];
+        [_collectionViewLabel registerClass:[VerticalFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:[VerticalFooterView footerViewIdentifier]];
+        __weak typeof(self) weakSelf=self;
+        //_collectionViewLabel.mj_header.ignoredScrollViewContentInsetTop = 150;
+        _collectionViewLabel.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [weakSelf.collectionViewLabel reloadData];
+            [weakSelf.collectionViewLabel.mj_header endRefreshing];
+        }];
     }
     return _collectionViewLabel;
 }

@@ -4,4 +4,5 @@ use_frameworks!
 target "ZLCollectionView" do
     pod 'Masonry'
     pod 'SDWebImage'
+    pod 'MJRefresh'
 end

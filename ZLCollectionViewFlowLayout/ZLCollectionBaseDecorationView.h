@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ZLCollectionBackView : UICollectionReusableView
+@interface ZLCollectionBaseDecorationView : UICollectionReusableView
 
 @end
 

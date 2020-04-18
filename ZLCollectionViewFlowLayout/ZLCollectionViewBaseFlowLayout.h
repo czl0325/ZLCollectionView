@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ZLBaseEventModel.h"
 
 /**
- 版本：1.3.2
+ 版本：1.4.0
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -35,19 +36,20 @@ typedef enum {
 //设置每个section的背景色
 - (UIColor*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backColorForSection:(NSInteger)section;
 
-//自定义每个section的背景view，需要继承UICollectionReusableView，返回类名
+//设置每个section的背景图
+- (UIImage*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backImageForSection:(NSInteger)section;
+
+//自定义每个section的背景view，需要继承UICollectionReusableView(如要调用方法传递参数需要继承ZLCollectionBaseDecorationView)，返回类名
 - (NSString*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout registerBackView:(NSInteger)section;
 
-//对section背景进行一些操作
-- (void)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout loadView:(NSInteger)section;
+//向每个section自定义背景view传递自定义方法 eventName:方法名（注意带参数的方法名必须末尾加:）,parameter:参数
+- (ZLBaseEventModel*)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout backgroundViewMethodForSection:(NSInteger)section;
 
 //背景是否延伸覆盖到headerView，默认为NO
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToTop:(NSInteger)section;
 
-// 没有效果
-//- (ZLCollectionReusableView*)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout registerBackView2:(NSInteger)section;
-// 没有效果
-//- (void)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout *)collectionViewLayout newLoadView:(ZLCollectionReusableView*)backView section:(NSInteger)section;
+//背景是否延伸覆盖到footerView，默认为NO
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout attachToBottom:(NSInteger)section;
 
 /******** 提取出UICollectionViewLayoutAttributes的一些属性 ***********/
 //设置每个item的zIndex，不指定默认为0
@@ -113,6 +115,10 @@ typedef enum {
 //提供一个方法来设置isNeedReCalculateAllLayout (之所以提供是因为特殊情况下外部可能需要强制重新计算布局)
 //比如需要强制刷新布局时，可以先调用此函数设置为YES, 一般情况外部无需干预
 - (void)forceSetIsNeedReCalculateAllLayout:(BOOL)isNeedReCalculateAllLayout;
+
+// 注册所有的背景view(传入类名)
+- (void)registerDecorationView:(NSArray<NSString*>*)classNames;
+
 @end
 
 NS_ASSUME_NONNULL_END

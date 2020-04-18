@@ -10,7 +10,7 @@
 #import "ZLBaseEventModel.h"
 
 /**
- 版本：1.4.0
+ 版本：1.4.1
  */
 
 NS_ASSUME_NONNULL_BEGIN

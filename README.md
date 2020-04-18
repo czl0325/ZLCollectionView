@@ -1,7 +1,6 @@
 # ZLCollectionView
 
-为应对类似淘宝首页，京东首页，国美首页的复杂布局而写的多样化的UICollectionView。
-目前支持标签布局，列布局，百分比布局，定位布局等。可以根据不同的section设置不同的布局。可以进行拖动cell，头部悬浮，自定义section的背景色或者背景view，实现了电影选座等高难度的布局。<br>
+为应对类似淘宝首页，京东首页，国美首页等复杂布局而写的ZLCollectionview。基于UICollectionView实现，目前支持标签布局，列布局，百分比布局，定位布局，填充式布局，瀑布流布局等。支持纵向布局和横向布局，可以根据不同的section设置不同的布局，支持拖动cell，头部悬浮，设置section背景色和自定义section背景view，向自定义背景view传递自定义方法。实现了电影选座等高难度的布局。<br>
 特别感谢[donggelaile](https://github.com/donggelaile)贡献了降低cpu占用率的代码
 
 ### gif效果图

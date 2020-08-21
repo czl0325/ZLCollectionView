@@ -17,7 +17,7 @@
     ZLCollectionViewBackgroundViewLayoutAttributes *myLayoutAttributes = (ZLCollectionViewBackgroundViewLayoutAttributes*)layoutAttributes;
     unsigned int methodCount = 0;
     Method *methods = class_copyMethodList([self class], &methodCount);
-    if (myLayoutAttributes.eventName != nil && myLayoutAttributes.eventName.length > 0) {
+    if ([myLayoutAttributes isKindOfClass:[ZLCollectionViewBackgroundViewLayoutAttributes class]] && myLayoutAttributes.eventName != nil && myLayoutAttributes.eventName.length > 0) {
         for(int i = 0; i < methodCount; i++) {
             Method method = methods[i];
             SEL sel = method_getName(method);

@@ -125,6 +125,12 @@
             NSMutableArray* arrayOfPercent = [NSMutableArray new];  //储存百分比布局的数组
             NSMutableArray* arrayOfFill = [NSMutableArray new];     //储存填充式布局的数组
             NSMutableArray* arrayOfAbsolute = [NSMutableArray new]; //储存绝对定位布局的数组
+            
+            NSMutableArray *arrayXOfFill = [NSMutableArray new]; //储存填充式布局的数组
+            [arrayXOfFill addObject:self.isFloor?@(floor(edgeInsets.left)):@(edgeInsets.left)];
+            NSMutableArray *arrayYOfFill = [NSMutableArray new]; //储存填充式布局的数组
+            [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
+            
             for (int i=0; i<itemCount; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
@@ -391,40 +397,18 @@
                         break;
 #pragma mark 填充布局处理
                     case FillLayout: {
+                        BOOL qualified = YES;
                         if (arrayOfFill.count == 0) {
                             attributes.frame = CGRectMake(self.isFloor?floor(edgeInsets.left):edgeInsets.left, self.isFloor?floor(maxYOfFill):maxYOfFill, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                             [arrayOfFill addObject:attributes];
                         } else {
-                            NSMutableArray *arrayXOfFill = [NSMutableArray new];
-                            [arrayXOfFill addObject:self.isFloor?@(floor(edgeInsets.left)):@(edgeInsets.left)];
-                            NSMutableArray *arrayYOfFill = [NSMutableArray new];
-                            [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
-                            for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
-                                if (![arrayXOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.x)):@(attr.frame.origin.x)]) {
-                                    [arrayXOfFill addObject:self.isFloor?@(floor(attr.frame.origin.x)):@(attr.frame.origin.x)];
-                                }
-                                if (![arrayXOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.x+attr.frame.size.width)):@(attr.frame.origin.x+attr.frame.size.width)]) {
-                                    [arrayXOfFill addObject:self.isFloor?@(floor(attr.frame.origin.x+attr.frame.size.width)):@(attr.frame.origin.x+attr.frame.size.width)];
-                                }
-                                if (![arrayYOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.y)):@(attr.frame.origin.y)]) {
-                                    [arrayYOfFill addObject:self.isFloor?@(floor(attr.frame.origin.y)):@(attr.frame.origin.y)];
-                                }
-                                if (![arrayYOfFill containsObject:self.isFloor?@(floor(attr.frame.origin.y+attr.frame.size.height)):@(attr.frame.origin.y+attr.frame.size.height)]) {
-                                    [arrayYOfFill addObject:self.isFloor?@(floor(attr.frame.origin.y+attr.frame.size.height)):@(attr.frame.origin.y+attr.frame.size.height)];
-                                }
-                            }
-                            [arrayXOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                                return [obj1 floatValue] > [obj2 floatValue];
-                            }];
-                            [arrayYOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                                return [obj1 floatValue] > [obj2 floatValue];
-                            }];
-                            BOOL qualified = YES;
+                            BOOL leftQualified = NO;
+                            BOOL topQualified = NO;
                             for (NSNumber* yFill in arrayYOfFill) {
                                 for (NSNumber* xFill in arrayXOfFill) {
                                     qualified = YES;
-                                    CGFloat attrX = self.isFloor?(floor([xFill floatValue])==floor(edgeInsets.left)?floor([xFill floatValue]):(floor([xFill floatValue])+minimumInteritemSpacing)):([xFill floatValue]==edgeInsets.left?[xFill floatValue]:[xFill floatValue]+minimumInteritemSpacing);
-                                    CGFloat attrY = self.isFloor?(floor([yFill floatValue])==floor(maxYOfFill)?(floor([yFill floatValue])):(floor([yFill floatValue])+floor(minimumLineSpacing))):([yFill floatValue]==maxYOfFill?([yFill floatValue]):([yFill floatValue])+floor(minimumLineSpacing));
+                                    CGFloat attrX = floor([xFill floatValue])==floor(edgeInsets.left)?floor([xFill floatValue]):(floor([xFill floatValue])+minimumInteritemSpacing);
+                                    CGFloat attrY = floor([yFill floatValue])==floor(maxYOfFill)?(self.isFloor?floor([yFill floatValue]):floor([yFill floatValue])):floor([yFill floatValue])+floor(minimumLineSpacing);
                                     attributes.frame = CGRectMake(attrX, attrY, self.isFloor?floor(itemSize.width):itemSize.width, self.isFloor?floor(itemSize.height):itemSize.height);
                                     if (floor(attributes.frame.origin.x)+floor(attributes.frame.size.width) > floor(totalWidth)-floor(edgeInsets.right)) {
                                         qualified = NO;
@@ -439,6 +423,7 @@
                                     if (qualified == NO) {
                                         continue;
                                     } else {
+                                        // 对比左侧的cell
                                         CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumInteritemSpacing, attributes.frame.origin.y);
                                         CGRect leftRect = CGRectZero;
                                         for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
@@ -448,12 +433,12 @@
                                             }
                                         }
                                         if (CGRectEqualToRect(leftRect, CGRectZero)) {
-                                            break;
+                                            leftQualified = YES;
                                         } else {
                                             if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) >= minimumInteritemSpacing) {
-                                                break;
+                                                leftQualified = YES;
                                             } else if (floor(leftRect.origin.x) + floor(leftRect.size.width) <= leftPt.x) {
-                                                break;
+                                                leftQualified = YES;
                                             } else {
                                                 CGRect rc = attributes.frame;
                                                 rc.origin.x = leftRect.origin.x + leftRect.size.width + minimumInteritemSpacing;
@@ -466,6 +451,39 @@
                                                 }
                                             }
                                         }
+                                        
+                                        // 对比上侧的cell
+                                        CGPoint topPt = CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y - minimumLineSpacing);
+                                        CGRect topRect = CGRectZero;
+                                        for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                            if (CGRectContainsPoint(attr.frame, topPt)) {
+                                                topRect = attr.frame;
+                                                break;
+                                            }
+                                        }
+                                        if (CGRectEqualToRect(topRect, CGRectZero)) {
+                                            topQualified = YES;
+                                        } else {
+                                            if (attributes.frame.origin.y - (topRect.origin.y + topRect.size.height) >= minimumLineSpacing) {
+                                                topQualified = YES;
+                                            } else if (floor(topRect.origin.y) + floor(topRect.size.height) <= topPt.y) {
+                                                topQualified = YES;
+                                            } else {
+                                                CGRect rc = attributes.frame;
+                                                rc.origin.y = topRect.origin.y + topRect.size.height + minimumLineSpacing;
+                                                attributes.frame = rc;
+                                                for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
+                                                    if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
+                                                        qualified = NO;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (leftQualified == YES && topQualified == YES) {
+                                            qualified = YES;
+                                            break;
+                                        }
                                     }
                                 }
                                 if (qualified == YES) {
@@ -474,8 +492,28 @@
                             }
                             if (qualified == YES) {
                                 //NSLog(@"第%d个,合格的矩形区域=%@",i,NSStringFromCGRect(attributes.frame));
+                                [arrayOfFill addObject:attributes];
                             }
-                            [arrayOfFill addObject:attributes];
+                        }
+                        if (qualified == YES) {
+                            if (![arrayXOfFill containsObject:self.isFloor?@(floor(attributes.frame.origin.x)):@(attributes.frame.origin.x)]) {
+                                [arrayXOfFill addObject:self.isFloor?@(floor(attributes.frame.origin.x)):@(attributes.frame.origin.x)];
+                            }
+                            if (![arrayXOfFill containsObject:self.isFloor?@(floor(attributes.frame.origin.x+attributes.frame.size.width)):@(attributes.frame.origin.x+attributes.frame.size.width)]) {
+                                [arrayXOfFill addObject:self.isFloor?@(floor(attributes.frame.origin.x+attributes.frame.size.width)):@(attributes.frame.origin.x+attributes.frame.size.width)];
+                            }
+                            if (![arrayYOfFill containsObject:self.isFloor?@(floor(attributes.frame.origin.y)):@(attributes.frame.origin.y)]) {
+                                [arrayYOfFill addObject:self.isFloor?@(floor(attributes.frame.origin.y)):@(attributes.frame.origin.y)];
+                            }
+                            if (![arrayYOfFill containsObject:self.isFloor?@(floor(attributes.frame.origin.y+attributes.frame.size.height)):@(attributes.frame.origin.y+attributes.frame.size.height)]) {
+                                [arrayYOfFill addObject:self.isFloor?@(floor(attributes.frame.origin.y+attributes.frame.size.height)):@(attributes.frame.origin.y+attributes.frame.size.height)];
+                            }
+                            [arrayXOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                return [obj1 floatValue] > [obj2 floatValue];
+                            }];
+                            [arrayYOfFill sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                                return [obj1 floatValue] > [obj2 floatValue];
+                            }];
                         }
                     }
                         break;

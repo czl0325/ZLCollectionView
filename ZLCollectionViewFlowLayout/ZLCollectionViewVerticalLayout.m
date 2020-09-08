@@ -424,7 +424,7 @@
                                         continue;
                                     } else {
                                         // 对比左侧的cell
-                                        CGPoint leftPt = CGPointMake(attributes.frame.origin.x - minimumInteritemSpacing, attributes.frame.origin.y);
+                                        CGPoint leftPt = CGPointMake(attributes.frame.origin.x - floor(minimumInteritemSpacing), attributes.frame.origin.y);
                                         CGRect leftRect = CGRectZero;
                                         for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                             if (CGRectContainsPoint(attr.frame, leftPt)) {
@@ -435,13 +435,13 @@
                                         if (CGRectEqualToRect(leftRect, CGRectZero)) {
                                             leftQualified = YES;
                                         } else {
-                                            if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) >= minimumInteritemSpacing) {
+                                            if (attributes.frame.origin.x - (leftRect.origin.x + leftRect.size.width) >= floor(minimumInteritemSpacing)) {
                                                 leftQualified = YES;
                                             } else if (floor(leftRect.origin.x) + floor(leftRect.size.width) <= leftPt.x) {
                                                 leftQualified = YES;
                                             } else {
                                                 CGRect rc = attributes.frame;
-                                                rc.origin.x = leftRect.origin.x + leftRect.size.width + minimumInteritemSpacing;
+                                                rc.origin.x = leftRect.origin.x + leftRect.size.width + floor(minimumInteritemSpacing);
                                                 attributes.frame = rc;
                                                 for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                                     if (CGRectIntersectsRect(attributes.frame, attr.frame)) {
@@ -453,7 +453,7 @@
                                         }
                                         
                                         // 对比上侧的cell
-                                        CGPoint topPt = CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y - minimumLineSpacing);
+                                        CGPoint topPt = CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y - floor(minimumLineSpacing));
                                         CGRect topRect = CGRectZero;
                                         for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                             if (CGRectContainsPoint(attr.frame, topPt)) {
@@ -464,13 +464,13 @@
                                         if (CGRectEqualToRect(topRect, CGRectZero)) {
                                             topQualified = YES;
                                         } else {
-                                            if (attributes.frame.origin.y - (topRect.origin.y + topRect.size.height) >= minimumLineSpacing) {
+                                            if (attributes.frame.origin.y - (topRect.origin.y + topRect.size.height) >= floor(minimumLineSpacing)) {
                                                 topQualified = YES;
                                             } else if (floor(topRect.origin.y) + floor(topRect.size.height) <= topPt.y) {
                                                 topQualified = YES;
                                             } else {
                                                 CGRect rc = attributes.frame;
-                                                rc.origin.y = topRect.origin.y + topRect.size.height + minimumLineSpacing;
+                                                rc.origin.y = topRect.origin.y + topRect.size.height + floor(minimumLineSpacing);
                                                 attributes.frame = rc;
                                                 for (ZLCollectionViewLayoutAttributes* attr in arrayOfFill) {
                                                     if (CGRectIntersectsRect(attributes.frame, attr.frame)) {

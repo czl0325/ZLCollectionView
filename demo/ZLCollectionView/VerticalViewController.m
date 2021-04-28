@@ -507,7 +507,7 @@
         ZLCollectionViewVerticalLayout *flowLayout = [[ZLCollectionViewVerticalLayout alloc] init];
         flowLayout.delegate = self;
         flowLayout.canDrag = YES;
-        flowLayout.isFloor = YES;
+        flowLayout.isFloor = NO;
         flowLayout.header_suspension = YES;
         [flowLayout registerDecorationView:@[@"MyTestReusableView2"]];
         //flowLayout.fixTop = 64;

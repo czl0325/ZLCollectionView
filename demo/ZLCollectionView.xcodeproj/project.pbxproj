@@ -346,6 +346,7 @@
 				TargetAttributes = {
 					BE13FE5B1EFBA5E900AFCD90 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = SGRM3SK667;
 						ProvisioningStyle = Automatic;
 					};
 					BE13FE741EFBA5E900AFCD90 = {
@@ -649,7 +650,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.2.0;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SGRM3SK667;
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -665,7 +666,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.2.0;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = SGRM3SK667;
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

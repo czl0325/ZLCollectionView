@@ -10,7 +10,7 @@
 #import "ZLBaseEventModel.h"
 
 /**
- 版本：1.4.3
+ 版本：1.4.4
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -100,6 +100,8 @@ typedef enum {
 @property (nonatomic,assign) NSInteger columnCount;     //指定列数
 
 @property (nonatomic,assign) CGFloat fixTop;            //header偏移量
+
+@property (nonatomic,assign) CGFloat xBeyond;           //x周允许超出的偏移量（仅填充布局，默认3px）
 
 //每个section的每一列的高度
 @property (nonatomic, strong) NSMutableArray *collectionHeightsArray;

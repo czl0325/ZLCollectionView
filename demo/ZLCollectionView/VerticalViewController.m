@@ -265,7 +265,7 @@
             return CGSizeMake(50, 80);
         }
         case 8: {
-            return [collectionView ar_sizeForCellWithIdentifier:@"MultilineTextCell" indexPath:indexPath fixedWidth:collectionView.frame.size.width/2-30 configuration:^(__kindof MultilineTextCell *cell) {
+            return [collectionView ar_sizeForCellWithIdentifier:@"MultilineTextCell" indexPath:indexPath fixedWidth:(collectionView.frame.size.width-30)/2 configuration:^(__kindof MultilineTextCell *cell) {
                 cell.label.text = self.arrayTexts[indexPath.row];
             }];
         }

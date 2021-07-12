@@ -132,6 +132,13 @@
             [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
             
             for (int i=0; i<itemCount; i++) {
+                BOOL singleColumnCount = NO;
+                if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:singleColumnCountOfIndexPath:)]) {
+                    singleColumnCount = [self.delegate collectionView:self.collectionView
+                                                               layout:self
+                                         singleColumnCountOfIndexPath:[NSIndexPath indexPathForItem:i inSection:index]];
+                }
+                
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:index];
                 CGSize itemSize = CGSizeZero;
                 if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
@@ -164,18 +171,33 @@
                         break;
 #pragma mark 列布局处理
                     case ClosedLayout: {
-                        CGFloat max = CGFLOAT_MAX;
-                        NSInteger column = 0;
-                        for (int i = 0; i < self.columnCount; i++) {
-                            if (columnHeight[i] < max) {
-                                max = columnHeight[i];
-                                column = i;
+                        if (singleColumnCount) {
+                            CGFloat max = 0;
+                            for (int i = 0; i < self.columnCount; i++) {
+                                if (columnHeight[i] > max) {
+                                    max = columnHeight[i];
+                                }
                             }
+                            CGFloat itemX = 0;
+                            CGFloat itemY = max;
+                            attributes.frame = CGRectMake(edgeInsets.left + itemX, itemY, totalWidth-edgeInsets.left-edgeInsets.right, itemSize.height);
+                            for (int i = 0; i < self.columnCount; i++) {
+                                columnHeight[i] = max + itemSize.height + minimumLineSpacing;
+                            }
+                        } else {
+                            CGFloat max = CGFLOAT_MAX;
+                            NSInteger column = 0;
+                            for (int i = 0; i < self.columnCount; i++) {
+                                if (columnHeight[i] < max) {
+                                    max = columnHeight[i];
+                                    column = i;
+                                }
+                            }
+                            CGFloat itemX = edgeInsets.left + (itemWidth+minimumInteritemSpacing)*column;
+                            CGFloat itemY = columnHeight[column];
+                            attributes.frame = CGRectMake(itemX, itemY, itemWidth, itemSize.height);
+                            columnHeight[column] += (itemSize.height + minimumLineSpacing);
                         }
-                        CGFloat itemX = edgeInsets.left + (itemWidth+minimumInteritemSpacing)*column;
-                        CGFloat itemY = columnHeight[column];
-                        attributes.frame = CGRectMake(itemX, itemY, itemWidth, itemSize.height);
-                        columnHeight[column] += (itemSize.height + minimumLineSpacing);
                     }
                         break;
 #pragma mark 百分比布局处理

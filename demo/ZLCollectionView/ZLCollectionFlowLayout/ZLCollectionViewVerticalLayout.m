@@ -180,10 +180,7 @@
                             }
                             CGFloat itemX = 0;
                             CGFloat itemY = max;
-                            attributes.frame = CGRectMake(itemX,
-                                                          itemY,
-                                                          itemSize.width,
-                                                          itemSize.height);
+                            attributes.frame = CGRectMake(edgeInsets.left + itemX, itemY, totalWidth-edgeInsets.left-edgeInsets.right, itemSize.height);
                             for (int i = 0; i < self.columnCount; i++) {
                                 columnHeight[i] = max + itemSize.height + minimumLineSpacing;
                             }

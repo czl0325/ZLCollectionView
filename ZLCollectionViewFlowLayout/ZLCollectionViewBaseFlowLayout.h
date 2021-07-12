@@ -10,7 +10,7 @@
 #import "ZLBaseEventModel.h"
 
 /**
- 版本：1.4.4
+ 版本：1.4.5
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -62,6 +62,9 @@ typedef enum {
 /******** ClosedLayout列布局需要的代理 ***********/
 //在ClosedLayout列布局中指定一行有几列，不指定默认为1列
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout columnCountOfSection:(NSInteger)section;
+
+//在ClosedLayout列布局中指定哪列哪行可以是单行布局，不指定以上个方法为准
+- (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout*)collectionViewLayout singleColumnCountOfIndexPath:(NSIndexPath*)indexPath;
 
 /******** PercentLayout百分比布局需要的代理 ***********/
 //在PercentLayout百分比布局中指定每个item占该行的几分之几，如3.0/4，注意为大于0小于等于1的数字。不指定默认为1

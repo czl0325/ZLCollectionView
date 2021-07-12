@@ -18,7 +18,7 @@
 #import "MJRefresh.h"
 
 @interface VerticalViewController ()
-<UICollectionViewDelegate,UICollectionViewDataSource,ZLCollectionViewBaseFlowLayoutDelegate>
+<UICollectionViewDelegate,UICollectionViewDataSource,ZLCollectionViewBaseFlowLayoutDelegate,UIScrollViewDelegate>
 
 @property(nonatomic,strong)UICollectionView* collectionViewLabel;
 @property(nonatomic,strong)NSArray* arrayMyActivitys;
@@ -493,6 +493,23 @@
         return YES;
     }
     return NO;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSInteger currentIndex = 0;
+    ZLCollectionViewVerticalLayout* layout = (ZLCollectionViewVerticalLayout*)self.collectionViewLabel.collectionViewLayout;
+    NSMutableArray* arr = [NSMutableArray new];
+    [arr addObject:@"0"];
+    [arr addObjectsFromArray:layout.collectionHeightsArray];
+    for (NSInteger i = 0; i < arr.count-1; i++) {
+        CGFloat height1 = [arr[i] floatValue];
+        CGFloat height2 = [arr[i+1] floatValue];
+        if (scrollView.contentOffset.y >= height1 && scrollView.contentOffset.y < height2) {
+            currentIndex = i;
+            break;
+        }
+    }
+    NSLog(@"当前所在section=%zd", currentIndex);
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout shouldMoveCell:(NSIndexPath *)indexPath {

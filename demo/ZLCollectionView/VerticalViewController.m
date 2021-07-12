@@ -265,7 +265,16 @@
             return CGSizeMake(50, 80);
         }
         case 8: {
-            return [collectionView ar_sizeForCellWithIdentifier:@"MultilineTextCell" indexPath:indexPath fixedWidth:(collectionView.frame.size.width-30)/2 configuration:^(__kindof MultilineTextCell *cell) {
+            CGFloat fixedWidth = 0;
+            if (indexPath.row == 0) {
+                fixedWidth = collectionView.frame.size.width;
+            } else {
+                fixedWidth = (collectionView.frame.size.width-30)/2;
+            }
+            return [collectionView ar_sizeForCellWithIdentifier:@"MultilineTextCell"
+                                                      indexPath:indexPath
+                                                     fixedWidth:fixedWidth
+                                                  configuration:^(__kindof MultilineTextCell *cell) {
                 cell.label.text = self.arrayTexts[indexPath.row];
             }];
         }
@@ -290,6 +299,20 @@
             return 0;
     }
 }
+
+- (BOOL)collectionView:(UICollectionView *)collectionView
+                layout:(UICollectionViewFlowLayout*)collectionViewLayout
+singleColumnCountOfIndexPath:(NSIndexPath*)indexPath {
+    switch (indexPath.section) {
+        case 8:
+            if (indexPath.row == 0) {
+                return YES;
+            }
+        default:
+            return NO;
+    }
+}
+
 
 //如果是绝对定位布局必须是否该代理，设置每个item的frame
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(ZLCollectionViewBaseFlowLayout*)collectionViewLayout rectOfItem:(NSIndexPath*)indexPath {

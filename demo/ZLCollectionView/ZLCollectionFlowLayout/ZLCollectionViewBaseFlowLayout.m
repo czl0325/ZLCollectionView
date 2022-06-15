@@ -83,7 +83,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
 #pragma mark - 所有cell和view的布局属性
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    if (!self.attributesArray) {
+    if (!self.attributesArray || self.collectionView.numberOfSections == 0) {
         return [super layoutAttributesForElementsInRect:rect];
     } else {
         if (self.header_suspension) {

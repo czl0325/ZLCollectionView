@@ -104,7 +104,7 @@ typedef enum {
 
 @property (nonatomic,assign) CGFloat fixTop;            //header偏移量
 
-@property (nonatomic,assign) CGFloat xBeyond;           //x周允许超出的偏移量（仅填充布局，默认3px）
+@property (nonatomic,assign) CGFloat xBeyond;           //x轴允许超出的偏移量（仅填充布局，默认3px）
 
 //每个section的每一列的高度
 @property (nonatomic, strong) NSMutableArray *collectionHeightsArray;
@@ -114,7 +114,7 @@ typedef enum {
 @property (nonatomic, strong, readonly) NSMutableArray *headerAttributesArray;
 
 //是否需要重新计算所有布局
-//内部控制，一般情况外部无需干预(内部会在外部调用reloadData,insertSections,insertItems,deleteItems...等方法调用时将此属性自动置为yYES)
+//内部控制，一般情况外部无需干预(内部会在外部调用reloadData,insertSections,insertItems,deleteItems...等方法调用时将此属性自动置为YES)
 @property (nonatomic, assign, readonly) BOOL isNeedReCalculateAllLayout;
 
 //提供一个方法来设置isNeedReCalculateAllLayout (之所以提供是因为特殊情况下外部可能需要强制重新计算布局)

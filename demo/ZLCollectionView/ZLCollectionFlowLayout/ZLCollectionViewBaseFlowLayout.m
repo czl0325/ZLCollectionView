@@ -136,9 +136,9 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
                 
                 if (!isNeedChangeFrame) {
                     /*
-                      这里需要注意，在悬浮的情况下改变了headerAtt的frame
-                      在滑出header又滑回来时,headerAtt已经被修改过，需要改回原始值
-                      否则header无法正确归位
+                     这里需要注意，在悬浮的情况下改变了headerAtt的frame
+                     在滑出header又滑回来时,headerAtt已经被修改过，需要改回原始值
+                     否则header无法正确归位
                      */
                     if ([attriture isKindOfClass:[ZLCollectionViewLayoutAttributes class]]) {
                         attriture.frame = ((ZLCollectionViewLayoutAttributes*)attriture).orginalFrame;
@@ -149,6 +149,16 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         return self.attributesArray;
     }
 }
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewLayoutAttributes *layoutAttributes = (UICollectionViewLayoutAttributes*)self.attributesArray[indexPath.item];
+    if(!layoutAttributes) {
+        layoutAttributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+    }
+    NSLog(@"%@", self.attributesArray[indexPath.item]);
+    return layoutAttributes;
+}
+
 
 #pragma mark 以下是拖动排序的代码
 - (void)setCanDrag:(BOOL)canDrag {
@@ -202,12 +212,12 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGPoint location = [longPress locationInView:self.collectionView];
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:location];
     
-//    __weak typeof(ZLCollectionViewBaseFlowLayout*) weakSelf = self;
-//    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
-//        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:indexPath] == NO) {
-//            return;
-//        }
-//    }
+    //    __weak typeof(ZLCollectionViewBaseFlowLayout*) weakSelf = self;
+    //    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
+    //        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:indexPath] == NO) {
+    //            return;
+    //        }
+    //    }
     
     if (_cellFakeView != nil) {
         indexPath = self.cellFakeView.indexPath;
@@ -350,11 +360,11 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         return;
     }
     
-//    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
-//        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:toIndexPath] == NO) {
-//            return;
-//        }
-//    }
+    //    if ([weakSelf.delegate respondsToSelector:@selector(collectionView:layout:shouldMoveCell:)]) {
+    //        if ([weakSelf.delegate collectionView:weakSelf.collectionView layout:weakSelf shouldMoveCell:toIndexPath] == NO) {
+    //            return;
+    //        }
+    //    }
     
     if (atIndexPath == nil || toIndexPath == nil) {
         return;

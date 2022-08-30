@@ -325,14 +325,14 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     if (self.cellFakeView == nil) {
         return;
     }
-    CGFloat offset = self.collectionView.contentOffset.y;
-    CGFloat trigerInsetTop = self.collectionView.contentInset.top;
-    CGFloat trigerInsetEnd = self.collectionView.contentInset.bottom;
+    CGFloat offset = self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.contentOffset.y : self.collectionView.contentOffset.x;
+    CGFloat trigerInsetTop = self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.contentInset.top: self.collectionView.contentInset.left;
+    CGFloat trigerInsetEnd = self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.contentInset.bottom : self.collectionView.contentInset.right;
     CGFloat paddingTop = 0;
     CGFloat paddingEnd = 0;
-    CGFloat length = self.collectionView.frame.size.height;
-    CGFloat fakeCellTopEdge = CGRectGetMinY(self.cellFakeView.frame);
-    CGFloat fakeCellEndEdge = CGRectGetMaxY(self.cellFakeView.frame);
+    CGFloat length = self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.frame.size.height : self.collectionView.frame.size.width;
+    CGFloat fakeCellTopEdge = self.scrollDirection == UICollectionViewScrollDirectionVertical ? CGRectGetMinY(self.cellFakeView.frame) : CGRectGetMinX(self.cellFakeView.frame);
+    CGFloat fakeCellEndEdge = self.scrollDirection == UICollectionViewScrollDirectionVertical ? CGRectGetMaxY(self.cellFakeView.frame) : CGRectGetMaxX(self.cellFakeView.frame);
     
     if(fakeCellTopEdge <= offset + paddingTop + trigerInsetTop){
         self.continuousScrollDirection = LewScrollDirctionToTop;
@@ -422,8 +422,8 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     CGFloat offset = 0;
     CGFloat insetTop = 0;
     CGFloat insetEnd = 0;
-    CGFloat length = self.collectionView.frame.size.height;
-    CGFloat contentLength = self.collectionView.contentSize.height;
+    CGFloat length = self.scrollDirection == UICollectionViewScrollDirectionVertical ?  self.collectionView.frame.size.height : self.collectionView.frame.size.width;
+    CGFloat contentLength = self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.contentSize.height : self.collectionView.contentSize.width;
     
     if (contentLength + insetTop + insetEnd <= length) {
         return;
@@ -469,7 +469,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         return 0;
     }
     CGFloat offset = 0;
-    CGFloat offsetEnd = 0 + self.collectionView.frame.size.height;
+    CGFloat offsetEnd = 0 + self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.collectionView.frame.size.height : self.collectionView.frame.size.width;
     CGFloat insetTop = 0;
     CGFloat trigerInsetTop = 0;
     CGFloat trigerInsetEnd = 0;
@@ -480,11 +480,11 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     
     if (self.continuousScrollDirection == LewScrollDirctionToTop) {
         if (self.cellFakeView) {
-            percentage = 1.0 - ((self.cellFakeView.frame.origin.y - (offset + paddingTop)) / trigerInsetTop);
+            percentage = 1.0 - (((self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.cellFakeView.frame.origin.y : self.cellFakeView.frame.origin.x) - (offset + paddingTop)) / trigerInsetTop);
         }
     } else if (self.continuousScrollDirection == LewScrollDirctionToEnd){
         if (self.cellFakeView) {
-            percentage = 1.0 - (((insetTop + offsetEnd - paddingEnd) - (self.cellFakeView.frame.origin.y + self.cellFakeView.frame.size.height + insetTop)) / trigerInsetEnd);
+            percentage = 1.0 - (((insetTop + offsetEnd - paddingEnd) - ((self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.cellFakeView.frame.origin.y : self.cellFakeView.frame.origin.x) + (self.scrollDirection == UICollectionViewScrollDirectionVertical ? self.cellFakeView.frame.size.height : self.cellFakeView.frame.size.width) + insetTop)) / trigerInsetEnd);
         }
     }
     percentage = fmin(1.0f, percentage);

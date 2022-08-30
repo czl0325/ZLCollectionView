@@ -74,16 +74,16 @@
         make.edges.mas_equalTo(self.view);
     }];
 
-    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:2000 target:self selector:@selector(onChangeView) userInfo:nil repeats:YES];
+//    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:2000 target:self selector:@selector(onChangeView) userInfo:nil repeats:YES];
 }
 
-- (void)onChangeView {
-    [self.collectionViewLabel performBatchUpdates:^{
-        <#code#>
-    } completion:^(BOOL finished) {
-        
-    }];
-}
+//- (void)onChangeView {
+//    [self.collectionViewLabel performBatchUpdates:^{
+//
+//    } completion:^(BOOL finished) {
+//
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

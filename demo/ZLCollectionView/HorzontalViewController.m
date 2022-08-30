@@ -178,11 +178,13 @@
         _collectionViewLabel = ({
             ZLCollectionViewHorzontalLayout* layout = [[ZLCollectionViewHorzontalLayout alloc]init];
             layout.delegate = self;
+            layout.canDrag = YES;
             layout.header_suspension = YES;
             
             UICollectionView * object = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
             object.delegate = self;
             object.dataSource = self;
+            object.alwaysBounceHorizontal = YES;
             object.backgroundColor = [UIColor whiteColor];
             [object registerClass:[MultilineTextCell class] forCellWithReuseIdentifier:@"MultilineTextCell"];
             [object registerClass:[VerticalHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[VerticalHeaderView headerViewIdentifier]];

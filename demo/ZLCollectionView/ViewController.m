@@ -50,7 +50,7 @@
     item0.selectedImage = [[UIImage imageNamed:@"vertical_hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item0.image = [[UIImage imageNamed:@"vertical"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UITabBarItem *item1 = [tabbar.items objectAtIndex:1];
-    item1.title =@"横向布局";
+    item1.title = @"横向布局";
     item1.selectedImage = [[UIImage imageNamed:@"horzontal_hl"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item1.image = [[UIImage imageNamed:@"horzontal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 }

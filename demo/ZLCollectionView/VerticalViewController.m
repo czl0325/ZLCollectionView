@@ -24,6 +24,7 @@
 @property(nonatomic,strong)NSArray* arrayMyActivitys;
 @property(nonatomic,strong)NSMutableArray* arraySeats;      //电影座位的数组
 @property(nonatomic,strong)NSArray* arrayTexts;
+@property(nonatomic,assign)NSInteger itemIndex;
 
 @end
 
@@ -74,16 +75,20 @@
         make.edges.mas_equalTo(self.view);
     }];
 
-//    NSTimer* timer = [NSTimer scheduledTimerWithTimeInterval:2000 target:self selector:@selector(onChangeView) userInfo:nil repeats:YES];
+    self.itemIndex = 0;
+//    [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(onChangeView) userInfo:nil repeats:YES];
 }
 
-//- (void)onChangeView {
+- (void)onChangeView {
 //    [self.collectionViewLabel performBatchUpdates:^{
 //
 //    } completion:^(BOOL finished) {
 //
 //    }];
-//}
+//    UICollectionViewLayoutAttributes* attr = [self.collectionViewLabel layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:self.itemIndex inSection:0]];
+//    NSLog(@"%@", attr);
+//    self.itemIndex++;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

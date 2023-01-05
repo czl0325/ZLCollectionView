@@ -150,15 +150,18 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
     }
 }
 
-- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewLayoutAttributes *layoutAttributes = (UICollectionViewLayoutAttributes*)self.attributesArray[indexPath.item];
-    if(!layoutAttributes) {
-        layoutAttributes = [super layoutAttributesForItemAtIndexPath:indexPath];
-    }
-    NSLog(@"%@", self.attributesArray[indexPath.item]);
-    return layoutAttributes;
-}
+// 1.4.8暂时去掉layoutAttributesForItemAtIndexPath方法
+//- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
+//    UICollectionViewLayoutAttributes *layoutAttributes = (UICollectionViewLayoutAttributes*)self.attributesArray[indexPath.item];
+//    if(!layoutAttributes) {
+//        layoutAttributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+//    }
+//    return layoutAttributes;
+//}
 
+/**
+
+ */
 
 #pragma mark 以下是拖动排序的代码
 - (void)setCanDrag:(BOOL)canDrag {

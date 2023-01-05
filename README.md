@@ -9,7 +9,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.4.7
+支持cocoapod导入，最新版本 1.4.8
 
 ```
 pod 'ZLCollectionViewFlowLayout' 

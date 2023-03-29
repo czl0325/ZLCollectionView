@@ -122,6 +122,8 @@
                 itemHeight = (totalHeight - edgeInsets.top - edgeInsets.bottom - minimumInteritemSpacing * (self.columnCount - 1)) / self.columnCount;
             }
             
+            NSInteger lastColumnIndex = 0;
+            
             NSMutableArray* arrayOfAbsolute = [NSMutableArray new]; //储存绝对定位布局的数组
             
             for (int i=0; i<itemCount; i++) {
@@ -160,16 +162,24 @@
                     case ClosedLayout: {
                         CGFloat max = CGFLOAT_MAX;
                         NSInteger column = 0;
-                        for (int i = 0; i < self.columnCount; i++) {
-                            if (columnWidths[i] < max) {
-                                max = columnWidths[i];
-                                column = i;
+                        if (self.columnSortType == Sequence) {
+                            column = lastColumnIndex;
+                        } else {
+                            for (int i = 0; i < self.columnCount; i++) {
+                                if (columnWidths[i] < max) {
+                                    max = columnWidths[i];
+                                    column = i;
+                                }
                             }
                         }
                         CGFloat itemX = columnWidths[column];
                         CGFloat itemY = edgeInsets.top + (itemHeight+minimumInteritemSpacing)*column;
                         attributes.frame = CGRectMake(itemX, itemY, itemSize.width, itemHeight);
                         columnWidths[column] += (itemSize.width + minimumLineSpacing);
+                        lastColumnIndex++;
+                        if (lastColumnIndex >= self.columnCount) {
+                            lastColumnIndex = 0;
+                        }
                     }
                         break;
                     case AbsoluteLayout: {

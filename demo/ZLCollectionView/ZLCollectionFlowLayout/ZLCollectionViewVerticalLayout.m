@@ -131,6 +131,8 @@
             NSMutableArray *arrayYOfFill = [NSMutableArray new]; //储存填充式布局的数组
             [arrayYOfFill addObject:self.isFloor?@(floor(maxYOfFill)):@(maxYOfFill)];
             
+            NSInteger lastColumnIndex = 0;
+            
             for (int i=0; i<itemCount; i++) {
                 BOOL singleColumnCount = NO;
                 if (self.delegate && [self.delegate respondsToSelector:@selector(collectionView:layout:singleColumnCountOfIndexPath:)]) {
@@ -184,19 +186,28 @@
                             for (int i = 0; i < self.columnCount; i++) {
                                 columnHeight[i] = max + itemSize.height + minimumLineSpacing;
                             }
+                            lastColumnIndex = 0;
                         } else {
                             CGFloat max = CGFLOAT_MAX;
                             NSInteger column = 0;
-                            for (int i = 0; i < self.columnCount; i++) {
-                                if (columnHeight[i] < max) {
-                                    max = columnHeight[i];
-                                    column = i;
+                            if (self.columnSortType == Sequence) {
+                                column = lastColumnIndex;
+                            } else {
+                                for (int i = 0; i < self.columnCount; i++) {
+                                    if (columnHeight[i] < max) {
+                                        max = columnHeight[i];
+                                        column = i;
+                                    }
                                 }
                             }
                             CGFloat itemX = edgeInsets.left + (itemWidth+minimumInteritemSpacing)*column;
                             CGFloat itemY = columnHeight[column];
                             attributes.frame = CGRectMake(itemX, itemY, itemWidth, itemSize.height);
                             columnHeight[column] += (itemSize.height + minimumLineSpacing);
+                            lastColumnIndex++;
+                            if (lastColumnIndex >= self.columnCount) {
+                                lastColumnIndex = 0;
+                            }
                         }
                     }
                         break;

@@ -9,7 +9,7 @@
 
 ### 导入
 
-支持cocoapod导入，最新版本 1.4.8
+支持cocoapod导入，最新版本 1.4.9
 
 ```
 pod 'ZLCollectionViewFlowLayout' 
@@ -206,6 +206,9 @@ Unable to find a specification for `ZLCollectionViewFlowLayout`
 ```
 
 ### 更新
+##### v1.4.9 (2022.03.29)
+* 增加瀑布流排列方式的字段
+
 ##### v1.4.0 (2020.04.18)
 * 自定义背景view的代理方法增加
 

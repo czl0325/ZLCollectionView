@@ -41,6 +41,7 @@ typedef NS_ENUM(NSUInteger, LewScrollDirction) {
         self.header_suspension = NO;
         self.layoutType = FillLayout;
         self.columnCount = 1;
+        self.columnSortType = minHeight;
         self.fixTop = 0;
         self.xBeyond = 3;
         _isNeedReCalculateAllLayout = YES;

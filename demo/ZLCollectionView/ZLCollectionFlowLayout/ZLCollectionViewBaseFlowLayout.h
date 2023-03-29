@@ -10,7 +10,7 @@
 #import "ZLBaseEventModel.h"
 
 /**
- 版本：1.4.8
+ 版本：1.4.9
  */
 
 NS_ASSUME_NONNULL_BEGIN
@@ -25,6 +25,11 @@ typedef enum {
     FillLayout              = 5,        //填充式布局     将一堆大小不一的view见缝插针的填充到一个平面内，规则为先判断从左到右是否有间隙填充，再从上到下判断。
     AbsoluteLayout          = 6,        //绝对定位布局    需实现rectOfItem的代理，指定每个item的frame
 } ZLLayoutType;
+
+typedef enum {
+    minHeight               = 1,        // 按最小高度
+    Sequence                = 2,        // 按顺序
+} ZLColumnSortType;
 
 @class ZLCollectionViewBaseFlowLayout;
 @protocol  ZLCollectionViewBaseFlowLayoutDelegate <NSObject, UICollectionViewDelegateFlowLayout>
@@ -92,7 +97,7 @@ typedef enum {
 
 @property (nonatomic,weak) id<ZLCollectionViewBaseFlowLayoutDelegate> delegate;
 
-@property (nonatomic,assign) BOOL isFloor;//宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
+@property (nonatomic,assign) BOOL isFloor; // 宽度是否向下取整，默认YES，用于填充布局，未来加入百分比布局
 
 @property (nonatomic,assign) BOOL canDrag;              //是否允许拖动cell，默认是NO
 
@@ -101,6 +106,8 @@ typedef enum {
 @property (nonatomic,assign) ZLLayoutType layoutType;   //指定layout的类型，也可以在代理里设置
 
 @property (nonatomic,assign) NSInteger columnCount;     //指定列数
+
+@property (nonatomic,assign) ZLColumnSortType columnSortType;   // 瀑布流列排序的方式
 
 @property (nonatomic,assign) CGFloat fixTop;            //header偏移量
 

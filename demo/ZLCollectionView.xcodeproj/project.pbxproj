@@ -346,7 +346,7 @@
 				TargetAttributes = {
 					BE13FE5B1EFBA5E900AFCD90 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = SGRM3SK667;
+						DevelopmentTeam = B28EYZD36N;
 						ProvisioningStyle = Automatic;
 					};
 					BE13FE741EFBA5E900AFCD90 = {
@@ -650,11 +650,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.2.0;
-				DEVELOPMENT_TEAM = SGRM3SK667;
+				DEVELOPMENT_TEAM = B28EYZD36N;
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh/MJRefresh.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry/Masonry.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.ZLCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -666,11 +681,26 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1.2.0;
-				DEVELOPMENT_TEAM = SGRM3SK667;
+				DEVELOPMENT_TEAM = B28EYZD36N;
 				INFOPLIST_FILE = ZLCollectionView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.2.0;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh/MJRefresh.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry/Masonry.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MJRefresh\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Masonry\"",
+					"-iframework",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.ZLCollectionView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -680,8 +710,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = ZLCollectionViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qipai.ZLCollectionViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZLCollectionView.app/ZLCollectionView";
@@ -692,8 +725,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = ZLCollectionViewTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.qipai.ZLCollectionViewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZLCollectionView.app/ZLCollectionView";

@@ -1,9 +1,9 @@
 PODS:
   - Masonry (1.1.0)
-  - MJRefresh (3.2.0)
-  - SDWebImage (5.0.2):
-    - SDWebImage/Core (= 5.0.2)
-  - SDWebImage/Core (5.0.2)
+  - MJRefresh (3.5.0)
+  - SDWebImage (5.9.5):
+    - SDWebImage/Core (= 5.9.5)
+  - SDWebImage/Core (5.9.5)
 
 DEPENDENCIES:
   - Masonry
@@ -18,9 +18,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  MJRefresh: ed450d6eb9d3346a2cb033ab7eb6de090aeef437
-  SDWebImage: 6764b5fa0f73c203728052955dbefa2bf1f33282
+  MJRefresh: 6afc955813966afb08305477dd7a0d9ad5e79a16
+  SDWebImage: 0b2ba0d56479bf6a45ecddbfd5558bea93150d25
 
-PODFILE CHECKSUM: ff07c01e879dd9fbeeaae9451833c3dd8c2de8d2
+PODFILE CHECKSUM: 7d411a12e577e70ea3a162164dc118010c3c46d2
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

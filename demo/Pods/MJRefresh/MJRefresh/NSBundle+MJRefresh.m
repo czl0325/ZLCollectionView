@@ -30,6 +30,14 @@
     return arrowImage;
 }
 
++ (UIImage *)mj_trailArrowImage {
+    static UIImage *arrowImage = nil;
+    if (arrowImage == nil) {
+        arrowImage = [[UIImage imageWithContentsOfFile:[[self mj_refreshBundle] pathForResource:@"trail_arrow@2x" ofType:@"png"]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+    return arrowImage;
+}
+
 + (NSString *)mj_localizedStringForKey:(NSString *)key
 {
     return [self mj_localizedStringForKey:key value:nil];
@@ -56,6 +64,10 @@
             }
         } else if ([language hasPrefix:@"ko"]) {
             language = @"ko";
+        } else if ([language hasPrefix:@"ru"]) {
+            language = @"ru";
+        } else if ([language hasPrefix:@"uk"]) {
+            language = @"uk";
         } else {
             language = @"en";
         }
